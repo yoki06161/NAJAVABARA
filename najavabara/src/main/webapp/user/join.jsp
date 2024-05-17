@@ -8,8 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
 function idCheck(){
-	const id = $('#id').val().trim(); // 입력값에서 앞뒤 공백 제거
-    if (!id) {
+	const id = $('#id').val();
+    if (id=="") {
         // 아이디가 빈 칸인 경우 처리
         $('#isIdTrue').hide();
     	$('#isIdFalse').hide();
@@ -24,18 +24,12 @@ function idCheck(){
 	// 아이디 글자 수 체크
     const idLength = id.length;
     const minIdLength = 3; // 최소 글자 수
-    const maxIdLength = 10; // 최대 글자 수
 	
     if (idLength < minIdLength) {
     	$('#isIdTrue').hide();
     	$('#isIdFalse').hide();
         $('#idLengthMessage').text('최소 ' + minIdLength + '글자 이상 입력해야 합니다.');
         return; // 최소 글자 수 미만이면 AJAX 요청을 보내지 않음
-    } else if (idLength > maxIdLength) {
-    	$('#isIdTrue').hide();
-    	$('#isIdFalse').hide();
-        $('#idLengthMessage').text('최대 ' + maxIdLength + '글자까지 입력할 수 있습니다.');
-        return; // 최대 글자 수 초과하면 AJAX 요청을 보내지 않음
     } else {
         $('#idLengthMessage').text('');
     
@@ -52,7 +46,7 @@ function idCheck(){
 	            if(data['rs'] === '0'){
 	            	$('#isIdFalse').show();
 	            	$('#isIdTrue').hide();
-	            }else{
+	            } else{
 	            	$('#isIdTrue').show();
 	            	$('#isIdFalse').hide();
 	            };
@@ -103,9 +97,30 @@ $(function(){
 				<td><h3>지역:</h3></td>
 				<td>
 					<h4>
-						<input class="form-control" type="text" name="area"
-							placeholder="주소를 입력해주세요" required>
+					<select class="form-select" name="area">
+					  <option selected>지역을 선택해주세요</option>
+					  <option value="서울특별시">서울특별시</option>
+					  <option value="경기도">경기도</option>
+					  <option value="강원도">강원도</option>
+					  <option value="대전광역시">대전광역시</option>
+					  <option value="대구광역시">대구광역시</option>
+					  <option value="부산광역시">부산광역시</option>
+					  <option value="인천광역시">인천광역시</option>
+					  <option value="광주광역시">광주광역시</option>
+					  <option value="울산광역시">울산광역시</option>
+					  <option value="세종특별시">세종특별시</option>
+					  <option value="충청북도">충청북도</option>
+					  <option value="충청남도">충청남도</option>
+					  <option value="전라북도">전라북도</option>
+					  <option value="전라남도">전라남도</option>
+					  <option value="경상북도">경상북도</option>
+					  <option value="경상남도">경상남도</option>
+					  <option value="제주특별시">제주특별시</option>
+					</select>
+<!-- 						<input class="form-control" type="text" name="area"
+							placeholder="지역명을 입력해주세요" required> -->
 					</h4>
+					
 				</td>
 			</tr>
 <!-- 			<tr>

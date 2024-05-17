@@ -29,11 +29,11 @@
 <a href="../user/logout.usr">LogOut</a> 
 <%} %>
 </li>
-<li>
+<!-- <li>
 <a href="/myproject/user/userlist.usr">User List</a>
-</li>
+</li>  -->
 <li>
-<a href="/myproject/region/list.reg">Board List</a> 
+<a href="/najavabara/region/list.reg">Board List</a> 
 </li>
 </ul>
 </h3>

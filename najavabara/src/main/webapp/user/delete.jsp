@@ -37,15 +37,13 @@ UserDTO dto = (UserDTO) request.getAttribute("user");
 	<form action="deleteProc.usr" method="post" id="delete">
 		<table>
 			<tr>
-				<td><h4>아이디 <%=session.getAttribute("id") %></h4></td>
-				<td><h4>의 회원 탈퇴를 계속 진행하시려면 비밀번호를 입력해주세요</h4></td>
+				<td colspan="3"><h4>아이디 <%=session.getAttribute("id") %>
+					의 회원 탈퇴를 계속 진행하시려면 비밀번호를 입력해주세요</h4></td>
 			</tr>
 			<tr>
 				<td><h5>비밀번호:</h5></td>
 				<td><input type="password" name="pw" id="pw" class="form-control"
 					placeholder="비밀번호" required></td>
-			</tr>
-			<tr>
 				<td><input type="button" onclick="del()" value="회원 탈퇴" class="btn btn-primary">
 				</td>
 			</tr>
