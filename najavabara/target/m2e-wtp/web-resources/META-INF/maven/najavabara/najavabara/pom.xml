@@ -4,6 +4,33 @@
   <artifactId>najavabara</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  
+  <dependencies>
+  	<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+	<dependency>
+	    <groupId>com.mysql</groupId>
+	    <artifactId>mysql-connector-j</artifactId>
+	    <version>8.3.0</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+	<dependency>
+	    <groupId>org.webjars</groupId>
+	    <artifactId>bootstrap</artifactId>
+	    <version>5.3.3</version>
+	</dependency>
+	<dependency>
+		<groupId>mvcpjt</groupId>
+		<artifactId>mvcpjt</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+	<dependency>
+    	<groupId>commons-fileupload</groupId>
+    	<artifactId>commons-fileupload</artifactId>
+    	<version>1.5</version>
+	</dependency>
+  </dependencies>
+  
   <build>
     <plugins>
       <plugin>
