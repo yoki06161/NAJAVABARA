@@ -37,4 +37,13 @@
 </h3>
 <hr>
 <br>
+<body>
+<style>
+body {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+</style>
+</body>
 </html>

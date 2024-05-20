@@ -5,48 +5,59 @@ public class RegionDTO {
 	private String title;
 	private String content;
 	private String id;
+	private String area;
 	private String name;
-	private String Ofile;
-	private String Sfile;
+	private String ofile;
+	private String sfile;
 	private String postdate;
 	private int visitcount;
 	private int postNum;
 	
-	public RegionDTO(int num, String title, String content, String id, String postdate, int visitcount, String name) {
+	public RegionDTO(int num, String title, String content, String id, String area, String postdate, String name, int visitcount) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.num = num;
 		this.title = title;
 		this.content = content;
 		this.id = id;
+		this.area = area;
 		this.postdate = postdate;
 		this.visitcount = visitcount;
 		this.name = name;
 	}
 	//기본 생성자
 	public RegionDTO() {
-		// TODO Auto-generated constructor stub
 	}
-	public RegionDTO(int num, String title, String content, String id, String postdate, int visitcount) {
-		// TODO Auto-generated constructor stub
+	public RegionDTO(int num, String title, String content, String id, String area, String postdate, int visitcount, String ofile, String sfile) {
 		super();
 		this.num = num;
 		this.title = title;
 		this.content = content;
 		this.id = id;
+		this.area = area;
 		this.postdate = postdate;
 		this.visitcount = visitcount;
+		this.ofile = ofile;
+		this.sfile = sfile;
+	}
+	public RegionDTO(int num, String title, String content, String id, String area, String postdate, String name, int visitcount, String ofile, String sfile) {
+		super();
+		this.num = num;
+		this.title = title;
+		this.content = content;
+		this.id = id;
+		this.area = area;
+		this.postdate = postdate;
+		this.name = name;
+		this.visitcount = visitcount;
+		this.ofile = ofile;
+		this.sfile = sfile;
 	}
 	public RegionDTO(String title, String content, String id) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.id = id;
-	}
-	public RegionDTO(String Ofile, String Sfile) {
-		super();
-		this.Ofile = Ofile;
-		this.Sfile = Sfile;
 	}
 	public int getNum() {
 		return num;
@@ -79,16 +90,16 @@ public class RegionDTO {
 		this.name = name;
 	}
 	public String getOfile() {
-		return Ofile;
+		return ofile;
 	}
-	public void setOfile(String Ofile) {
-		this.Ofile = Ofile;
+	public void setOfile(String ofile) {
+		this.ofile = ofile;
 	}
 	public String getSfile() {
-		return Sfile;
+		return sfile;
 	}
-	public void setSfile(String Sfile) {
-		this.Sfile = Sfile;
+	public void setSfile(String sfile) {
+		this.sfile = sfile;
 	}
 	public String getPostdate() {
 		return postdate;
@@ -108,4 +119,11 @@ public class RegionDTO {
 	public void setpostNum(int postNum) {
 		this.postNum = postNum;
 	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
 }
