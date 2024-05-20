@@ -8,7 +8,7 @@
 </head>
 <body>
 	<%@ include file="../common/menu.jsp"%>
-	<h1>로그인 화면</h1>
+	<h1>로그인</h1>
 	<br>
 	<form action="loginProc.usr" name="login">
 		<table>
@@ -25,8 +25,15 @@
 			<tr>
 				<td><input type="submit" value="로그인"
 					class="btn btn-primary"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
 			</tr>
 		</table>
+		<br>
+		<h4>아직 회원이 아니신가요?</h4>
+		<a href="../user/join.usr" class="btn btn-outline-primary">회원가입</a>
 	</form>
 </body>
 </html>

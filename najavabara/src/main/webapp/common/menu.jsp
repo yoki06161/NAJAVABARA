@@ -18,22 +18,20 @@
 <h3>
 <ul>
 <li>
-<a href="<%=request.getContextPath()%>">Index</a> |
+<a href="<%=request.getContextPath()%>">홈</a> |
 <% if(session.getAttribute("idx") == null) {%>
-<a href="../user/join.usr">Join</a> | 
-<a href="../user/login.usr">Login</a> 
+<a href="../user/login.usr">로그인</a> 
 <%}else{ %>
-<%=session.getAttribute("id") %>(<%=session.getAttribute("name") %>) |
-<a href="../user/update.usr">Update(내정보수정)</a> | 
-<a href="../user/delete.usr">Delete(회원탈퇴)</a> |
-<a href="../user/logout.usr">LogOut</a> 
+<%=session.getAttribute("id") %>(<%=session.getAttribute("name") %>)님 환영합니다! |
+<a href="../user/update.usr">내 정보 수정</a> | 
+<a href="../user/logout.usr">로그아웃</a> 
 <%} %>
 </li>
 <!-- <li>
 <a href="/myproject/user/userlist.usr">User List</a>
 </li>  -->
 <li>
-<a href="/najavabara/region/list.reg">Board List</a> 
+<a href="/najavabara/region/list.reg">지역 게시판</a> 
 </li>
 </ul>
 </h3>

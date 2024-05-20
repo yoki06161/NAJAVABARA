@@ -66,6 +66,7 @@ UserDTO dto = (UserDTO) request.getAttribute("user");
 			<tr>
 				<td><input type="submit" value="회원정보 수정" class="btn btn-primary">
 				</td>
+				<td><a href="../user/delete.usr" class="btn btn-outline-primary">회원탈퇴</a></td>
 			</tr>
 		</table>
 	</form>

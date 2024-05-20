@@ -49,5 +49,6 @@ UserDTO dto = (UserDTO) request.getAttribute("user");
 			</tr>
 		</table>
 	</form>
+	<a href="../user/update.usr" class="btn btn-outline-primary">내 정보 수정</a>
 </body>
 </html>
