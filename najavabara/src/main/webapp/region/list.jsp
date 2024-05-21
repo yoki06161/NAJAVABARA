@@ -9,7 +9,7 @@
 <title>지역 게시판</title>
 </head>
 <body>
-	<style>
+<style>
 img {
 	width: 400px !important;
 	height: 400px !important;
@@ -25,7 +25,7 @@ a:hover {
 }
 
 .card {
-	width: 400px !important;
+	width: 402px !important;
 }
 
 .card-title {
@@ -47,20 +47,55 @@ a:hover {
 				<td><select name="searchField" class="form-select">
 						<option value="title">제목</option>
 						<option value="content">내용</option>
+						<option value="user.id">글쓴이</option>
 				</select></td>
 				<td><input type="text" name="searchWord" class="form-control">
 				</td>
 				<td><input type="submit" value="검색" class="btn btn-primary">
 				</td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+	<br>
+	<form method="get">
+		<table>
+			<tr>
+				<td>
+					<select class="form-select" name="area">
+					  <option selected value="null">지역을 선택해주세요</option>
+					  <option value="서울특별시">서울특별시</option>
+					  <option value="경기도">경기도</option>
+					  <option value="강원도">강원도</option>
+					  <option value="대전광역시">대전광역시</option>
+					  <option value="대구광역시">대구광역시</option>
+					  <option value="부산광역시">부산광역시</option>
+					  <option value="인천광역시">인천광역시</option>
+					  <option value="광주광역시">광주광역시</option>
+					  <option value="울산광역시">울산광역시</option>
+					  <option value="세종특별시">세종특별시</option>
+					  <option value="충청북도">충청북도</option>
+					  <option value="충청남도">충청남도</option>
+					  <option value="전라북도">전라북도</option>
+					  <option value="전라남도">전라남도</option>
+					  <option value="경상북도">경상북도</option>
+					  <option value="경상남도">경상남도</option>
+					  <option value="제주특별시">제주특별시</option>
+					</select>
+				</td>
+				<td>
+					<input type="submit" value="지역별 검색" class="btn btn-primary">
+				</td>
 			</tr>
 		</table>
 	</form>
 
+	<br><br>
+		<h3 class="text-start">
+			전체 : <%=totalCount%>
+		</h3>
+		<input type="button" class="btn btn-outline-primary" onclick="location.href='write.reg'" value="글쓰기">
 	<br>
-	<h3>
-		전체 :
-		<%=totalCount%></h3>
-	번호 제목 첨부 이미지 아이디 지역 작성일 조회수
 	<%
 		if (regionList.isEmpty()) {
 		%>
@@ -86,7 +121,7 @@ a:hover {
 		<div class="col">
 			<div class="card">
 					<%if(dtos.getSfile() == null) { %>
-					<img src="../region/europe-3483539_1280.jpg" class="card-img-top"
+					<img src="../region/no_image.PNG" class="card-img-top"
 						alt="사진">
 					<%} else {%>
 					<img src="<%= fullpath %>" class="card-img-top" alt="사진">
@@ -97,9 +132,7 @@ a:hover {
 					<h4>
 						<a href="view.reg?num=<%=num%>" class="card-title"><%=title%></a>
 					</h4>
-					<h6 class="card-subtitle"><%= area %>/<%=id%></h6>
-					<h6 class="card-text text-body-secondary"><%=postdate%></h6>
-					<p>조회수 <%=visitcount%></p>
+					<h6 class="card-subtitle"><%= area %>/<%=id%></h6><h6 class="card-text text-body-secondary"><%=postdate%>&nbsp;&nbsp;&nbsp;&nbsp;조회수 <%=visitcount%></h6>
 				</div>
 			</div>
 		</div>
@@ -111,8 +144,5 @@ a:hover {
 	<%
 		}
 		%>
-	<div style="display: block;">
-		<a class="btn btn-outline-primary" href="write.reg">글쓰기</a>
-	</div>
 </body>
 </html>

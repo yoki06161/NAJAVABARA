@@ -57,11 +57,13 @@ public class RegionController extends HttpServlet {
 
 			String searchField = request.getParameter("searchField");
 			String searchWord = request.getParameter("searchWord");
-
+			String area = request.getParameter("area");
+			
 			Map<String, String> map = new HashMap<>();
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
-
+			map.put("area", area);
+		
 			// service : dao
 			RegionDAO dao = new RegionDAO();
 			List<RegionDTO> regionList =  dao.selectList(map);
@@ -109,33 +111,53 @@ public class RegionController extends HttpServlet {
 			MultipartRequest mr = new MultipartRequest(request, saveDirectory, maxPostSize, encoding);
 
 			String fileName = mr.getFilesystemName("file");
-			String ext = fileName.substring(fileName.lastIndexOf("."));
-			String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
-			String newFileName = now + ext;
-			System.out.println(fileName);
-			System.out.println(newFileName);
+			
+			if(fileName != null) {	
+				String ext = fileName.substring(fileName.lastIndexOf("."));
+				String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
+				String newFileName = now + ext;
+				System.out.println(fileName);
+				System.out.println(newFileName);
+	
+				File oldFile = new File(saveDirectory + File.separator + fileName); 
+				File newFile = new File(saveDirectory + File.separator + newFileName); 
+				oldFile.renameTo(newFile);
+				
+				// 나머지 값 받아오기			
+				String title = mr.getParameter("title");
+				String content = mr.getParameter("content");
+				HttpSession session = request.getSession();    
+				String id = (String)session.getAttribute("id");
+				
+				RegionDTO dto = new RegionDTO(title, content, id);
+				dto.setOfile(fileName);
+				dto.setSfile(newFileName);
+				
+				// 4. DAO 
+				RegionDAO dao = new RegionDAO();
+				dao.insertWrite(dto);
+				
+				System.out.println(title);
+				System.out.println(content);
+				System.out.println(id);
+			} else if(fileName == null) {
+				// 값 받아오기			
+				String title = mr.getParameter("title");
+				String content = mr.getParameter("content");
+				HttpSession session = request.getSession();    
+				String id = (String)session.getAttribute("id");
 
-			File oldFile = new File(saveDirectory + File.separator + fileName); 
-			File newFile = new File(saveDirectory + File.separator + newFileName); 
-			oldFile.renameTo(newFile);
+				RegionDTO dto = new RegionDTO(title, content, id);
+				
+				// 4. DAO 
+				RegionDAO dao = new RegionDAO();
+				dao.insertWrite(dto);
 
-			// 나머지 값 받아오기			
-			String title = mr.getParameter("title");
-			String content = mr.getParameter("content");
-			HttpSession session = request.getSession();    
-			String id = (String)session.getAttribute("id");
-
-			RegionDTO dto = new RegionDTO(title, content, id);
-			dto.setOfile(fileName);
-			dto.setSfile(newFileName);
-
-			System.out.println(title);
-			System.out.println(content);
-			System.out.println(id);
-
-			// 4. DAO 
-			RegionDAO dao = new RegionDAO();
-			dao.insertWrite(dto);
+				System.out.println(title);
+				System.out.println(content);
+				System.out.println(id);
+			}
+			
 
 			// 5. move
 			String path = request.getContextPath() + "/region/list.reg";

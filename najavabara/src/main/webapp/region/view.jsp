@@ -26,40 +26,39 @@ String fullpath = requestFolder+"/"+fname;
 
 	}
 </script>
+<style>
+img {
+	width: 50%;
+	height: 50%;
+}
+</style>
 </head>
 <body>
 	<%@ include file="../common/menu.jsp"%>
-	<h2>글 상세보기</h2>
-	<table class="table table-bordered">
+	<h1>게시물 상세보기</h1>
+	<br>
+	<table class="table table-borderless">
 		<tr>
-			<td>번호</td>
-			<td><%=dto.getNum() %></td>
-			<td>아이디(이름)</td>
-			<td><%=dto.getId()%>(<%=dto.getName() %>)</td>
-			<td>지역</td>
-			<td><%= dto.getArea() %></td>
+			<!-- <td>번호</td>
+			<td>dto.getNum()</td> -->
+			<td><h5><%=dto.getId()%>(<%=dto.getName() %>)</h5>
+			<p style="color:gray;"><%= dto.getArea() %>  |  <%=dto.getPostdate() %></p></td>
 		</tr>
 		<tr>
-			<td>작성일자</td>
-			<td><%=dto.getPostdate() %></td>
-			<td>조회</td>
-			<td><%=dto.getVisitcount() %></td>
+			<td><h3><%=dto.getTitle() %></h3></td>
 		</tr>
 		<tr>
-			<td>제목</td>
-			<td colspan="3"><%=dto.getTitle() %></td>
+			<td><h5><%=dto.getContent() %></h5></td>
 		</tr>
 		<tr>
-			<td>내용</td>
-			<td colspan="3"><%=dto.getContent() %></td>
-		</tr>
-		<tr>
-			<td>이미지 첨부</td>
 				<% if(dto.getOfile() == null) { %>
-					<td colspan="5"><img src="../region/europe-3483539_1280.jpg"></td>
+					<td style="color:gray;">등록한 이미지가 없습니다.</td>
 				<% } else { %>
-					<td colspan="5"><img src="<%= fullpath %>"></td>
+					<td><img src="<%= fullpath %>"></td>
 				<%} %>
+		</tr>
+		<tr>
+			<td style="color:gray;">조회 <%=dto.getVisitcount() %></td>
 		</tr>
 	</table>
 	<a href="list.reg" class="btn btn-outline-primary">게시물 목록</a>

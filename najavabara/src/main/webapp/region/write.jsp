@@ -10,7 +10,7 @@
 </head>
 <body>
 <%@ include file="../common/menu.jsp" %>
-<h2>게시물 작성</h2>
+<h1>게시물 작성</h1>
 <%
 //세션에서 filePath 속성을 가져와서 변수에 저장
 String filePath = (String) session.getAttribute("filePath");

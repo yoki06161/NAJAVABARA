@@ -117,8 +117,6 @@ $(function(){
 					  <option value="경상남도">경상남도</option>
 					  <option value="제주특별시">제주특별시</option>
 					</select>
-<!-- 						<input class="form-control" type="text" name="area"
-							placeholder="지역명을 입력해주세요" required> -->
 					</h4>
 					
 				</td>
