@@ -31,7 +31,16 @@ public class RegionDAO {
 		// 리스트 필요없으면 이걸 삭제
 		List<RegionDTO> regionList = new ArrayList<>();
 		// sql 창 
-		String sql = "select num, title, content, regionBoard.id, user.area, postdate, visitcount, ofile, sfile from user, regionBoard";
+		String sql = "select num, title, content, regionBoard.id, user.area, ";
+		sql += "case when timestampdiff(second, postdate, current_timestamp) <60"
+				+ "           then concat(timestampdiff(second, postdate, current_timestamp),'초 전')"
+				+ "           when timestampdiff(minute, postdate, current_timestamp) <60"
+				+ "           then concat(timestampdiff(minute, postdate, current_timestamp),'분 전')"
+				+ "           when timestampdiff(hour, postdate, current_timestamp) <24"
+				+ "           then concat(timestampdiff(hour, postdate, current_timestamp),'시간 전')"
+				+ "           else concat(datediff(current_timestamp, postdate),'일 전')"
+				+ "        end as postdate,visitcount, ofile, sfile ";
+		sql += "from user, regionBoard";
 		sql += " where user.id = regionBoard.id";
 		if(isFilter) {
 			sql += " and area = ? ";

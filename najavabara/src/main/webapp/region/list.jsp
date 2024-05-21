@@ -129,10 +129,10 @@ a:hover {
 				<div class="card-body">
 					<input type="hidden" value="<%=num%>">
 
-					<h4>
-						<a href="view.reg?num=<%=num%>" class="card-title"><%=title%></a>
+					<h4 class="card-title fw-bold">
+						<a href="view.reg?num=<%=num%>" style="color:black;"><%=title%></a>
 					</h4>
-					<h6 class="card-subtitle"><%= area %>/<%=id%></h6><h6 class="card-text text-body-secondary"><%=postdate%>&nbsp;&nbsp;&nbsp;&nbsp;조회수 <%=visitcount%></h6>
+					<h5><%= area %>/<%=id%></h5><h6 style="color:gray;"><%=postdate%> &nbsp;|&nbsp; 조회수 <%=visitcount%></h6>
 				</div>
 			</div>
 		</div>

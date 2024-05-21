@@ -41,12 +41,12 @@ img {
 		<tr>
 			<!-- <td>번호</td>
 			<td>dto.getNum()</td> -->
-			<td><h5><%=dto.getId()%>(<%=dto.getName() %>)</h5>
+			<td><h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName() %>)</h5>
 			<p style="color:gray;"><%= dto.getArea() %>  |  <%=dto.getPostdate() %></p></td>
 		</tr>
 		<tr>
 			<td>
-				<h3><%=dto.getTitle() %></h3>
+				<h3 class="fw-bold"><%=dto.getTitle() %></h3>
 			</td>
 		</tr>
 		<tr>
