@@ -329,13 +329,15 @@ public class RegionDAO {
 			conn = JDBConnect.getConnection();
 
 			// sql + 쿼리창
-			String sql = "update regionBoard set title=?, content=? where num = ?";
+			String sql = "update regionBoard set title=?, content=?, ofile=?, sfile=? where num = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 세팅
 			pstmt.setString(1, dto.getTitle());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setInt(3, dto.getNum());
+			pstmt.setString(3, dto.getOfile());
+			pstmt.setString(4, dto.getSfile());
+			pstmt.setInt(5, dto.getNum());
 
 			// execute 실행
 			rs = pstmt.executeUpdate();

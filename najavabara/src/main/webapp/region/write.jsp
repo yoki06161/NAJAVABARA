@@ -11,12 +11,7 @@
 <body>
 <%@ include file="../common/menu.jsp" %>
 <h1>게시물 작성</h1>
-<%
-//세션에서 filePath 속성을 가져와서 변수에 저장
-String filePath = (String) session.getAttribute("filePath");
-RegionDTO fdto = (RegionDTO)request.getAttribute("fdto");
-%>
-	<form name="writeForm" method="post" action="<%=request.getContextPath()%>/region/writeProc.reg" enctype="multipart/form-data">
+<form name="writeForm" method="post" action="<%=request.getContextPath()%>/region/writeProc.reg" enctype="multipart/form-data">
 	<img>
 	<table class="table table-bordered">
 		<tr><td>제목</td><td><input type="text" name="title" class="form-control" required></td></tr>
