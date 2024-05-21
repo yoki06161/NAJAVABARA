@@ -80,6 +80,7 @@ public class RegionController extends HttpServlet {
 			request.setCharacterEncoding("utf-8");
 			String sNum = request.getParameter("num"); 
 			int num = Integer.parseInt(sNum);
+			//Boolean isEdited = request.getParameter(isEdited);
 			RegionDTO dto = new RegionDTO();
 			dto.setNum(num);
 			//System.out.print(num);  //찍히는 것 확인...
@@ -90,9 +91,9 @@ public class RegionController extends HttpServlet {
 			dao.updateVisitcount(dto); // 5초
 			//2. 글 상세보기
 			dto = dao.selectView(dto);
-
+			
 			request.setAttribute("dto", dto);
-
+			
 			//3. forward
 			String path =  "./view.jsp"; // 1
 			request.getRequestDispatcher(path).forward(request, response);
@@ -193,14 +194,14 @@ public class RegionController extends HttpServlet {
 
 			// 게시물 번호 받아오기
 			String sNum = mr.getParameter("num"); 
-			System.out.println(sNum);
+			//System.out.println(sNum);
 			int num = Integer.parseInt(sNum);
-			System.out.println(num);
+			//System.out.println(num);
 			RegionDTO dto = new RegionDTO();
 			dto.setNum(num);
 			
 			String fileName = mr.getFilesystemName("file");
-
+			
 			if(fileName != null) {	
 				String ext = fileName.substring(fileName.lastIndexOf("."));
 				String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
@@ -246,7 +247,7 @@ public class RegionController extends HttpServlet {
 				System.out.println(id);
 			}
 
-			//DAO 
+			// DAO 
 			RegionDAO dao = new RegionDAO();
 			int rs = dao.updateWrite(dto);
 			

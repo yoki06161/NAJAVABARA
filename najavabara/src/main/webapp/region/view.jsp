@@ -45,7 +45,9 @@ img {
 			<p style="color:gray;"><%= dto.getArea() %>  |  <%=dto.getPostdate() %></p></td>
 		</tr>
 		<tr>
-			<td><h3><%=dto.getTitle() %></h3></td>
+			<td>
+				<h3><%=dto.getTitle() %></h3>
+			</td>
 		</tr>
 		<tr>
 			<td><h5><%=dto.getContent() %></h5></td>

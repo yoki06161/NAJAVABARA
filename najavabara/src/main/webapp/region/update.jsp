@@ -86,35 +86,24 @@ img {
 		<input type="hidden" name="num" value="<%=dto.getNum()%>">
 		<table class="table table-bordered">
 			<tr>
-				<td>번호</td>
-				<td><%=dto.getNum()%></td>
-				<td>아이디(이름)</td>
-				<td><%=dto.getId()%>(<%=dto.getName()%>)</td>
-			</tr>
-			<tr>
-				<td>작성일자</td>
-				<td><%=dto.getPostdate()%></td>
-				<td>조회</td>
-				<td><%=dto.getVisitcount()%></td>
-			</tr>
-			<tr>
 				<td>제목</td>
-				<td colspan="3"><input type="text" name="title"
+				<td><input type="text" name="title"
 					class="form-control" value="<%=dto.getTitle()%>"></td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td colspan="3"><input type="text" name="content"
+				<td><input type="text" name="content"
 					class="form-control" value="<%=dto.getContent()%>"></td>
 			</tr>
 			<tr>
 				<td>이미지 첨부</td>
-				<td colspan="3"><input type="file" name="file"
+				<td><input type="file" name="file"
 					class="form-control">	
+				<br>
 				<%
 				if (dto.getOfile() == null) {
 				%>
-				<br><h6 style="color: gray;">등록한 이미지가 없습니다.</h6>
+				<h6 style="color: gray;">등록한 이미지가 없습니다.</h6>
 				<%
 				} else {
 				%>
