@@ -63,7 +63,7 @@ a:hover {
 			<tr>
 				<td>
 					<select class="form-select" name="area">
-					  <option selected value="null">지역을 선택해주세요</option>
+					  <option selected value="">전체 지역</option>
 					  <option value="서울특별시">서울특별시</option>
 					  <option value="경기도">경기도</option>
 					  <option value="강원도">강원도</option>
@@ -112,6 +112,7 @@ a:hover {
 				String id = dtos.getId();
 				String postdate = dtos.getPostdate();
 				int visitcount = dtos.getVisitcount();
+				int likes = dtos.getLikes();
 				// param
 				String saveFolder="Uploads";
 				String requestFolder=request.getContextPath()+"/"+saveFolder;
@@ -132,7 +133,7 @@ a:hover {
 					<h4 class="card-title fw-bold">
 						<a href="view.reg?num=<%=num%>" style="color:black;"><%=title%></a>
 					</h4>
-					<h5><%= area %>/<%=id%></h5><h6 style="color:gray;"><%=postdate%> &nbsp;|&nbsp; 조회수 <%=visitcount%></h6>
+					<h5><%= area %>/<%=id%></h5><h6 style="color:gray;"><%=postdate%> &nbsp;|&nbsp; 조회수 <%=visitcount%> &nbsp;|&nbsp; 좋아요 <%=likes %></h6>
 				</div>
 			</div>
 		</div>

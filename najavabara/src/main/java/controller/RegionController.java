@@ -71,6 +71,7 @@ public class RegionController extends HttpServlet {
 
 			request.setAttribute("regionList", regionList);
 			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("area", area);
 
 			String path =  "./list.jsp"; // 1
 			request.getRequestDispatcher(path).forward(request, response);

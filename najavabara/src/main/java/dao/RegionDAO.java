@@ -20,7 +20,7 @@ public class RegionDAO {
 
 		// 필터링 여부
 		boolean isFilter = false;
-		if(map.get("area") != null) {
+		if(map.get("area") != null || map.get("area") == "") {
 			isFilter = true;
 		}
 		// search 여부
@@ -39,11 +39,11 @@ public class RegionDAO {
 				+ "           when timestampdiff(hour, postdate, current_timestamp) <24"
 				+ "           then concat(timestampdiff(hour, postdate, current_timestamp),'시간 전')"
 				+ "           else concat(datediff(current_timestamp, postdate),'일 전')"
-				+ "        end as postdate,visitcount, ofile, sfile ";
+				+ "        end as postdate,visitcount, ofile, sfile, likes ";
 		sql += "from user, regionBoard";
 		sql += " where user.id = regionBoard.id";
 		if(isFilter) {
-			sql += " and area = ? ";
+			sql += " and area like ? ";
 		} else if(isSearch) {
 			sql += " and " + map.get("searchField") + " like ? ";
 		}
@@ -60,7 +60,7 @@ public class RegionDAO {
 
 			pstmt = conn.prepareStatement(sql);
 			if(isFilter) {
-				pstmt.setString(1, map.get("area"));
+				pstmt.setString(1, "%" + map.get("area") + "%");
 			} else if(isSearch) {
 				pstmt.setString(1, "%" + map.get("searchWord") + "%");
 			}
@@ -82,8 +82,9 @@ public class RegionDAO {
 				int visitcount = rs.getInt("visitcount");
 				String ofile = rs.getString("ofile");
 				String sfile = rs.getString("sfile");
+				int likes = rs.getInt("likes");
 				// 생성자
-				RegionDTO dto = new RegionDTO(num, title, content, id, area, postdate, visitcount, ofile, sfile);
+				RegionDTO dto = new RegionDTO(num, title, content, id, area, postdate, visitcount, ofile, sfile, likes);
 				// 리스트 필요없으면 이걸 삭제
 				regionList.add(dto);
 			} 
@@ -104,7 +105,7 @@ public class RegionDAO {
 		int totalCount = 0;
 		// 필터링 여부
 		boolean isFilter = false;
-		if(map.get("area") != null) {
+		if(map.get("area") != null || map.get("area") == "") {
 			isFilter = true;
 		}
 		// search 여부
@@ -116,7 +117,7 @@ public class RegionDAO {
 		String sql = "select count(num) as cnt from regionBoard, user";
 		sql += " where user.id = regionBoard.id";
 		if(isFilter) {
-			sql += " and area = ? ";
+			sql += " and area like ?";
 		}
 		if(isSearch) {
 			sql += " and " + map.get("searchField") + " like ? ";
@@ -127,7 +128,7 @@ public class RegionDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			if(isFilter) {
-				pstmt.setString(1, map.get("area"));
+				pstmt.setString(1, "%" + map.get("area") + "%");
 			} else if(isSearch) {
 				pstmt.setString(1, "%" + map.get("searchWord") + "%");
 			} 
@@ -191,7 +192,7 @@ public class RegionDAO {
 			conn = JDBConnect.getConnection();
 
 			// sql 창- 리스트면 where ..=?부분 수정
-			String sql = "select regionBoard.num, title, content, regionBoard.id, user.area, postdate, visitcount, user.name, ofile, sfile ";
+			String sql = "select regionBoard.num, title, content, regionBoard.id, user.area, postdate, visitcount, user.name, ofile, sfile, likes ";
 			sql += " from regionBoard, user";
 			sql += " where regionBoard.num=? and user.id = regionBoard.id";
 			pstmt = conn.prepareStatement(sql);
@@ -215,8 +216,9 @@ public class RegionDAO {
 				int visitcount = rs.getInt("visitcount");
 				String ofile = rs.getString("ofile");
 				String sfile = rs.getString("sfile");
+				int likes = rs.getInt("likes");
 				// 생성자 필요에 따라 추가(리스트면 dto앞에 DTO명 붙여야함)
-				dto = new RegionDTO(num, title, content, id, area, postdate, name, visitcount, ofile, sfile);
+				dto = new RegionDTO(num, title, content, id, area, postdate, name, visitcount, ofile, sfile, likes);
 				System.out.println(ofile+"과"+sfile);
 			} 
 		} catch (Exception e) {

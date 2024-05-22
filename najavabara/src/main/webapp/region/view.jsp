@@ -60,9 +60,15 @@ img {
 				<%} %>
 		</tr>
 		<tr>
+			<td>
+			 	<input type="button" class="btn btn-outline-danger rounded-pill" value="좋아요 <%=dto.getLikes() %>">
+			</td>
+		</tr>
+		<tr>
 			<td style="color:gray;">조회 <%=dto.getVisitcount() %></td>
 		</tr>
 	</table>
+	<br>
 	<a href="list.reg" class="btn btn-outline-primary">게시물 목록</a>
 	<%if(session.getAttribute("id") != null && session.getAttribute("id").equals(dto.getId())) {%>
 	<a href="update.reg?num=<%=dto.getNum()%>"

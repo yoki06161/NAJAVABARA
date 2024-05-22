@@ -11,7 +11,7 @@ public class RegionDTO {
 	private String sfile;
 	private String postdate;
 	private int visitcount;
-	private int postNum;
+	private int likes;
 	
 	public RegionDTO(int num, String title, String content, String id, String area, String postdate, String name, int visitcount) {
 		// TODO Auto-generated constructor stub
@@ -28,7 +28,7 @@ public class RegionDTO {
 	//기본 생성자
 	public RegionDTO() {
 	}
-	public RegionDTO(int num, String title, String content, String id, String area, String postdate, int visitcount, String ofile, String sfile) {
+	public RegionDTO(int num, String title, String content, String id, String area, String postdate, int visitcount, String ofile, String sfile, int likes) {
 		super();
 		this.num = num;
 		this.title = title;
@@ -39,8 +39,9 @@ public class RegionDTO {
 		this.visitcount = visitcount;
 		this.ofile = ofile;
 		this.sfile = sfile;
+		this.likes = likes;
 	}
-	public RegionDTO(int num, String title, String content, String id, String area, String postdate, String name, int visitcount, String ofile, String sfile) {
+	public RegionDTO(int num, String title, String content, String id, String area, String postdate, String name, int visitcount, String ofile, String sfile, int likes) {
 		super();
 		this.num = num;
 		this.title = title;
@@ -52,6 +53,7 @@ public class RegionDTO {
 		this.visitcount = visitcount;
 		this.ofile = ofile;
 		this.sfile = sfile;
+		this.likes = likes;
 	}
 	public RegionDTO(String title, String content, String id) {
 		super();
@@ -113,11 +115,11 @@ public class RegionDTO {
 	public void setVisitcount(int visitcount) {
 		this.visitcount = visitcount;
 	}
-	public int getpostNum() {
-		return postNum;
+	public int getLikes() {
+		return likes;
 	}
-	public void setpostNum(int postNum) {
-		this.postNum = postNum;
+	public void setLikes(int likes) {
+		this.likes = likes;
 	}
 	public String getArea() {
 		return area;
