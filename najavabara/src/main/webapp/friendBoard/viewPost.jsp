@@ -17,6 +17,7 @@
 <title>게시물 상세보기</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 	<%@ include file="../index.jsp"%>
@@ -49,7 +50,29 @@
             var form = document.getElementById("replyForm_" + commentNum);
             form.style.display = "none";
         }
-        
+
+        var likeInProgress = false; // 클릭 이벤트가 실행 중인지 여부를 나타내는 변수
+
+        function toggleLike(postNum) {
+            if (likeInProgress) return; // 클릭 이벤트가 이미 실행 중이면 더 이상 실행하지 않음
+            likeInProgress = true; // 클릭 이벤트가 실행 중임을 표시
+            
+            $.ajax({
+                url: "likePost.po",
+                type: "POST",
+                data: { num: postNum },
+                success: function(response) {
+                    // 서버로부터 좋아요 수를 받아와서 업데이트합니다.
+                    $("#likeCount").text(response.likeCount);
+                },
+                error: function() {
+                    alert("좋아요 처리 중 오류가 발생했습니다.");
+                },
+                complete: function() {
+                    likeInProgress = false; // 클릭 이벤트가 완료되었으므로 변수를 초기화
+                }
+            });
+        }
     </script>
 
 	<div class="container mt-5">
@@ -141,11 +164,8 @@
 		%>
 
 		<p>
-			<a href="likePost.po?num=<%=post.getNum()%>" style="color: black;">좋아요
-				<%=session.getAttribute("likedPosts") != null
-		&& ((Set<Integer>) session.getAttribute("likedPosts")).contains(post.getNum())
-				? request.getAttribute("likeCount")
-				: post.getLikeCount()%>
+			<a href="#" style="color: black;" onclick="toggleLike(<%=post.getNum()%>)">좋아요
+				<span id="likeCount"><%=request.getAttribute("likeCount")%></span>
 			</a> 댓글
 			<%=commentCount%>
 		</p>

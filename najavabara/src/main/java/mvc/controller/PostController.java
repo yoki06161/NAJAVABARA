@@ -2,6 +2,7 @@ package mvc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,17 +51,18 @@ public class PostController extends HttpServlet {
 		String action = uri.substring(uri.lastIndexOf("/"));
 
 		if (action.equals("/friendBoard.po")) {
-		    // 페이지 번호 및 검색어 파라미터 가져오기
+		    // 페이지 번호, 검색어 및 지역 파라미터 가져오기
 		    String searchField = request.getParameter("searchField");
 		    String searchWord = request.getParameter("searchWord");
-		    int pageNum = 1; // 기본 페이지 번호 설정
+		    String searchArea = request.getParameter("searchArea");
 
+		    int pageNum = 1; // 기본 페이지 번호 설정
 		    String pageNumStr = request.getParameter("pageNum");
 		    if (pageNumStr != null && !pageNumStr.isEmpty()) {
 		        try {
 		            pageNum = Integer.parseInt(pageNumStr);
 		        } catch (NumberFormatException e) {
-		            e.printStackTrace(); // 또는 적절한 예외 처리를 수행할 수 있습니다.
+		            e.printStackTrace(); 
 		        }
 		    }
 
@@ -68,6 +70,7 @@ public class PostController extends HttpServlet {
 		    Map<String, String> map = new HashMap<>();
 		    map.put("searchField", searchField);
 		    map.put("searchWord", searchWord);
+		    map.put("searchArea", searchArea); 
 
 		    // 페이지당 글 수와 요청된 페이지에 해당하는 글 목록 가져오기
 		    int pageSize = 10; // 페이지당 글 수
@@ -75,7 +78,7 @@ public class PostController extends HttpServlet {
 		    map.put("amount", String.valueOf(pageSize));
 		    map.put("offset", String.valueOf(offset));
 
-		    // PostDAO를 사용하여 해당 페이지의 글 목록 및 총 글 수 가져오기
+		    // friendBoardDAO를 사용하여 해당 페이지의 글 목록 및 총 글 수 가져오기
 		    friendBoardDAO dao = new friendBoardDAO();
 		    List<friendBoardDTO> postLists = dao.selectPageList(map); // 요청된 페이지에 해당하는 글 목록 가져오기
 		    int totalCount = dao.selectCount(map); // 전체 글 수 가져오기
@@ -135,6 +138,7 @@ public class PostController extends HttpServlet {
 		                            System.out.println("filePath: " + filePath); // 디버깅 로그 추가
 		                            if (filePath != null) {
 		                                File uploadDir = new File(filePath);
+		                                // filePath에 디렉토리가 없으면 생성
 		                                if (!uploadDir.exists()) {
 		                                    boolean dirCreated = uploadDir.mkdirs(); // 디렉토리 생성
 		                                    System.out.println("Directory created: " + dirCreated); // 디버깅 로그 추가
@@ -364,11 +368,6 @@ public class PostController extends HttpServlet {
 		                                friendBoardDTO existingPost = postDao.getPostByNum(num); // 문자열 매개변수 사용
 		                                if (existingPost != null && existingPost.getFileName() != null) {
 		                                    File existingFile = new File(filePath + File.separator + existingPost.getFileName());
-		                                    if (postDao.deleteFileIfExists(existingFile)) {
-		                                        System.out.println("Existing file deleted: " + existingFile.getAbsolutePath()); // 디버깅 로그 추가
-		                                    } else {
-		                                        System.out.println("Cannot delete file, it is locked or does not exist."); // 디버깅 로그 추가
-		                                    }
 		                                }
 		                            } catch (Exception e) {
 		                                e.printStackTrace();
@@ -410,43 +409,38 @@ public class PostController extends HttpServlet {
 		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
 		    }
 		} else if (action.equals("/likePost.po")) {
-		    // 게시물 번호를 받아옴
 		    String numStr = request.getParameter("num");
-
+		    
 		    if (numStr != null && !numStr.isEmpty()) {
 		        int num = Integer.parseInt(numStr);
 
-		        // PostDAO 객체 생성
 		        friendBoardDAO postDAO = new friendBoardDAO();
-
-		        // 사용자가 좋아요를 이미 눌렀는지 확인
 		        HttpSession session = request.getSession();
 		        Set<Integer> likedPosts = (Set<Integer>) session.getAttribute("likedPosts");
+		        
 		        if (likedPosts == null) {
 		            likedPosts = new HashSet<>();
 		        }
 
+		        int likeCount;
 		        if (!likedPosts.contains(num)) {
-		            // 좋아요 수를 증가시키는 메서드 호출
 		            postDAO.incrementLikeCount(num);
-
-		            // 좋아요 처리 후 해당 게시물 상세보기 페이지로 리다이렉트
-		            response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + num);
-
-		            // 좋아요를 누른 게시물 번호를 세션에 저장
 		            likedPosts.add(num);
 		            session.setAttribute("likedPosts", likedPosts);
+		            likeCount = postDAO.selectLikeCount(num);
 		        } else {
-		            // 이미 좋아요를 누른 경우에는 좋아요를 취소하고 해당 게시물 상세보기 페이지로 리다이렉트
 		            postDAO.decrementLikeCount(num);
-
-		            // 좋아요 취소 후 해당 게시물 상세보기 페이지로 리다이렉트
-		            response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + num);
-
-		            // 좋아요를 취소한 게시물 번호를 세션에서 제거
 		            likedPosts.remove(num);
 		            session.setAttribute("likedPosts", likedPosts);
+		            likeCount = postDAO.selectLikeCount(num);
 		        }
+
+		        // 좋아요 수를 JSON 형식으로 응답
+		        response.setContentType("application/json");
+		        PrintWriter out = response.getWriter();
+		        out.print("{\"likeCount\": " + likeCount + "}");
+		        out.flush();
+		        return;
 		    }
 		}
 	}

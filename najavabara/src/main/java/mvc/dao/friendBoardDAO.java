@@ -28,16 +28,33 @@ public class friendBoardDAO {
 
 	    // search 여부
 	    boolean isSearch = false;
-	    if (map.get("searchWord") != null && map.get("searchWord").length() != 0) {
+	    if (map.get("searchWord") != null && !map.get("searchWord").isEmpty()) {
 	        isSearch = true;
+	    }
+
+	    // 지역 필터 여부
+	    boolean isFilterArea = false;
+	    if (map.get("searchArea") != null && !map.get("searchArea").isEmpty()) {
+	        isFilterArea = true;
 	    }
 
 	    List<friendBoardDTO> postList = new ArrayList<>();
 
+	    // 기본 SQL 쿼리
 	    String sql = "SELECT p.num, p.title, p.content, p.postdate, p.visitcount, p.id, p.fileName, p.area, COUNT(c.commentNum) AS commentCount " +
 	                 "FROM friendBoard p LEFT JOIN comments c ON p.num = c.postNum ";
+	    // 검색어를 포함한 경우 조건 추가
 	    if (isSearch) {
 	        sql += "WHERE " + map.get("searchField") + " LIKE ? ";
+	    }
+	    // 지역 필터링 조건 추가
+	    if (isFilterArea) {
+	        if (isSearch) {
+	            sql += "AND ";
+	        } else {
+	            sql += "WHERE ";
+	        }
+	        sql += "p.area = ? ";
 	    }
 	    sql += "GROUP BY p.num ORDER BY p.num DESC ";
 	    sql += "LIMIT ? OFFSET ?"; // LIMIT과 OFFSET을 사용하여 페이지별로 결과를 제한
@@ -50,6 +67,10 @@ public class friendBoardDAO {
 
 	        if (isSearch) {
 	            pstmt.setString(parameterIndex++, "%" + map.get("searchWord") + "%");
+	        }
+	        // 지역 필터링 파라미터 설정
+	        if (isFilterArea) {
+	            pstmt.setString(parameterIndex++, map.get("searchArea"));
 	        }
 	        // LIMIT과 OFFSET 파라미터 설정
 	        pstmt.setInt(parameterIndex++, Integer.parseInt(map.get("amount"))); // LIMIT
@@ -69,11 +90,11 @@ public class friendBoardDAO {
 	            String area = rs.getString("area");
 
 	            // 새로운 생성자 사용하여 객체 생성
-	            friendBoardDTO dto = new friendBoardDTO(num, title, content, id, postdate, visitcount, area);
+	            friendBoardDTO dto = new friendBoardDTO(num, title, content, id, postdate, visitcount);
 	            dto.setFileName(fileName);
 	            dto.setCommentCount(commentCount);
 	            dto.setArea(area);
-	            
+
 	            postList.add(dto);
 	        }
 

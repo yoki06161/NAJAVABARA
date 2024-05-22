@@ -11,6 +11,12 @@ Integer totalCount = (Integer) request.getAttribute("totalCount");
 int pageNum = (Integer) request.getAttribute("pageNum"); // 현재 페이지 번호 가져오기
 int pageSize = 10; // 페이지당 표시할 글의 수
 int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수 계산
+String selectedArea = (String) request.getParameter("searchArea");
+if (selectedArea == null) {
+	selectedArea = (String) session.getAttribute("selectedArea");
+} else {
+	session.setAttribute("selectedArea", selectedArea);
+}
 %>
 
 <!DOCTYPE html>
@@ -32,14 +38,76 @@ int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페�
 
 .card {
 	margin-bottom: 20px;
+	min-height: 300px;
+}
+
+.card-title {
+	margin-bottom: 0.75rem;
+}
+
+.card-text {
+	color: #6c757d;
+}
+
+.card-footer {
+	background-color: #f8f9fa;
+	border-top: none;
+}
+
+.card-footer a {
+	color: #007bff;
+}
+
+.card-footer a:hover {
+	text-decoration: none;
+}
+
+.img-fluid {
+	width: auto;
+	height: auto;
 }
 </style>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		// 이전에 선택된 지역이 있는지 확인하고 선택된 값으로 설정
+		var selectedArea = sessionStorage.getItem('selectedArea');
+		if (selectedArea) {
+			$('#searchArea').val(selectedArea);
+			$('#boardTitle').text(selectedArea + " 동네 친구 게시판");
+		} else {
+			$('#boardTitle').text("동네 친구 게시판");
+		}
+
+		// 지역 선택 시 검색 폼 자동 제출
+		$('#searchArea').change(function() {
+			sessionStorage.setItem('selectedArea', $(this).val()); // 선택한 지역을 저장
+			$('#searchForm').submit();
+		});
+
+		// 검색 폼 제출 시 세션 저장소 초기화
+		$('#searchForm').submit(function() {
+			sessionStorage.setItem('selectedArea', $('#searchArea').val());
+		});
+	});
+</script>
 </head>
+
 <body>
 	<%@ include file="../index.jsp"%>
 	<div class="container mt-5">
-		<h1 class="mb-4">동네 친구 게시판</h1>
-		<form method="get">
+		<h1 class="mb-4" id="boardTitle"><%=selectedArea != null && !selectedArea.isEmpty() ? selectedArea + " " : ""%>동네
+			친구 게시판
+		</h1>
+		<form id="searchForm" action="friendBoard.po" method="get">
 			<div class="form-row mb-3">
 				<div class="col-auto">
 					<select class="form-control" name="searchField">
@@ -50,8 +118,19 @@ int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페�
 				<div class="col">
 					<input type="text" class="form-control" name="searchWord">
 				</div>
+
 				<div class="col-auto">
 					<button type="submit" class="btn btn-primary">검색</button>
+				</div>
+			</div>
+			<div class="form-row mb-3">
+				<div class="col-auto">
+					<select class="form-control" name="searchArea" id="searchArea">
+						<option value="">전체</option>
+						<option value="서울특별시">서울특별시</option>
+						<option value="대구광역시">대구광역시</option>
+						<!-- 필요한 만큼 지역 옵션을 추가 -->
+					</select>
 				</div>
 			</div>
 		</form>
@@ -66,6 +145,17 @@ int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페�
 			} else {
 			for (int i = 0; i < postLists.size(); i++) {
 				friendBoardDTO post = postLists.get(i);
+				boolean isImage = false; // isImage 변수를 여기서 선언하여 전체 범위에서 사용 가능하도록 함
+				String filePath = "uploads/" + post.getFileName();
+				if (post.getFileName() != null && !post.getFileName().isEmpty()) {
+					String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+					for (String ext : imageExtensions) {
+				if (post.getFileName().toLowerCase().endsWith(ext)) {
+					isImage = true;
+					break;
+				}
+					}
+				}
 				if (i % 2 == 0 && i != 0) {
 			%>
 		</div>
@@ -76,52 +166,66 @@ int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페�
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-body">
-						<h5 class="card-title">
-							<a href="viewPost.po?num=<%=post.getNum()%>"
-								style="color: black;"> <%=post.getTitle()%>
-							</a>
-							<%
-							if (post.getFileName() != null && !post.getFileName().isEmpty()) {
-							%>
-							<i class="far fa-file"></i>
-							<%
-							}
-							if (post.getCommentCount() > 0) {
-							%>
-							<a href="viewPost.po?num=<%=post.getNum()%>" style="color: red;">
-								[<%=post.getCommentCount()%>]
-							</a>
-							<%
-							}
-							%>
-						</h5>
-						<p class="card-text">
-							작성자:
-							<%=post.getId()%>
-						</p>
-						<p class="card-text">
-							<%= post.getArea() %>
-							·
-							<%
-							// 게시물의 작성일을 LocalDateTime 객체로 가져옴
-							LocalDateTime postDateTime = post.getPostdate().toLocalDateTime(); // Timestamp를 LocalDateTime으로 변환
-							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-							%>
-							<%
-							if (postDateTime.toLocalDate().isEqual(LocalDate.now())) {
-							%>
-							<%=postDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))%>
-							<%
-							} else {
-							%>
-							<%=postDateTime.format(formatter)%>
-							<%
-							}
-							%>
-							·
-							조회
-							<%=post.getVisitcount()%>
-						</p>
+						<div class="row">
+							<div class="col-md-8">
+								<h5 class="card-title">
+									<a href="viewPost.po?num=<%=post.getNum()%>"
+										style="color: black;"> <%=post.getTitle()%>
+									</a>
+									<%
+									if (!isImage) {
+									%>
+									<i class="far fa-file"></i>
+									<%
+									}
+									%>
+									<%
+									if (post.getCommentCount() > 0) {
+									%>
+									<a href="viewPost.po?num=<%=post.getNum()%>"
+										style="color: red;"> [<%=post.getCommentCount()%>]
+									</a>
+									<%
+									}
+									%>
+								</h5>
+								<p class="card-text">
+									작성자:
+									<%=post.getId()%>
+								</p>
+								<p class="card-text">
+									<%=post.getArea()%>
+									·
+									<%
+									LocalDateTime postDateTime = post.getPostdate().toLocalDateTime();
+									DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+									if (postDateTime.toLocalDate().isEqual(LocalDate.now())) {
+									%>
+									<%=postDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))%>
+									<%
+									} else {
+									%>
+									<%=postDateTime.format(formatter)%>
+									<%
+									}
+									%>
+									· 조회
+									<%=post.getVisitcount()%>
+								</p>
+							</div>
+							<div class="col-md-4">
+								<%
+								if (isImage) {
+								%>
+								<div class="text-center">
+									<img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid"
+										style="max-width: 100%; max-height: 200px;">
+								</div>
+								<%
+								}
+								%>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -152,10 +256,5 @@ int totalPage = (int) Math.ceil((double) totalCount / pageSize); // 전체 페�
 			<a href="writeForm.po" class="btn btn-primary">글 작성</a>
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
