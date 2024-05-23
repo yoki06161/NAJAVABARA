@@ -38,7 +38,7 @@ if (selectedArea == null) {
 
 .card {
 	margin-bottom: 20px;
-	min-height: 300px;
+	min-height: 200px;
 }
 
 .card-title {
@@ -62,9 +62,23 @@ if (selectedArea == null) {
 	text-decoration: none;
 }
 
-.img-fluid {
-	width: auto;
-	height: auto;
+.img-square-container {
+	position: relative;
+	width: 100%;
+	padding-bottom: 100%; /* 1:1 Aspect Ratio */
+	background-color: #f8f9fa;
+	overflow: hidden;
+	border-radius: 15px;
+}
+
+.img-square-container img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	border-radius: 15px;
 }
 </style>
 
@@ -97,6 +111,7 @@ if (selectedArea == null) {
 		$('#searchForm').submit(function() {
 			sessionStorage.setItem('selectedArea', $('#searchArea').val());
 		});
+		
 	});
 </script>
 </head>
@@ -145,8 +160,8 @@ if (selectedArea == null) {
 			} else {
 			for (int i = 0; i < postLists.size(); i++) {
 				friendBoardDTO post = postLists.get(i);
-				boolean isImage = false; // isImage 변수를 여기서 선언하여 전체 범위에서 사용 가능하도록 함
 				String filePath = "uploads/" + post.getFileName();
+				boolean isImage = false;
 				if (post.getFileName() != null && !post.getFileName().isEmpty()) {
 					String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
 					for (String ext : imageExtensions) {
@@ -170,10 +185,17 @@ if (selectedArea == null) {
 							<div class="col-md-8">
 								<h5 class="card-title">
 									<a href="viewPost.po?num=<%=post.getNum()%>"
-										style="color: black;"> <%=post.getTitle()%>
+										style="color: black;" title="<%=post.getTitle()%>"> 
+										<%
+											 String title = post.getTitle();
+											 if (title.length() > 15) {
+											 	title = title.substring(0, 35) + "..."; // 15자 이상이면 말줄임 처리
+											 }
+											 out.println(title);
+										%>
 									</a>
 									<%
-									if (!isImage) {
+									if (!isImage && post.getFileName() != null && !post.getFileName().isEmpty()) {
 									%>
 									<i class="far fa-file"></i>
 									<%
@@ -190,7 +212,6 @@ if (selectedArea == null) {
 									%>
 								</h5>
 								<p class="card-text">
-									작성자:
 									<%=post.getId()%>
 								</p>
 								<p class="card-text">
@@ -198,7 +219,11 @@ if (selectedArea == null) {
 									·
 									<%
 									LocalDateTime postDateTime = post.getPostdate().toLocalDateTime();
+									%>
+									<%
 									DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+									%>
+									<%
 									if (postDateTime.toLocalDate().isEqual(LocalDate.now())) {
 									%>
 									<%=postDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))%>
@@ -217,9 +242,8 @@ if (selectedArea == null) {
 								<%
 								if (isImage) {
 								%>
-								<div class="text-center">
-									<img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid"
-										style="max-width: 100%; max-height: 200px;">
+								<div class="text-center img-square-container">
+									<img src="<%=filePath%>" alt="<%=post.getTitle()%>">
 								</div>
 								<%
 								}
