@@ -60,7 +60,9 @@ $(document).ready(function() {
 			    var responseData = JSON.parse(data);
 			    console.log("responseData['rs']: ", responseData['rs']);
 			    
-				if (responseData['rs'] === "0") {
+			    if(responseData === null) {
+					alert("로그인이 필요한 기능입니다");
+				} else if (responseData['rs'] === "0") {
 					console.log("data['rs']: ", data['rs']);
 					// btn-outline-danger와 btn-danger 클래스를 토글
                     $button.removeClass("btn-outline-danger").addClass("btn-danger");
