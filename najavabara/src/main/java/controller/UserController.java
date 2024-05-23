@@ -195,7 +195,7 @@ public class UserController extends HttpServlet {
 			if(isCheck) {
 				//이건 그냥 화면에 글자출력임...
 				//response.getWriter().write("그동안 이용해주셔서 감사합니다.");
-				w.write("<script>alert('그동안 이용해주셔서 감사합니다.');location.href='/myproject/user/userMain.usr';</script>");
+				w.write("<script>alert('그동안 이용해주셔서 감사합니다.');location.href='/najavabara/user/userMain.usr';</script>");
 				w.flush();
 				w.close();
 				System.out.println(pw);

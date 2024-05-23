@@ -27,7 +27,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.oreilly.servlet.MultipartRequest;
 
 import dao.RegionDAO;
+import dao.RegionLikeDAO;
 import dto.RegionDTO;
+import dto.RegionLikeDTO;
 
 
 
@@ -81,11 +83,11 @@ public class RegionController extends HttpServlet {
 			request.setCharacterEncoding("utf-8");
 			String sNum = request.getParameter("num"); 
 			int num = Integer.parseInt(sNum);
-			//Boolean isEdited = request.getParameter(isEdited);
 			RegionDTO dto = new RegionDTO();
+			RegionLikeDTO ldto = new RegionLikeDTO();
 			dto.setNum(num);
 			//System.out.print(num);  //찍히는 것 확인...
-
+			// 값 - dto - id 값
 			RegionDAO dao = new RegionDAO();
 
 			//1. 조회수 update

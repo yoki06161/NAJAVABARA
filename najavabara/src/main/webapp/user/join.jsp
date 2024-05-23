@@ -97,7 +97,7 @@ $(function(){
 				<td><h3>지역:</h3></td>
 				<td>
 					<h4>
-					<select class="form-select" name="area">
+					<select class="form-select" name="area" required>
 					  <option selected>지역을 선택해주세요</option>
 					  <option value="서울특별시">서울특별시</option>
 					  <option value="경기도">경기도</option>

@@ -12,7 +12,7 @@ import common.JDBConnect;
 import dto.RegionDTO;
 
 public class RegionDAO {
-	// 게시글 목록 가져오기(검색, 필터링 기능 포함)
+	// 게시글 목록 가져오기(검색,필터링 기능 포함)
 	public List<RegionDTO> selectList(Map<String, String> map) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -47,10 +47,6 @@ public class RegionDAO {
 		} else if(isSearch) {
 			sql += " and " + map.get("searchField") + " like ? ";
 		}
-//		else if(isFilter && isSearch) {
-//			sql += " and area = " + map.get("area");
-//			sql += " and " + map.get("searchField") + " like ? ";
-//		}
 		sql += " order by num desc";
 		System.out.println(sql);
 
@@ -64,10 +60,6 @@ public class RegionDAO {
 			} else if(isSearch) {
 				pstmt.setString(1, "%" + map.get("searchWord") + "%");
 			}
-//			else if(isFilter && isSearch) {
-//				pstmt.setString(1, "%" + map.get("searchWord") + "%");
-//				pstmt.setString(2, map.get("area"));
-//			} 
 			// execute
 			rs = pstmt.executeQuery(); 
 
@@ -132,10 +124,6 @@ public class RegionDAO {
 			} else if(isSearch) {
 				pstmt.setString(1, "%" + map.get("searchWord") + "%");
 			} 
-//			else if(isFilter && isSearch) {
-//				pstmt.setString(1, "%" + map.get("searchWord") + "%");
-//				pstmt.setString(2, map.get("area"));
-//			}
 			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
@@ -180,7 +168,7 @@ public class RegionDAO {
 		return rs;
 	}
 
-	// 게시물 상세 보기
+	// 게시물 상세 보기(사진포함)
 	public RegionDTO selectView(RegionDTO dto) {
 		// 메소드 안
 		Connection conn = null;
@@ -196,7 +184,6 @@ public class RegionDAO {
 			sql += " from regionBoard, user";
 			sql += " where regionBoard.num=? and user.id = regionBoard.id";
 			pstmt = conn.prepareStatement(sql);
-			// 문자니까 setString, 날짜면 setDate 등등 ...
 
 			pstmt.setInt(1, dto.getNum());
 			// execute
@@ -219,7 +206,7 @@ public class RegionDAO {
 				int likes = rs.getInt("likes");
 				// 생성자 필요에 따라 추가(리스트면 dto앞에 DTO명 붙여야함)
 				dto = new RegionDTO(num, title, content, id, area, postdate, name, visitcount, ofile, sfile, likes);
-				System.out.println(ofile+"과"+sfile);
+				//				System.out.println(ofile+"과"+sfile);
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -229,47 +216,7 @@ public class RegionDAO {
 		return dto;
 	}
 
-	// 게시물 상세 보기(사진)
-	//	public RegionDTO selectViewFile(RegionDTO fdto) {
-	//		// 메소드 안
-	//		Connection conn = null;
-	//		PreparedStatement pstmt = null;
-	//		ResultSet rs = null;		// select문에서만 사용
-	//
-	//		try {
-	//			// connection
-	//			conn = JDBConnect.getConnection();
-	//
-	//			// sql 창
-	//			String sql = "select ofile, sfile ";
-	//			sql += " from regionBoard, regionFile ";
-	//			sql += " where regionBoard.num=? and regionBoard.num = regionfile.postNum";
-	//			pstmt = conn.prepareStatement(sql);
-	//			// 문자니까 setString, 날짜면 setDate 등등 ...
-	//
-	//			pstmt.setInt(1, fdto.getNum());
-	//			// execute
-	//			rs = pstmt.executeQuery(); 
-	//
-	//			// 있는지 판단 - 리스트면 이걸 수정 
-	//			fdto = null;
-	//			// List<DTO명>이면 if를 while로 변경
-	//			if (rs.next()) { // id 존재
-	//				String ofile = rs.getString("ofile");
-	//				String sfile = rs.getString("sfile");
-	//				String postNum = rs.getString("postNum");
-	//				// 생성자 필요에 따라 추가(리스트면 dto앞에 DTO명 붙여야함)
-	//				fdto = new RegionDTO(ofile, sfile, postNum);
-	//			} 
-	//		} catch (Exception e) {
-	//			e.printStackTrace();
-	//		} finally {
-	//			JDBConnect.close(rs, pstmt, conn);
-	//		}
-	//		return fdto;
-	//	}
-
-	// 게시물 등록 - 이건 rs가 필요함!!
+	// 게시물 등록(사진포함) - 이건 rs가 필요함!!
 	public int insertWrite (RegionDTO dto) {
 		// 메소드 안 
 		Connection conn = null;
@@ -300,35 +247,8 @@ public class RegionDAO {
 		}
 		return rs;
 	}
-	//	// 게시물 파일 등록
-	//	public int insertFile(RegionDTO dto) {
-	//		// 메소드 안 
-	//		Connection conn = null;
-	//		PreparedStatement pstmt = null;  
-	//		int rs = 0;
-	//		try {
-	//			// conn
-	//			conn = JDBConnect.getConnection();
-	//
-	//			// sql + 쿼리창
-	//			String sql = "insert into regionFile(ofile, sfile) values(?, ?)";
-	//			pstmt = conn.prepareStatement(sql);
-	//
-	//			// ?에 들어갈 컬럼들 세팅
-	//			pstmt.setString(1, dto.getOfile());
-	//			pstmt.setString(2, dto.getSfile());
-	//
-	//			// execute 실행
-	//			rs = pstmt.executeUpdate();
-	//
-	//		} catch (Exception e) {
-	//			e.printStackTrace();
-	//		}finally {
-	//			JDBConnect.close(pstmt, conn);
-	//		}
-	//		return rs;
-	//	}
 
+	// 게시물 수정
 	public int updateWrite(RegionDTO dto) {
 		// 메소드 안 
 		Connection conn = null;
@@ -389,4 +309,31 @@ public class RegionDAO {
 		return rs;
 	} 
 
+	// 좋아요 클릭 시 좋아요 수 증가함(update)
+	public int updateLike (RegionDTO dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rs = 0;   
+
+		try {
+			// conn
+			conn = JDBConnect.getConnection();
+
+			// sql + 쿼리창
+			String sql = "update regionBoard set likes = likes + 1 where num = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			// 세팅
+			pstmt.setInt(1, dto.getNum());
+
+			// execute 실행
+			rs = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBConnect.close(pstmt, conn);
+		}
+		return rs;
+	}
 }
