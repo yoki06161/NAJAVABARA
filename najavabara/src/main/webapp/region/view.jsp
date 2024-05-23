@@ -36,7 +36,7 @@ $(document).ready(function() {
     });
 	 
 	$(document).on("click", ".like-btn", function() {
-	     const id = '<%= session.getAttribute("id") %>';
+	     const id = '<%=session.getAttribute("id")%>';
 	     const num = '<%=dto.getNum()%>';
 	     console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
 	     //console.log(id, num); // 출력: dto.getNum() 값: num
@@ -50,28 +50,33 @@ $(document).ready(function() {
 	     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
 			contentType : "application/json",
 			type : "POST",
+			dataType:'json',
 			data : JSON.stringify({
 				id : id,
 				num : num
-			}),
+			}),				
 			success : function(data) {
 				console.log("data: ", data);
-				// console.log("data['rs']: ", data['rs']);
-
+		     	console.log("data,id: ", data,id);
+				console.log("data.rs ", data.rs);
+				if (data.rs === 'error') {
+					alert("로그인이 필요한 기능입니다");
+					window.location.href = "../user/login.jsp";
+				}
 			    if (data.rs === 0) {
 			    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
 					console.log("data['rs']: ", data['rs']);
 					// btn-outline-danger와 btn-danger 클래스를 토글
                     $button.removeClass("btn-outline-danger").addClass("btn-danger");
 					//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
-				} else {
+				} else if (data.rs === 1){
 					alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
 				}
 			},
 			error : function(request, status, error) {
 				console.log(request, status, error);
-				alert("로그인이 필요한 기능입니다");
-				 window.location.href = "../user/login.jsp";
+		     	console.log("data,id: ", data,id);
+				console.log("data.rs ", data.rs);
 			}
 		});
 	});
@@ -92,10 +97,9 @@ img {
 		<tr>
 			<!-- <td>번호</td>
 			<td>dto.getNum()</td> -->
-			
-			<td>
-			<input type="hidden" name="num" value="<%=dto.getNum() %>">
-			<h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
+
+			<td><input type="hidden" name="num" value="<%=dto.getNum()%>">
+				<h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
 				</h5>
 				<p style="color: gray;"><%=dto.getArea()%>
 					|
@@ -124,11 +128,13 @@ img {
 		</tr>
 		<tr>
 			<td>
-				<!-- 버튼색상: btn-outline-danger, btn-warning --> 
+				<!-- 버튼색상: btn-outline-danger, btn-warning -->
 				<button type="button"
-				class="like-btn btn btn-outline-danger 
+					class="like-btn btn btn-outline-danger 
 				 	rounded-pill"
-				value="좋아요 <%=dto.getLikes()%>"> <span id="likeCount">좋아요 0</span></button>
+					value="좋아요 <%=dto.getLikes()%>">
+					<span id="likeCount">좋아요 0</span>
+				</button>
 			</td>
 		</tr>
 		<tr>
@@ -142,7 +148,8 @@ img {
 	%>
 	<a href="update.reg?num=<%=dto.getNum()%>"
 		class="btn btn-outline-primary">게시물 수정</a>
-	<button class="btn btn-outline-primary delete-button" data-num="<%=dto.getNum()%>">게시물 삭제</button>
+	<button class="btn btn-outline-primary delete-button"
+		data-num="<%=dto.getNum()%>">게시물 삭제</button>
 	<%
 	}
 	%>
