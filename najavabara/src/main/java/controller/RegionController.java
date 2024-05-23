@@ -81,6 +81,8 @@ public class RegionController extends HttpServlet {
 		}else if(action.equals("/view.reg")) {
 			// 값 받아오기
 			request.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession(); 
+			String id = (String) session.getAttribute("id");
 			String sNum = request.getParameter("num"); 
 			int num = Integer.parseInt(sNum);
 			RegionDTO dto = new RegionDTO();
@@ -89,13 +91,15 @@ public class RegionController extends HttpServlet {
 			//System.out.print(num);  //찍히는 것 확인...
 			// 값 - dto - id 값
 			RegionDAO dao = new RegionDAO();
-
+			RegionLikeDAO ldao = new RegionLikeDAO();
+			
 			//1. 조회수 update
 			dao.updateVisitcount(dto); // 5초
 			//2. 글 상세보기
 			dto = dao.selectView(dto);
 			
 			request.setAttribute("dto", dto);
+			request.setAttribute("ldto", ldto);
 			
 			//3. forward
 			String path =  "./view.jsp"; // 1

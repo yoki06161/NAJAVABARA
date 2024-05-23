@@ -1,14 +1,22 @@
+<%@page import="dao.RegionLikeDAO"%>
 <%@page import="dto.RegionDTO"%>
+<%@page import="dto.RegionLikeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 // param
 RegionDTO dto = (RegionDTO) request.getAttribute("dto");
+RegionLikeDAO ldao = new RegionLikeDAO();
+String id = (String) session.getAttribute("id");
+int num = dto.getNum();
+RegionLikeDTO ldto = ldao.hasUserLiked(new RegionLikeDTO(id, num));
+String buttonClass = (ldto == null) ? "like-btn btn rounded-pill btn-outline-danger" : "like-btn btn rounded-pill btn-danger";
+
+
 String saveFolder = "Uploads";
 String requestFolder = request.getContextPath() + "/" + saveFolder;
 String fname = dto.getSfile();
 String fullpath = requestFolder + "/" + fname;
-String id = (String) session.getAttribute("id");
 %>
 <!DOCTYPE html>
 <html>
@@ -30,14 +38,16 @@ function del(num) {
 }
 
 $(document).ready(function() {
+	// 페이지가 로드될 때 실행되는 코드
+	const id = '<%=session.getAttribute("id")%>';
+	const did = '<%=dto.getId()%>';
+	const num = '<%=dto.getNum()%>';
+	
 	$("button.delete-button").click(function() {
-         const num = '<%=dto.getNum()%>';
          del(num);
     });
 	 
-	$(document).on("click", ".like-btn", function() {
-	     const id = '<%=session.getAttribute("id")%>';
-	     const num = '<%=dto.getNum()%>';
+	$(".like-btn").click(function() {
 	     console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
 	     //console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
@@ -62,8 +72,7 @@ $(document).ready(function() {
 				if (data.rs === 'error') {
 					alert("로그인이 필요한 기능입니다");
 					window.location.href = "../user/login.jsp";
-				}
-			    if (data.rs === 0) {
+				} else if (data.rs === 0) {
 			    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
 					console.log("data['rs']: ", data['rs']);
 					// btn-outline-danger와 btn-danger 클래스를 토글
@@ -130,8 +139,7 @@ img {
 			<td>
 				<!-- 버튼색상: btn-outline-danger, btn-warning -->
 				<button type="button"
-					class="like-btn btn btn-outline-danger 
-				 	rounded-pill"
+					class="<%= buttonClass %>"
 					value="좋아요 <%=dto.getLikes()%>">
 					<span id="likeCount">좋아요 0</span>
 				</button>
