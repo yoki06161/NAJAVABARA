@@ -38,11 +38,11 @@ $(document).ready(function() {
 	$(document).on("click", ".like-btn", function() {
 	     const id = '<%= session.getAttribute("id") %>';
 	     const num = '<%=dto.getNum()%>';
-	     console.log(id, num); // 출력: dto.getNum() 값: num
+	     //console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
 
 	     // 콘솔에 클릭된 요소 출력
-	     console.log("클릭된 요소:", $button);
+	     //console.log("클릭된 요소:", $button);
 
 	     // AJAX 요청 보내기
 	     $.ajax({
@@ -66,7 +66,7 @@ $(document).ready(function() {
                     $button.removeClass("btn-outline-danger").addClass("btn-danger");
 					$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
 				} else {
-					alert("좋아요는 한 번만 누를 수 있습니다");
+					alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
 				}
 			},
 			error : function(request, status, error) {

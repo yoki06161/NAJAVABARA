@@ -310,10 +310,10 @@ public class RegionDAO {
 	} 
 
 	// 좋아요 클릭 시 좋아요 수 증가함(update)
-	public int updateLike (RegionDTO dto) {
+	public int updateLike (RegionDTO ldto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		int rs = 0;   
+		int rset = 0;   
 
 		try {
 			// conn
@@ -324,16 +324,16 @@ public class RegionDAO {
 			pstmt = conn.prepareStatement(sql);
 
 			// 세팅
-			pstmt.setInt(1, dto.getNum());
+			pstmt.setInt(1, ldto.getNum());
 
 			// execute 실행
-			rs = pstmt.executeUpdate();
+			rset = pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			JDBConnect.close(pstmt, conn);
 		}
-		return rs;
+		return rset;
 	}
 }

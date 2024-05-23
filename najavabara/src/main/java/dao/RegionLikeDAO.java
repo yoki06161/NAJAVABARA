@@ -27,14 +27,16 @@ public class RegionLikeDAO {
 			rs = pstmt.executeQuery(); 
 			
 			// 있는지 판단  
-			ldto = null;
-			if (rs.next()) { // id 존재
-				int likenum = rs.getInt("likenum");
+			if (rs.next()) { // id와 num 존재
 				String id = rs.getString("id");
 				int num = rs.getInt("num");
 				// 생성자 필요에 따라 추가
-				ldto = new RegionLikeDTO(likenum, id, num);
-			} 
+				ldto = new RegionLikeDTO(id, num);
+				//System.out.println(id +"," + num + ", " + ldto);
+			} else {
+	            // 해당 레코드가 없는 경우
+	            ldto = null;
+	        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
