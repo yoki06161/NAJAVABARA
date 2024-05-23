@@ -29,11 +29,11 @@
     	<artifactId>commons-fileupload</artifactId>
     	<version>1.5</version>
 	</dependency>
-	<!-- Jackson 라이브러리 -->
+    <!-- JSON 라이브러리 추가 -->
     <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.12.5</version> <!-- 사용하는 Jackson 라이브러리의 버전 -->
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20220320</version>
     </dependency>
   </dependencies>
   

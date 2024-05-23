@@ -38,6 +38,7 @@ $(document).ready(function() {
 	$(document).on("click", ".like-btn", function() {
 	     const id = '<%= session.getAttribute("id") %>';
 	     const num = '<%=dto.getNum()%>';
+	     console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
 	     //console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
 
@@ -55,24 +56,22 @@ $(document).ready(function() {
 			}),
 			success : function(data) {
 				console.log("data: ", data);
-				//console.log("data['rs']: ", data['rs']);
-				// JSON 문자열을 JSON 객체로 파싱
-			    var responseData = JSON.parse(data);
-			    console.log("responseData['rs']: ", responseData['rs']);
-			    
-			    if(responseData === null) {
-					alert("로그인이 필요한 기능입니다");
-				} else if (responseData['rs'] === "0") {
+				// console.log("data['rs']: ", data['rs']);
+
+			    if (data.rs === 0) {
+			    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
 					console.log("data['rs']: ", data['rs']);
 					// btn-outline-danger와 btn-danger 클래스를 토글
                     $button.removeClass("btn-outline-danger").addClass("btn-danger");
-					$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
+					//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
 				} else {
 					alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
 				}
 			},
 			error : function(request, status, error) {
 				console.log(request, status, error);
+				alert("로그인이 필요한 기능입니다");
+				 window.location.href = "../user/login.jsp";
 			}
 		});
 	});
