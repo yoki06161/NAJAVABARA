@@ -31,13 +31,14 @@ function del(num) {
 
 $(document).ready(function() {
 	$("button.delete-button").click(function() {
-         const num = $(this).data("num");
+         const num = '<%=dto.getNum()%>';
          del(num);
     });
 	 
 	$(document).on("click", ".like-btn", function() {
-	     const id = $(this).data("id");
-	     const num = $(this).data("num");
+	     const id = '<%= session.getAttribute("id") %>';
+	     const num = '<%=dto.getNum()%>';
+	     console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
 
 	     // 콘솔에 클릭된 요소 출력
@@ -54,7 +55,7 @@ $(document).ready(function() {
 			}),
 			success : function(data) {
 				console.log("data: ", data);
-				console.log("data['rs']: ", data['rs']);
+				//console.log("data['rs']: ", data['rs']);
 				// JSON 문자열을 JSON 객체로 파싱
 			    var responseData = JSON.parse(data);
 			    console.log("responseData['rs']: ", responseData['rs']);
@@ -90,7 +91,10 @@ img {
 		<tr>
 			<!-- <td>번호</td>
 			<td>dto.getNum()</td> -->
-			<td><h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
+			
+			<td>
+			<input type="hidden" name="num" value="<%=dto.getNum() %>">
+			<h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
 				</h5>
 				<p style="color: gray;"><%=dto.getArea()%>
 					|
@@ -123,7 +127,6 @@ img {
 				<button type="button"
 				class="like-btn btn btn-outline-danger 
 				 	rounded-pill"
-				data-id="<%=id%>" data-num="<%=dto.getNum()%>"
 				value="좋아요 <%=dto.getLikes()%>"> <span id="likeCount">좋아요 0</span></button>
 			</td>
 		</tr>

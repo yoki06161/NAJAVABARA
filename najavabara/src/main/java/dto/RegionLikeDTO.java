@@ -11,6 +11,11 @@ public class RegionLikeDTO {
 		this.id = id;
 		this.num = num;
 	}
+	public RegionLikeDTO(String id, int num) {
+		super();
+		this.id = id;
+		this.num = num;
+	}
 	// 기본 생성자
 	public RegionLikeDTO() {
 
