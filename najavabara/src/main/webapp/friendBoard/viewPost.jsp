@@ -25,7 +25,7 @@
 <script>
     function confirmDelete(postNum) {
         if (confirm("게시물을 삭제하시겠습니까?")) {
-            window.location.href = "deletePost.po?num=" + postNum;
+            window.location.href = "deletePost.fri?num=" + postNum;
         }
     }
 
@@ -59,7 +59,7 @@
         likeInProgress = true; // 클릭 이벤트가 실행 중임을 표시
         
         $.ajax({
-            url: "likePost.po",
+            url: "likePost.fri",
             type: "POST",
             data: { num: postNum },
             success: function(response) {
@@ -88,66 +88,50 @@
             boolean isOwner = (user != null && user.getId().equals(post.getId()));
         %>
         <div class="card">
-            <div class="card-header">
-                <h5 class="card-title"><%=post.getTitle()%></h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text">
-                    작성자:
-                    <%=post.getId()%>
-                    <small class="text-muted"> <%-- Timestamp를 LocalDateTime으로 변환 --%>
-                        <%
-                        Timestamp timestamp = post.getPostdate();
-                        LocalDateTime postDateTime = timestamp.toLocalDateTime();
-                        %> <%-- 원하는 형식으로 날짜를 출력함 --%> <%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
-                    </small>
-                </p>
-                <p class="card-text">
-                    조회수:
-                    <%=post.getVisitcount()%>
-                </p>
-                <p class="card-text">
-                    내용:
-                    <%=post.getContent()%>
-                </p>
-                <%
-                if (post.getFileName() != null && !post.getFileName().isEmpty()) {
-                    // 이미지 파일의 경로를 구성합니다. 여기서는 예시로 "uploads" 폴더에 저장된 것으로 가정합니다.
-                    String filePath = "uploads/" + post.getFileName();
-                    // 파일이 이미지인지 확인하는 로직 추가 (예시로 간단하게 확장자로 확인)
-                    String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
-                    boolean isImage = false;
-                    for (String ext : imageExtensions) {
-                        if (post.getFileName().toLowerCase().endsWith(ext)) {
-                            isImage = true;
-                            break;
-                        }
-                    }
-                    if (isImage) {
-                %>
-                <div class="mt-3">
-                    <img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid rounded-image">
-                </div>
-                <%
-                } else {
-                %>
-                <div class="mt-3">
-                    <p>
-                        첨부 파일: <a href="<%=filePath%>"><%=post.getFileName()%></a>
-                    </p>
-                </div>
-                <%
-                }
-                }
-                %>
-            </div>
-        </div>
+    <div class="card-header">
+        <h5 class="card-title"><%=post.getTitle()%></h5>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            작성자: <%=post.getId()%>
+            <small class="text-muted">
+                <%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%>
+                <% LocalDateTime postDateTime = post.getPostdate().toLocalDateTime(); %>
+                <%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
+            </small>
+        </p>
+        <p class="card-text">
+            조회수: <%=post.getVisitcount()%>
+        </p>
+        <p class="card-text">
+            내용: <%=post.getContent()%>
+        </p>
+        <%
+        if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
+            for (String fileName : post.getFileNames()) {
+                String filePath = "uploads/" + fileName;
+                // 이미지 파일인지 확인
+                boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
+                if (isImage) {
+        %>
         <div class="mt-3">
-            <a href="friendBoard.po" class="btn btn-primary">게시판으로 돌아가기</a>
+            <img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid rounded-image">
+        </div>
+        <% } else { %>
+        <div class="mt-3">
+            <p>첨부 파일: <a href="<%=filePath%>"><%=fileName%></a></p>
+        </div>
+        <% }
+            }
+        } %>
+    </div>
+</div>
+        <div class="mt-3">
+            <a href="friendBoard.fri" class="btn btn-primary">게시판으로 돌아가기</a>
             <%
             if (isOwner) {
             %>
-            <a href="editPostForm.po?num=<%=post.getNum()%>"
+            <a href="editPostForm.fri?num=<%=post.getNum()%>"
                 class="btn btn-primary">게시물 수정</a> <a href="#"
                 class="btn btn-danger ml-2"
                 onclick="confirmDelete(<%=post.getNum()%>)">게시물 삭제</a>

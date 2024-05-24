@@ -1,6 +1,7 @@
 package mvc.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class friendBoardDTO {
     private int num;
@@ -11,22 +12,20 @@ public class friendBoardDTO {
     private String id;
     private int commentCount;
     private int likeCount;
-    private String fileName;
+    private List<String> fileNames; // 여러 파일명을 저장하기 위한 필드
     private String area;
-    
-    public friendBoardDTO() {
-    }
-    
-    public friendBoardDTO(String title, String content, String id, String fileName, String area) {
+
+    public friendBoardDTO() {}
+
+    public friendBoardDTO(String title, String content, String id, List<String> fileNames, String area) {
         this.title = title;
         this.content = content;
         this.id = id;
-        this.fileName = fileName;
+        this.fileNames = fileNames;
         this.area = area;
     }
     
     public friendBoardDTO(int num, String title, String content, String id, Timestamp postdate, int visitcount) {
-        super();
         this.num = num;
         this.title = title;
         this.content = content;
@@ -35,18 +34,31 @@ public class friendBoardDTO {
         this.visitcount = visitcount;
     }
     
-    public friendBoardDTO(int num, String title, String content, String id, Timestamp postdate, int visitcount, String fileName) {
-        super();
+    public friendBoardDTO(int num, String title, String content, String id, Timestamp postdate, int visitcount, String area) {
         this.num = num;
         this.title = title;
         this.content = content;
         this.id = id;
         this.postdate = postdate;
         this.visitcount = visitcount;
-        this.fileName = fileName;
+        this.area = area;
     }
 
-    public int getNum() {
+    public friendBoardDTO(int num, String title, String content, String id, Timestamp postdate, int visitcount, List<String> fileNames) {
+    	this.num = num;
+        this.title = title;
+        this.content = content;
+        this.id = id;
+        this.postdate = postdate;
+        this.visitcount = visitcount;
+        this.fileNames = fileNames;
+    }
+
+
+    // Getters and Setters
+
+
+	public int getNum() {
         return num;
     }
 
@@ -70,7 +82,6 @@ public class friendBoardDTO {
         this.content = content;
     }
 
-    
     public Timestamp getPostdate() {
         return postdate;
     }
@@ -103,29 +114,27 @@ public class friendBoardDTO {
         this.commentCount = commentCount;
     }
 
-	public int getLikeCount() {
-		return likeCount;
-	}
+    public int getLikeCount() {
+        return likeCount;
+    }
 
-	public void setLikeCount(int likeCount) {
-		this.likeCount = likeCount;
-	}
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public List<String> getFileNames() {
+        return fileNames;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setFileNames(List<String> fileNames) {
+        this.fileNames = fileNames;
+    }
 
-	public String getArea() {
-		return area;
-	}
+    public String getArea() {
+        return area;
+    }
 
-	public void setArea(String area) {
-		this.area = area;
-	}
-    
-	
+    public void setArea(String area) {
+        this.area = area;
+    }
 }

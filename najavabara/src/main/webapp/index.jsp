@@ -16,7 +16,7 @@
         </button>
 
         <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/friendBoard/friendBoard.po">동네 친구 게시판</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/friendBoard/friendBoard.fri">동네 친구 게시판</a>
             <ul class="navbar-nav">
                 <%-- 로그인 상태에 따라 메뉴 변경 --%>
                 <% if (session.getAttribute("user") == null) { %>

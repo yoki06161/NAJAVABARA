@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,8 +33,8 @@ import mvc.dto.friendBoardDTO;
 import mvc.dto.ReplyDTO;
 import mvc.dto.UserDTO;
 
-@WebServlet("*.po")
-public class PostController extends HttpServlet {
+@WebServlet("*.fri")
+public class friendPostController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +51,7 @@ public class PostController extends HttpServlet {
 		String uri = request.getRequestURI();
 		String action = uri.substring(uri.lastIndexOf("/"));
 
-		if (action.equals("/friendBoard.po")) {
+		if (action.equals("/friendBoard.fri")) {
 		    // 페이지 번호, 검색어 및 지역 파라미터 가져오기
 		    String searchField = request.getParameter("searchField");
 		    String searchWord = request.getParameter("searchWord");
@@ -99,15 +100,15 @@ public class PostController extends HttpServlet {
 		    // forward
 		    String path = "./friendBoard.jsp";
 		    request.getRequestDispatcher(path).forward(request, response);
-		} else if (action.equals("/writeForm.po")) {
+		} else if (action.equals("/writeForm.fri")) {
 			// 새 글 작성 폼으로 이동
 			response.sendRedirect(request.getContextPath() + "/friendBoard/writeForm.jsp");
-		} else if (action.equals("/write.po")) {
+		} else if (action.equals("/write.fri")) {
 		    // 새 글 작성 처리
 		    String title = null;
 		    String content = null;
-		    String fileName = null;
-		    
+		    List<String> fileNames = new ArrayList<>();
+
 		    HttpSession session = request.getSession();
 		    UserDTO user = (UserDTO) session.getAttribute("user");
 
@@ -135,13 +136,11 @@ public class PostController extends HttpServlet {
 		                        // 파일 필드 처리
 		                        if (!item.getName().isEmpty()) {
 		                            String filePath = getServletContext().getRealPath("/friendBoard/uploads");
-		                            System.out.println("filePath: " + filePath); // 디버깅 로그 추가
 		                            if (filePath != null) {
 		                                File uploadDir = new File(filePath);
 		                                // filePath에 디렉토리가 없으면 생성
 		                                if (!uploadDir.exists()) {
 		                                    boolean dirCreated = uploadDir.mkdirs(); // 디렉토리 생성
-		                                    System.out.println("Directory created: " + dirCreated); // 디버깅 로그 추가
 		                                }
 		                                String originalFileName = new File(item.getName()).getName();
 		                                String fileExtension = FilenameUtils.getExtension(originalFileName);
@@ -149,27 +148,21 @@ public class PostController extends HttpServlet {
 		                                File uploadFile = new File(filePath + File.separator + uniqueFileName);
 		                                try {
 		                                    item.write(uploadFile);
-		                                    fileName = uniqueFileName;
-		                                    System.out.println("File uploaded: " + uploadFile.getAbsolutePath()); // 디버깅 로그 추가
+		                                    fileNames.add(uniqueFileName); // 파일명을 리스트에 추가
 		                                } catch (Exception e) {
 		                                    e.printStackTrace();
-		                                    System.out.println("Error writing file: " + e.getMessage()); // 디버깅 로그 추가
 		                                }
-		                            } else {
-		                                System.out.println("파일 경로를 찾을 수 없습니다.");
 		                            }
 		                        }
 		                    }
 		                }
 		            } catch (Exception e) {
 		                e.printStackTrace();
-		                System.out.println("Error parsing request: " + e.getMessage()); // 디버깅 로그 추가
 		            }
 		        }
 
 		        if (title != null && content != null) {
-		            // 작성된 내용을 데이터베이스에 저장하는 로직 추가
-		            friendBoardDTO newPost = new friendBoardDTO(title, content, id, fileName, area); // 새로운 게시물 객체 생성
+		            friendBoardDTO newPost = new friendBoardDTO(title, content, id, fileNames, area);
 
 		            // PostDAO 객체 생성
 		            friendBoardDAO postDao = new friendBoardDAO();
@@ -179,14 +172,14 @@ public class PostController extends HttpServlet {
 
 		            if (result == 1) {
 		                // 게시물 추가 성공 시 게시판 목록 페이지로 이동
-		                response.sendRedirect(request.getContextPath() + "/friendBoard/friendBoard.po");
+		                response.sendRedirect(request.getContextPath() + "/friendBoard/friendBoard.fri");
 		            }
 		        }
 		    } else {
 		        // 세션에서 사용자 정보가 없는 경우 로그인 페이지로 이동
 		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
 		    }
-		} else if (action.equals("/viewPost.po")) {
+		} else if (action.equals("/viewPost.fri")) {
 		    // 게시물 번호를 받아옴
 		    String numStr = request.getParameter("num");
 		    if (numStr != null && !numStr.isEmpty()) {
@@ -280,7 +273,7 @@ public class PostController extends HttpServlet {
 		            }
 		        }
 		    }
-		} else if (action.equals("/deletePost.po")) {
+		} else if (action.equals("/deletePost.fri")) {
 			// 게시물 번호를 받아옴
 			String numStr = request.getParameter("num");
 
@@ -299,10 +292,10 @@ public class PostController extends HttpServlet {
 
 				if (result == 1) {
 					// 삭제 성공 시 게시판 목록 페이지로 이동
-					response.sendRedirect(request.getContextPath() + "/friendBoard/friendBoard.po");
+					response.sendRedirect(request.getContextPath() + "/friendBoard/friendBoard.fri");
 				}
 			}
-		} else if (action.equals("/editPostForm.po")) {
+		} else if (action.equals("/editPostForm.fri")) {
 		    // 게시물 수정을 위한 폼으로 이동
 		    String postNum = request.getParameter("num");
 		    
@@ -315,7 +308,7 @@ public class PostController extends HttpServlet {
 		    // 게시물 수정 폼 페이지로 이동
 		    request.getRequestDispatcher("/friendBoard/editPostForm.jsp").forward(request, response);
 		    }
-		} else if (action.equals("/updatePost.po")) {
+		} else if (action.equals("/updatePost.fri")) {
 		    // 게시물 업데이트 처리
 		    String num = null;
 		    String title = null;
@@ -366,8 +359,11 @@ public class PostController extends HttpServlet {
 		                                // 기존 파일 삭제 로직 (필요한 경우)
 		                                friendBoardDAO postDao = new friendBoardDAO();
 		                                friendBoardDTO existingPost = postDao.getPostByNum(num); // 문자열 매개변수 사용
-		                                if (existingPost != null && existingPost.getFileName() != null) {
-		                                    File existingFile = new File(filePath + File.separator + existingPost.getFileName());
+		                                if (existingPost != null && existingPost.getFileNames() != null && !existingPost.getFileNames().isEmpty()) {
+		                                    // 기존 파일 이름 목록에서 첫 번째 파일명을 가져옴
+		                                    String existingFileName = existingPost.getFileNames().get(0);
+		                                    File existingFile = new File(filePath + File.separator + existingFileName);
+		                                    // 기존 파일 삭제 로직 추가...
 		                                }
 		                            } catch (Exception e) {
 		                                e.printStackTrace();
@@ -390,7 +386,13 @@ public class PostController extends HttpServlet {
 		            updatedPost.setNum(Integer.parseInt(num));
 		            updatedPost.setTitle(title);
 		            updatedPost.setContent(content);
-		            updatedPost.setFileName(fileName);
+		            
+		            if (fileName != null) {
+		                List<String> fileNames = new ArrayList<>();
+		                fileNames.add(fileName);
+		                updatedPost.setFileNames(fileNames);
+		            }
+		            
 		            updatedPost.setId(id);
 
 		            // PostDAO 객체 생성
@@ -401,14 +403,14 @@ public class PostController extends HttpServlet {
 
 		            if (result == 1) {
 		                // 게시물 추가 성공 시 게시물 보기 페이지로 이동
-		                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + num);
+		                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.fri?num=" + num);
 		            }
 		        }
 		    } else {
 		        // 세션에서 사용자 정보가 없는 경우 로그인 페이지로 이동
 		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
 		    }
-		} else if (action.equals("/likePost.po")) {
+		} else if (action.equals("/likePost.fri")) {
 		    String numStr = request.getParameter("num");
 		    
 		    if (numStr != null && !numStr.isEmpty()) {

@@ -111,7 +111,7 @@ if (selectedArea == null) {
 		$('#searchForm').submit(function() {
 			sessionStorage.setItem('selectedArea', $('#searchArea').val());
 		});
-		
+
 	});
 </script>
 </head>
@@ -122,7 +122,7 @@ if (selectedArea == null) {
 		<h1 class="mb-4" id="boardTitle"><%=selectedArea != null && !selectedArea.isEmpty() ? selectedArea + " " : ""%>동네
 			친구 게시판
 		</h1>
-		<form id="searchForm" action="friendBoard.po" method="get">
+		<form id="searchForm" action="friendBoard.fri" method="get">
 			<div class="form-row mb-3">
 				<div class="col-auto">
 					<select class="form-control" name="searchField">
@@ -160,14 +160,17 @@ if (selectedArea == null) {
 			} else {
 			for (int i = 0; i < postLists.size(); i++) {
 				friendBoardDTO post = postLists.get(i);
-				String filePath = "uploads/" + post.getFileName();
+				List<String> fileNames = post.getFileNames(); // 파일명 리스트 가져오기
+				boolean hasFiles = fileNames != null && !fileNames.isEmpty(); // 파일이 있는지 여부 확인
 				boolean isImage = false;
-				if (post.getFileName() != null && !post.getFileName().isEmpty()) {
-					String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
-					for (String ext : imageExtensions) {
-				if (post.getFileName().toLowerCase().endsWith(ext)) {
-					isImage = true;
-					break;
+				if (hasFiles) {
+					for (String fileName : fileNames) {
+				String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+				for (String ext : imageExtensions) {
+					if (fileName.toLowerCase().endsWith(ext)) {
+						isImage = true;
+						break;
+					}
 				}
 					}
 				}
@@ -184,18 +187,18 @@ if (selectedArea == null) {
 						<div class="row">
 							<div class="col-md-8">
 								<h5 class="card-title">
-									<a href="viewPost.po?num=<%=post.getNum()%>"
+									<a href="viewPost.fri?num=<%=post.getNum()%>"
 										style="color: black;" title="<%=post.getTitle()%>"> 
-										<%
-											 String title = post.getTitle();
-											 if (title.length() > 15) {
-											 	title = title.substring(0, 35) + "..."; // 15자 이상이면 말줄임 처리
-											 }
-											 out.println(title);
-										%>
+										 <%
+										 String title = post.getTitle();
+										 if (title.length() > 15) {
+										 	title = title.substring(0, 35) + "..."; // 15자 이상이면 말줄임 처리
+										 }
+										 out.println(title);
+										 %>
 									</a>
 									<%
-									if (!isImage && post.getFileName() != null && !post.getFileName().isEmpty()) {
+									if (hasFiles && !isImage) {
 									%>
 									<i class="far fa-file"></i>
 									<%
@@ -204,7 +207,7 @@ if (selectedArea == null) {
 									<%
 									if (post.getCommentCount() > 0) {
 									%>
-									<a href="viewPost.po?num=<%=post.getNum()%>"
+									<a href="viewPost.fri?num=<%=post.getNum()%>"
 										style="color: red;"> [<%=post.getCommentCount()%>]
 									</a>
 									<%
@@ -243,7 +246,8 @@ if (selectedArea == null) {
 								if (isImage) {
 								%>
 								<div class="text-center img-square-container">
-									<img src="<%=filePath%>" alt="<%=post.getTitle()%>">
+									<img src="uploads/<%=fileNames.get(0)%>"
+										alt="<%=post.getTitle()%>">
 								</div>
 								<%
 								}
@@ -261,23 +265,24 @@ if (selectedArea == null) {
 		<div class="text-center">
 			<ul class="pagination">
 				<li class="page-item <%=pageNum == 1 ? "disabled" : ""%>"><a
-					class="page-link" href="friendBoard.po?pageNum=<%=pageNum - 1%>">이전</a>
+					class="page-link" href="friendBoard.fri?pageNum=<%=pageNum - 1%>">이전</a>
 				</li>
 				<%
 				for (int i = 1; i <= totalPage; i++) {
 				%>
 				<li class="page-item <%=pageNum == i ? "active" : ""%>"><a
-					class="page-link" href="friendBoard.po?pageNum=<%=i%>"><%=i%></a></li>
+					class="page-link" href="friendBoard.fri?pageNum=<%=i%>"><%=i%></a></li>
 				<%
 				}
 				%>
 				<li class="page-item <%=pageNum == totalPage ? "disabled" : ""%>">
-					<a class="page-link" href="friendBoard.po?pageNum=<%=pageNum + 1%>">다음</a>
+					<a class="page-link"
+					href="friendBoard.fri?pageNum=<%=pageNum + 1%>">다음</a>
 				</li>
 			</ul>
 		</div>
 		<div class="text-right">
-			<a href="writeForm.po" class="btn btn-primary">글 작성</a>
+			<a href="writeForm.fri" class="btn btn-primary">글 작성</a>
 		</div>
 	</div>
 </body>
