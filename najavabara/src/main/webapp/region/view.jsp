@@ -40,15 +40,13 @@ function del(num) {
 
 $(document).ready(function() {
 	// 페이지가 로드될 때 실행되는 코드
-	//로그인한 사용자 아이디 
+	// 로그인한 사용자 아이디 
 	const id = '<%=session.getAttribute("id")%>';  
 	// 게시물 작성자 아이디
 	const did = '<%=dto.getId()%>';
 	// 게시물 번호
 	const num = '<%=dto.getNum()%>';
-	// 현재 좋아요 수 가져오기
-	var currentLikes = parseInt($(this).data('likes'));
-	
+
 	// 삭제 버튼 클릭 시 함수 호출
 	$("button.delete-button").click(function() {
          del(num);
@@ -64,58 +62,57 @@ $(document).ready(function() {
 	     //console.log("클릭된 요소:", $button);
 	     
 	     // 콘솔에 did 출력
-	     console.log("dto.getid: ", did);
+	     //console.log("dto.getid: ", did);
 
 	    // ajax 요청 보낼 때 확인할 것
 		if (id === 'null') {
-	    // id === null일 땐 요청 보내지 않기
-			console.log(id);
+	    // id === null일 땐(문자열로 찍힘) 요청 보내지 않기
+			//console.log(id);
 			alert("로그인이 필요한 기능입니다");
 			window.location.href = "../user/login.jsp";
 		} else if (id === did){
-			// id === did일땐 요청 보내지 않기
+			// id === did일때 요청 보내지 않기
 			alert("자신의 게시물에는 좋아요할 수 없습니다");
-		} else {
-		     // AJAX 요청 보내기
-		     $.ajax({
-		     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
-				contentType : "application/json",
-				type : "POST",
-				dataType:'json',
-				data : JSON.stringify({
-					id : id,
-					num : num,
-					did : did
-				}),				
-				success : function(data) {
-					console.log("data: ", data);
-			     	console.log("id: ", id);
-			     	console.log("did: ", did);
-					console.log("data.rs ", data.rs);
-	 				
-					if (data.rs === 0) {
-					    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
-							console.log("data['rs']: ", data['rs']);
-							// btn-outline-danger와 btn-danger 클래스를 토글해서 좋아요를 눌렀을때 버튼디자인 변경
-		                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
-		                    // 현재 좋아요 수 가져오기
-		                    var currentLikes = parseInt($button.data('likes'));
-		                    // 좋아요 수 증가
-		                    currentLikes++;
-		                    // 업데이트된 좋아요 수를 버튼의 data-likes 속성에 저장
-		                    $button.data('likes', currentLikes);
-		                    // 좋아요 수 업데이트
-		                    $("#likeCount").text("좋아요 " + currentLikes);
-					} else if (data.rs === 1){
-							alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
-					} 
-				},
-				error : function(request, status, error) {
-					console.log(request, status, error);
-			     	console.log("data,id: ", data,id);
-					console.log("data.rs ", data.rs);
-				}
-			});
+		} else if (id !== did) {
+		     // 자신의 게시물이 아닐 경우, 버튼에 btn-danger 클래스가 있는지 확인하고 AJAX 요청 보내기
+		     // 클래스가 있다면 좋아요는 게시물 당 한 번만 누를 수 있다고 alert 띄우고, 
+		     if($button.hasClass("btn-danger")) {
+		    	 alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
+		     } else {    	 
+			     // 없다면 버튼 디자인+숫자 변경 후 ajax 요청()
+				 $button.removeClass("btn-outline-danger").addClass("btn-danger");
+			     // 현재 좋아요 수 가져오기
+			     // 게시물 좋아요 수
+				 var likeCount = parseInt($("#likeCount").text());
+				 $("#likeCount").text(likeCount + 1);
+				 
+			     $.ajax({
+			     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
+					contentType : "application/json",
+					type : "POST",
+					dataType:'json',
+					data : JSON.stringify({
+						id : id,
+						num : num,
+						did : did
+					}),				
+					success : function(data) {
+						console.log("data: ", data);
+				     	//console.log("id: ", id);
+				     	//console.log("did: ", did);
+						//console.log("data.rs ", data.rs);
+		 				
+						if (data.rs === 0) {			       
+					        console.log("rs success!");
+						}
+					},
+					error : function(request, status, error) {
+						console.log(request, status, error);
+				     	console.log("data,id: ", data,id);
+						console.log("data.rs ", data.rs);
+					}
+				});
+		     }
 		}
 	});
 });
@@ -167,8 +164,8 @@ img {
 		<tr>
 			<td>
 				<!-- 버튼색상: btn-outline-danger, btn-warning -> 좋아요 버튼이 클릭 처리되면 버튼의 디자인 변경 -->
-				<button type="button" class="<%=buttonClass %>"  data-likes="<%=dto.getLikes()%>">
-					<span id="likeCount">좋아요 <%=dto.getLikes()%></span>
+				<button type="button" class="<%=buttonClass %>">
+					<span id="likeCount"><%=dto.getLikes()%></span>
 				</button>
 			</td>
 		</tr>

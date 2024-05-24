@@ -38,7 +38,7 @@ if (ldto != null) {
 } else {
 	// 좋아요를 아직 누르지 않은 경우
 	//System.out.println("아이디, 게시물번호: " + id + ", " + num);
-	ldao.insertLike(new RegionLikeDTO(id, num)); // 좋아요테이블에 좋아요 정보 추가
+	ldao.insertLike(new RegionLikeDTO(id, num)); // 좋아요 테이블에 좋아요 정보 추가
 	// 좋아요 수 업데이트
 	dto.setNum(num);
 	dao.updateLike(dto);
