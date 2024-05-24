@@ -211,6 +211,7 @@ public class RegionController extends HttpServlet {
 			dto.setNum(num);
 			
 			String fileName = mr.getFilesystemName("file");
+			System.out.println(fileName);
 			
 			if(fileName != null) {	
 				String ext = fileName.substring(fileName.lastIndexOf("."));
@@ -240,7 +241,9 @@ public class RegionController extends HttpServlet {
 				System.out.println(title);
 				System.out.println(content);
 				System.out.println(id);
-			} else if(fileName == null) {
+			} else if(fileName == null && dto.getOfile() != null) {
+				dto.setOfile(dto.getOfile());
+				dto.setSfile(dto.getSfile());
 				// 값 받아오기			
 				String title = mr.getParameter("title");
 				String content = mr.getParameter("content");
