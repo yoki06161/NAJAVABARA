@@ -34,7 +34,7 @@ if(id == null || id.isEmpty()) {
 } else {
 	//아이디가 null이 아닌 경우에만 계속 진행
 	//likeCheck
-	System.out.println("null이 아닐때");
+	// System.out.println("null이 아닐때");
 	RegionLikeDAO ldao = new RegionLikeDAO();
 	RegionDTO dto = new RegionDTO();
 	RegionDAO dao = new RegionDAO();
@@ -47,7 +47,7 @@ if(id == null || id.isEmpty()) {
 		jsonResponse.put("message", "좋아요는 게시물 당 한 번만 누를 수 있습니다");
 	} else {
 		// 좋아요를 아직 누르지 않은 경우
-		System.out.println("아이디, 게시물번호: " + id + ", " + num);
+		//System.out.println("아이디, 게시물번호: " + id + ", " + num);
 		ldao.insertLike(new RegionLikeDTO(id, num)); // 좋아요테이블에 좋아요 정보 추가
 		jsonResponse.put("rs", 0); // 좋아요를 누르지 않았고, 좋아요를 추가했음을 나타내는 코드
 	}

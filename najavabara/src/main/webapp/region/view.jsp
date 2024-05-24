@@ -58,47 +58,49 @@ $(document).ready(function() {
 	     // 콘솔에 did 출력
 	     console.log("dto.getid: ", did);
 
-	     // AJAX 요청 보내기
-	     $.ajax({
-	     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
-			contentType : "application/json",
-			type : "POST",
-			dataType:'json',
-			data : JSON.stringify({
-				id : id,
-				num : num,
-				did : did
-			}),				
-			success : function(data) {
-				console.log("data: ", data);
-		     	console.log("id: ", id);
-		     	console.log("did: ", did);
-				console.log("data.rs ", data.rs);
-				if (id === did) {
-					alert("자신의 게시물에는 좋아요할 수 없습니다");
-				} else if (data.rs === 'error') {
-					alert("로그인이 필요한 기능입니다");
-					window.location.href = "../user/login.jsp";
-				} else {
-					if (data.rs === 2) {
-					} else if (data.rs === 0) {
-				    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
-						console.log("data['rs']: ", data['rs']);
-						// btn-outline-danger와 btn-danger 클래스를 토글
-	                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
-						//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
+	    // id === null일 땐 요청 보내지 않기
+		if (id === null) {
+			console.log(id);
+			alert("로그인이 필요한 기능입니다");
+			window.location.href = "../user/login.jsp";
+		} else if (id === did){
+			// id === did일땐 요청 보내지 않기
+			alert("자신의 게시물에는 좋아요할 수 없습니다");
+		} else {
+		     // AJAX 요청 보내기
+		     $.ajax({
+		     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
+				contentType : "application/json",
+				type : "POST",
+				dataType:'json',
+				data : JSON.stringify({
+					id : id,
+					num : num,
+					did : did
+				}),				
+				success : function(data) {
+					console.log("data: ", data);
+			     	console.log("id: ", id);
+			     	console.log("did: ", did);
+					console.log("data.rs ", data.rs);
+	 				
+					if (data.rs === 0) {
+					    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
+							console.log("data['rs']: ", data['rs']);
+							// btn-outline-danger와 btn-danger 클래스를 토글
+		                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
+							//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
 					} else if (data.rs === 1){
-						alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
-					}
-					
-				} 
-			},
-			error : function(request, status, error) {
-				console.log(request, status, error);
-		     	console.log("data,id: ", data,id);
-				console.log("data.rs ", data.rs);
-			}
-		});
+							alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
+					} 
+				},
+				error : function(request, status, error) {
+					console.log(request, status, error);
+			     	console.log("data,id: ", data,id);
+					console.log("data.rs ", data.rs);
+				}
+			});
+		}
 	});
 });
 </script>
@@ -119,7 +121,6 @@ img {
 			<td>dto.getNum()</td> -->
 
 			<td><input type="hidden" name="num" value="<%=dto.getNum()%>">
-			<input type="hidden" name="id" value="<%=dto.getId()%>">
 				<h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
 				</h5>
 				<p style="color: gray;"><%=dto.getArea()%>
@@ -150,9 +151,7 @@ img {
 		<tr>
 			<td>
 				<!-- 버튼색상: btn-outline-danger, btn-warning -->
-				<button type="button"
-					class="<%= buttonClass %>"
-					value="좋아요 <%=dto.getLikes()%>">
+				<button type="button" class="<%= buttonClass %>">
 					<span id="likeCount">좋아요 0</span>
 				</button>
 			</td>
