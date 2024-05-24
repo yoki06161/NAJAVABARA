@@ -128,7 +128,7 @@ $(document).ready(function(){
 					  <option value="전라남도">전라남도</option>
 					  <option value="경상북도">경상북도</option>
 					  <option value="경상남도">경상남도</option>
-					  <option value="제주특별시">제주특별시</option>
+					  <option value="제주특별자치도">제주특별자치도</option>
 					</select>
 					</h4>	
 				</td>
