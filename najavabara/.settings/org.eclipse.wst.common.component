@@ -8,8 +8,9 @@
                 
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                 
+        <property name="context-root" value="najavabara"/>
+                
         <property name="java-output-path" value="/najavabara/build/classes"/>
-        <property name="context-root" value="/"/>
             
     </wb-module>
     
