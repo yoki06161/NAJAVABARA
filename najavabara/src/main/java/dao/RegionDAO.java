@@ -10,6 +10,7 @@ import java.util.Map;
 
 import common.JDBConnect;
 import dto.RegionDTO;
+import dto.RegionLikeDTO;
 
 public class RegionDAO {
 	// 게시글 목록 가져오기(검색,필터링 기능 포함)
@@ -309,8 +310,8 @@ public class RegionDAO {
 		return rs;
 	} 
 
-	// 좋아요 클릭 시 좋아요 수 증가함(update)
-	public int updateLike (RegionDTO ldto) {
+	// 좋아요 클릭 시 게시물 테이블에 좋아요 수 반영함(update)
+	public int updateLike (RegionDTO dto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int rset = 0;   
@@ -320,14 +321,15 @@ public class RegionDAO {
 			conn = JDBConnect.getConnection();
 
 			// sql + 쿼리창
-			String sql = "update regionBoard set likes = likes + 1 where num = ?";
+			String sql = "update regionBoard rb join (select num, count(*) as likes";
+			sql += " from regionLike group by num)";
+			sql += " rl on rb.num = rl.num";
+			sql += " set rb.likes = rl.likes";
 			pstmt = conn.prepareStatement(sql);
-
-			// 세팅
-			pstmt.setInt(1, ldto.getNum());
-
+			
 			// execute 실행
 			rset = pstmt.executeUpdate();
+			System.out.println("try문 안: " + rset);
 
 		} catch (Exception e) {
 			e.printStackTrace();

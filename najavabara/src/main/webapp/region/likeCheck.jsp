@@ -21,7 +21,7 @@ JSONObject jsonRequest = new JSONObject(sb.toString());
 
 String id = (String) session.getAttribute("id");
 int num = jsonRequest.optInt("num");
-System.out.println("아이디, 게시물번호: " + id + ", " + num);
+//System.out.println("아이디, 게시물번호: " + id + ", " + num);
 
 // id가 null인 경우, 잘못된 요청으로 처리하고 오류 메시지를 반환
 if(id == null || id.isEmpty()) {
@@ -46,10 +46,10 @@ if(id == null || id.isEmpty()) {
 		jsonResponse.put("rs", 1); // 좋아요를 이미 눌렀음을 나타내는 코드
 		jsonResponse.put("message", "좋아요는 게시물 당 한 번만 누를 수 있습니다");
 	} else {
-		// 좋아요를 누르지 않은 경우
+		// 좋아요를 아직 누르지 않은 경우
 		System.out.println("아이디, 게시물번호: " + id + ", " + num);
-		ldao.insertLike(new RegionLikeDTO(id, num)); // 좋아요 추가
-		jsonResponse.put("rs", 0); // 좋아요를 누르지 않음을 나타내는 코드
+		ldao.insertLike(new RegionLikeDTO(id, num)); // 좋아요테이블에 좋아요 정보 추가
+		jsonResponse.put("rs", 0); // 좋아요를 누르지 않았고, 좋아요를 추가했음을 나타내는 코드
 	}
 	out.print(jsonResponse.toString());
 	out.flush();
