@@ -48,12 +48,15 @@ $(document).ready(function() {
     });
 	 
 	$(".like-btn").click(function() {
-	     console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
+	     //console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
 	     //console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
 
 	     // 콘솔에 클릭된 요소 출력
 	     //console.log("클릭된 요소:", $button);
+	     
+	     // 콘솔에 did 출력
+	     console.log("dto.getid: ", did);
 
 	     // AJAX 요청 보내기
 	     $.ajax({
@@ -63,24 +66,32 @@ $(document).ready(function() {
 			dataType:'json',
 			data : JSON.stringify({
 				id : id,
-				num : num
+				num : num,
+				did : did
 			}),				
 			success : function(data) {
 				console.log("data: ", data);
-		     	console.log("data,id: ", data,id);
+		     	console.log("id: ", id);
+		     	console.log("did: ", did);
 				console.log("data.rs ", data.rs);
-				if (data.rs === 'error') {
+				if (id === did) {
+					alert("자신의 게시물에는 좋아요할 수 없습니다");
+				} else if (data.rs === 'error') {
 					alert("로그인이 필요한 기능입니다");
 					window.location.href = "../user/login.jsp";
-				} else if (data.rs === 0) {
-			    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
-					console.log("data['rs']: ", data['rs']);
-					// btn-outline-danger와 btn-danger 클래스를 토글
-                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
-					//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
-				} else if (data.rs === 1){
-					alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
-				}
+				} else {
+					if (data.rs === 2) {
+					} else if (data.rs === 0) {
+				    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
+						console.log("data['rs']: ", data['rs']);
+						// btn-outline-danger와 btn-danger 클래스를 토글
+	                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
+						//$button.find("#likeCount").text(data.likeCount); // 버튼 내부의 likeCount를 업데이트
+					} else if (data.rs === 1){
+						alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
+					}
+					
+				} 
 			},
 			error : function(request, status, error) {
 				console.log(request, status, error);
@@ -108,6 +119,7 @@ img {
 			<td>dto.getNum()</td> -->
 
 			<td><input type="hidden" name="num" value="<%=dto.getNum()%>">
+			<input type="hidden" name="id" value="<%=dto.getId()%>">
 				<h5 class="fw-bold"><%=dto.getId()%>(<%=dto.getName()%>)
 				</h5>
 				<p style="color: gray;"><%=dto.getArea()%>

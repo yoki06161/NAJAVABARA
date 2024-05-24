@@ -70,7 +70,7 @@ public class RegionController extends HttpServlet {
 			RegionDAO dao = new RegionDAO();
 			// 좋아요 수 업데이트
 			RegionDTO dto = new RegionDTO();
-			int rset =  dao.updateLike(dto);
+			dao.updateLike(dto);
 			
 			List<RegionDTO> regionList =  dao.selectList(map);
 			
