@@ -59,7 +59,7 @@ $(document).ready(function() {
 	     console.log("dto.getid: ", did);
 
 	    // id === null일 땐 요청 보내지 않기
-		if (id === null) {
+		if (id === 'null') {
 			console.log(id);
 			alert("로그인이 필요한 기능입니다");
 			window.location.href = "../user/login.jsp";
