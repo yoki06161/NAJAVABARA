@@ -12,16 +12,18 @@ public class friendBoardDTO {
     private String id;
     private int commentCount;
     private int likeCount;
-    private List<String> fileNames; // 여러 파일명을 저장하기 위한 필드
+    private List<String> fileNames;
+    private List<String> ofileNames;
     private String area;
 
     public friendBoardDTO() {}
 
-    public friendBoardDTO(String title, String content, String id, List<String> fileNames, String area) {
+    public friendBoardDTO(String title, String content, String id, List<String> fileNames, List<String> ofileNames, String area) {
         this.title = title;
         this.content = content;
         this.id = id;
         this.fileNames = fileNames;
+        this.ofileNames = ofileNames;
         this.area = area;
     }
     
@@ -128,6 +130,14 @@ public class friendBoardDTO {
 
     public void setFileNames(List<String> fileNames) {
         this.fileNames = fileNames;
+    }
+    
+    public List<String> getOfileNames() {
+        return ofileNames;
+    }
+
+    public void setOfileNames(List<String> ofileNames) {
+        this.ofileNames = ofileNames;
     }
 
     public String getArea() {

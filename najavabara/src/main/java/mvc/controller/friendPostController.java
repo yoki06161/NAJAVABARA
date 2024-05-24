@@ -1,8 +1,11 @@
 package mvc.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,6 +111,7 @@ public class friendPostController extends HttpServlet {
 		    String title = null;
 		    String content = null;
 		    List<String> fileNames = new ArrayList<>();
+		    List<String> ofileNames = new ArrayList<>();
 
 		    HttpSession session = request.getSession();
 		    UserDTO user = (UserDTO) session.getAttribute("user");
@@ -149,6 +153,7 @@ public class friendPostController extends HttpServlet {
 		                                try {
 		                                    item.write(uploadFile);
 		                                    fileNames.add(uniqueFileName); // 파일명을 리스트에 추가
+		                                    ofileNames.add(originalFileName); // 원본 파일명을 리스트에 추가
 		                                } catch (Exception e) {
 		                                    e.printStackTrace();
 		                                }
@@ -162,7 +167,7 @@ public class friendPostController extends HttpServlet {
 		        }
 
 		        if (title != null && content != null) {
-		            friendBoardDTO newPost = new friendBoardDTO(title, content, id, fileNames, area);
+		            friendBoardDTO newPost = new friendBoardDTO(title, content, id, fileNames, ofileNames, area);
 
 		            // PostDAO 객체 생성
 		            friendBoardDAO postDao = new friendBoardDAO();
@@ -319,7 +324,8 @@ public class friendPostController extends HttpServlet {
 
 		    if (user != null) {
 		        String id = user.getId();
-
+		        String area = user.getArea();
+		        
 		        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		        if (isMultipart) {
 		            FileItemFactory factory = new DiskFileItemFactory();
@@ -394,6 +400,7 @@ public class friendPostController extends HttpServlet {
 		            }
 		            
 		            updatedPost.setId(id);
+		            updatedPost.setArea(area);
 
 		            // PostDAO 객체 생성
 		            friendBoardDAO postDao = new friendBoardDAO();
@@ -443,6 +450,47 @@ public class friendPostController extends HttpServlet {
 		        out.print("{\"likeCount\": " + likeCount + "}");
 		        out.flush();
 		        return;
+		    }
+		} else if (action.equals("/download.fri")) {
+		    // 파일 경로 및 파일 이름 파라미터 가져오기
+		    String saveDirectory = getServletContext().getRealPath("/friendBoard/uploads"); // 파일이 저장된 디렉토리 경로
+		    String fileName = request.getParameter("fileName");
+
+		    if (saveDirectory != null && fileName != null) {
+		        // 다운로드할 파일 객체 생성
+		        File downloadFile = new File(saveDirectory, fileName);
+
+		        // 파일이 존재하는지 확인
+		        if (downloadFile.exists()) {
+		            // 다운로드할 파일의 MIME 타입 설정
+		            response.setContentType("application/octet-stream");
+		            // 다운로드할 파일의 크기 설정
+		            response.setContentLength((int) downloadFile.length());
+
+		            // 파일 이름을 인코딩하여 파일 다운로드 헤더 설정
+		            String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
+		            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+		            try (FileInputStream in = new FileInputStream(downloadFile);
+		                 OutputStream out = response.getOutputStream()) {
+		                // 파일을 읽어와서 클라이언트에 전송
+		                byte[] buffer = new byte[4096];
+		                int bytesRead = -1;
+		                while ((bytesRead = in.read(buffer)) != -1) {
+		                    out.write(buffer, 0, bytesRead);
+		                }
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        } else {
+		            // 다운로드할 파일을 찾을 수 없는 경우
+		            response.setContentType("text/html");
+		            response.getWriter().println("<h3>다운로드할 파일을 찾을 수 없습니다.</h3>");
+		        }
+		    } else {
+		        // 다운로드할 파일 경로를 찾을 수 없는 경우
+		        response.setContentType("text/html");
+		        response.getWriter().println("<h3>다운로드할 파일 경로를 찾을 수 없습니다.</h3>");
 		    }
 		}
 	}

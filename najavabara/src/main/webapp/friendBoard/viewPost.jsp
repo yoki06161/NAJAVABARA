@@ -88,44 +88,45 @@
             boolean isOwner = (user != null && user.getId().equals(post.getId()));
         %>
         <div class="card">
-    <div class="card-header">
-        <h5 class="card-title"><%=post.getTitle()%></h5>
-    </div>
-    <div class="card-body">
-        <p class="card-text">
-            작성자: <%=post.getId()%>
-            <small class="text-muted">
-                <%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%>
-                <% LocalDateTime postDateTime = post.getPostdate().toLocalDateTime(); %>
-                <%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
-            </small>
-        </p>
-        <p class="card-text">
-            조회수: <%=post.getVisitcount()%>
-        </p>
-        <p class="card-text">
-            내용: <%=post.getContent()%>
-        </p>
-        <%
-        if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
-            for (String fileName : post.getFileNames()) {
-                String filePath = "uploads/" + fileName;
-                // 이미지 파일인지 확인
-                boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
-                if (isImage) {
-        %>
-        <div class="mt-3">
-            <img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid rounded-image">
+            <div class="card-header">
+                <h5 class="card-title"><%=post.getTitle()%></h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    작성자: <%=post.getId()%>
+                    <small class="text-muted">
+                        <%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%>
+                        <% LocalDateTime postDateTime = post.getPostdate().toLocalDateTime(); %>
+                        <%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
+                    </small>
+                </p>
+                <p class="card-text">
+                    조회수: <%=post.getVisitcount()%>
+                </p>
+                <p class="card-text">
+                    내용: <%=post.getContent()%>
+                </p>
+                <%
+                if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
+                	 for (int i = 0; i < post.getFileNames().size(); i++) {
+                		String fileName = post.getFileNames().get(i);
+                        String filePath = "uploads/" + fileName;
+                        // 이미지 파일인지 확인
+                        boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
+                        if (isImage) {
+                %>
+                <div class="mt-3">
+                    <img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid rounded-image">
+                </div>
+                <% } else { %>
+                <div class="mt-3">
+                   <p>첨부 파일: <a href="download.fri?fileName=<%=fileName%>"><%=post.getOfileNames().get(i)%></a></p>
+                </div>
+                <% }
+                    }
+                } %>
+            </div>
         </div>
-        <% } else { %>
-        <div class="mt-3">
-            <p>첨부 파일: <a href="<%=filePath%>"><%=fileName%></a></p>
-        </div>
-        <% }
-            }
-        } %>
-    </div>
-</div>
         <div class="mt-3">
             <a href="friendBoard.fri" class="btn btn-primary">게시판으로 돌아가기</a>
             <%

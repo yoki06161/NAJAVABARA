@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -110,52 +111,60 @@ public class friendBoardDAO {
 	    }
 	
 	 public friendBoardDTO selectView(friendBoardDTO dto) {
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
-	        ResultSet rs = null;
+		    Connection conn = null;
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
 
-	        String sql = "SELECT p.num, p.title, p.content, p.postdate, p.visitcount, p.id, p.area, " +
-	                     "GROUP_CONCAT(f.fileName SEPARATOR ',') AS fileNames " +
-	                     "FROM friendBoard p " +
-	                     "LEFT JOIN friendBoardFiles f ON p.num = f.postNum " +
-	                     "WHERE p.num = ? " +
-	                     "GROUP BY p.num";
-	        conn = JDBCConnect.getConnection();
+		    String sql = "SELECT p.num, p.title, p.content, p.postdate, p.visitcount, p.id, p.area, " +
+		                 "GROUP_CONCAT(f.fileName SEPARATOR ',') AS fileNames, " +
+		                 "GROUP_CONCAT(f.ofileName SEPARATOR ',') AS ofileNames " +
+		                 "FROM friendBoard p " +
+		                 "LEFT JOIN friendBoardFiles f ON p.num = f.postNum " +
+		                 "WHERE p.num = ? " +
+		                 "GROUP BY p.num";
+		    conn = JDBCConnect.getConnection();
 
-	        try {
-	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setInt(1, dto.getNum());
-	            rs = pstmt.executeQuery();
+		    try {
+		        pstmt = conn.prepareStatement(sql);
+		        pstmt.setInt(1, dto.getNum());
+		        rs = pstmt.executeQuery();
 
-	            dto = null;
-	            if (rs.next()) {
-	                int num = rs.getInt("num");
-	                String title = rs.getString("title");
-	                String content = rs.getString("content");
-	                String id = rs.getString("id");
-	                Timestamp postdate = rs.getTimestamp("postdate");
-	                int visitcount = rs.getInt("visitcount");
-	                String area = rs.getString("area");
-	                String fileNamesStr = rs.getString("fileNames");
-	                List<String> fileNames = new ArrayList<>();
-	                if (fileNamesStr != null && !fileNamesStr.isEmpty()) {
-	                    for (String fileName : fileNamesStr.split(",")) {
-	                        fileNames.add(fileName.trim());
-	                    }
-	                }
-	                dto = new friendBoardDTO(num, title, content, id, postdate, visitcount);
-	                dto.setFileNames(fileNames);
-	                dto.setArea(area);
-	            }
+		        if (rs.next()) {
+		            int num = rs.getInt("num");
+		            String title = rs.getString("title");
+		            String content = rs.getString("content");
+		            String id = rs.getString("id");
+		            Timestamp postdate = rs.getTimestamp("postdate");
+		            int visitcount = rs.getInt("visitcount");
+		            String area = rs.getString("area");
+		            String fileNamesStr = rs.getString("fileNames");
+		            String ofileNamesStr = rs.getString("ofileNames");
+		            List<String> fileNames = new ArrayList<>();
+		            List<String> ofileNames = new ArrayList<>();
+		            if (fileNamesStr != null && !fileNamesStr.isEmpty()) {
+		                for (String fileName : fileNamesStr.split(",")) {
+		                    fileNames.add(fileName.trim());
+		                }
+		            }
+		            if (ofileNamesStr != null && !ofileNamesStr.isEmpty()) {
+		                for (String ofileName : ofileNamesStr.split(",")) {
+		                    ofileNames.add(ofileName.trim());
+		                }
+		            }
+		            dto = new friendBoardDTO(num, title, content, id, postdate, visitcount);
+		            dto.setFileNames(fileNames);
+		            dto.setOfileNames(ofileNames);
+		            dto.setArea(area);
+		        }
 
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } finally {
-	            JDBCConnect.close(rs, pstmt, conn);
-	        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        JDBCConnect.close(rs, pstmt, conn);
+		    }
 
-	        return dto;
-	    }
+		    return dto;
+		}
 
 	public int selectCount(Map<String, String> map){
 		Connection conn = null;
@@ -218,7 +227,7 @@ public class friendBoardDAO {
 	                rs = pstmt.getGeneratedKeys();
 	                if (rs.next()) {
 	                    int postNum = rs.getInt(1);
-	                    insertFiles(postNum, dto.getFileNames());
+	                    insertFiles(postNum, dto.getFileNames(), dto.getOfileNames());
 	                }
 	            }
 
@@ -231,27 +240,32 @@ public class friendBoardDAO {
 	    }
 	 
 	// 파일명 삽입
-	 private void insertFiles(int postNum, List<String> fileNames) throws SQLException {
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
+	 private void insertFiles(int postNum, List<String> fileNames, List<String> ofileNames) throws SQLException {
+		    Connection conn = null;
+		    PreparedStatement pstmt = null;
 
-	        try {
-	            conn = JDBCConnect.getConnection();
-	            String sql = "INSERT INTO friendBoardFiles (postNum, fileName) VALUES (?, ?)";
-	            pstmt = conn.prepareStatement(sql);
+		    try {
+		        // 데이터베이스 연결
+		        conn = JDBCConnect.getConnection();
+		        // SQL 쿼리 준비
+		        String sql = "INSERT INTO friendBoardFiles (postNum, fileName, ofileName) VALUES (?, ?, ?)";
+		        pstmt = conn.prepareStatement(sql);
 
-	            for (String fileName : fileNames) {
-	                pstmt.setInt(1, postNum);
-	                pstmt.setString(2, fileName);
-	                pstmt.addBatch();
-	            }
+		        // 각 파일에 대한 값 추가
+		        for (int i = 0; i < fileNames.size(); i++) {
+		            pstmt.setInt(1, postNum); // 게시물 번호 설정
+		            pstmt.setString(2, fileNames.get(i)); // 파일 이름 설정
+		            pstmt.setString(3, ofileNames.get(i)); // 원본 파일 이름 설정
+		            pstmt.addBatch(); // 일괄 처리에 추가
+		        }
 
-	            pstmt.executeBatch();
+		        pstmt.executeBatch(); // 일괄 처리 실행
 
-	        } finally {
-	            JDBCConnect.close(pstmt, conn);
-	        }
-	    }
+		    } finally {
+		        // 데이터베이스 연결 종료
+		        JDBCConnect.close(pstmt, conn);
+		    }
+		}
 
 	// 조회수 증가
 	    public int updateVisitcount(friendBoardDTO dto) {
@@ -294,7 +308,7 @@ public class friendBoardDAO {
 
             if (rs > 0 && dto.getFileNames() != null && !dto.getFileNames().isEmpty()) {
                 deleteFiles(dto.getNum());
-                insertFiles(dto.getNum(), dto.getFileNames());
+                insertFiles(dto.getNum(), dto.getFileNames(), dto.getOfileNames());
             }
 
         } catch (Exception e) {
