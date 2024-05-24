@@ -49,7 +49,7 @@ public class RegionDAO {
 			sql += " and " + map.get("searchField") + " like ? ";
 		}
 		sql += " order by num desc";
-		System.out.println(sql);
+		//System.out.println(sql);
 
 		try {
 			// connection
@@ -321,11 +321,13 @@ public class RegionDAO {
 			conn = JDBConnect.getConnection();
 
 			// sql + 쿼리창
-			String sql = "update regionBoard rb join (select num, count(*) as likes";
-			sql += " from regionLike group by num)";
-			sql += " rl on rb.num = rl.num";
-			sql += " set rb.likes = rl.likes";
+			String sql = "update regionBoard set likes = likes + 1 ";
+			sql += "where num = ?";
+			//System.out.println(sql);
 			pstmt = conn.prepareStatement(sql);
+			// 세팅
+			pstmt.setInt(1, dto.getNum());
+			System.out.println("게시물 번호" + dto.getNum());
 			
 			// execute 실행
 			rset = pstmt.executeUpdate();

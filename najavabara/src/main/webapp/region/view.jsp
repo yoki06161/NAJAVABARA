@@ -10,6 +10,8 @@ RegionLikeDAO ldao = new RegionLikeDAO();
 String id = (String) session.getAttribute("id");
 int num = dto.getNum();
 RegionLikeDTO ldto = ldao.hasUserLiked(new RegionLikeDTO(id, num));
+// 좋아요를 눌렀던 적이 없다면 앞의 클래스를, 있다면 뒤의 클래스를 사용
+String buttonClass = (ldto == null) ? "like-btn btn rounded-pill btn-outline-danger" : "like-btn btn rounded-pill btn-danger";
 
 String saveFolder = "Uploads";
 String requestFolder = request.getContextPath() + "/" + saveFolder;
@@ -164,8 +166,8 @@ img {
 		</tr>
 		<tr>
 			<td>
-				<!-- 버튼색상: btn-outline-danger, btn-warningㅣ 좋아요 버튼이 클릭 처리되면 버튼의 디자인 변경 -->
-				<button type="button" class="like-btn btn rounded-pill btn-outline-danger"  data-likes="<%=dto.getLikes()%>">
+				<!-- 버튼색상: btn-outline-danger, btn-warning -> 좋아요 버튼이 클릭 처리되면 버튼의 디자인 변경 -->
+				<button type="button" class="<%=buttonClass %>"  data-likes="<%=dto.getLikes()%>">
 					<span id="likeCount">좋아요 <%=dto.getLikes()%></span>
 				</button>
 			</td>

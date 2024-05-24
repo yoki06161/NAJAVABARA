@@ -68,15 +68,11 @@ public class RegionController extends HttpServlet {
 
 			// service : dao
 			RegionDAO dao = new RegionDAO();
-			// 좋아요 수 업데이트
-			RegionDTO dto = new RegionDTO();
-			dao.updateLike(dto);
 			
 			List<RegionDTO> regionList =  dao.selectList(map);
 			
 			// 총 게시물 수
 			int totalCount = dao.selectCount(map);
-			
 
 			request.setAttribute("regionList", regionList);
 			request.setAttribute("totalCount", totalCount);
