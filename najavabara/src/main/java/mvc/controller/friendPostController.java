@@ -318,7 +318,8 @@ public class friendPostController extends HttpServlet {
 		    String num = null;
 		    String title = null;
 		    String content = null;
-		    String fileName = null;
+		    List<String> fileNames = new ArrayList<>(); // 파일명 리스트 초기화
+		    List<String> ofileNames = new ArrayList<>(); // 원본 파일명 리스트 초기화
 		    HttpSession session = request.getSession();
 		    UserDTO user = (UserDTO) session.getAttribute("user");
 
@@ -359,17 +360,19 @@ public class friendPostController extends HttpServlet {
 		                            File uploadFile = new File(filePath + File.separator + uniqueFileName);
 		                            try {
 		                                item.write(uploadFile);
-		                                fileName = uniqueFileName;
+		                                fileNames.add(uniqueFileName); // 파일명을 리스트에 추가
+		                                ofileNames.add(originalFileName); // 원본 파일명을 리스트에 추가
 		                                System.out.println("File uploaded: " + uploadFile.getAbsolutePath()); // 디버깅 로그 추가
 
 		                                // 기존 파일 삭제 로직 (필요한 경우)
 		                                friendBoardDAO postDao = new friendBoardDAO();
 		                                friendBoardDTO existingPost = postDao.getPostByNum(num); // 문자열 매개변수 사용
 		                                if (existingPost != null && existingPost.getFileNames() != null && !existingPost.getFileNames().isEmpty()) {
-		                                    // 기존 파일 이름 목록에서 첫 번째 파일명을 가져옴
-		                                    String existingFileName = existingPost.getFileNames().get(0);
-		                                    File existingFile = new File(filePath + File.separator + existingFileName);
-		                                    // 기존 파일 삭제 로직 추가...
+		                                    for (String existingFileName : existingPost.getFileNames()) {
+		                                        File existingFile = new File(filePath + File.separator + existingFileName);
+		                                        boolean deleted = existingFile.delete();
+		                                        System.out.println("Deleted existing file: " + existingFile.getAbsolutePath() + ", Result: " + deleted); // 디버깅 로그 추가
+		                                    }
 		                                }
 		                            } catch (Exception e) {
 		                                e.printStackTrace();
@@ -392,13 +395,8 @@ public class friendPostController extends HttpServlet {
 		            updatedPost.setNum(Integer.parseInt(num));
 		            updatedPost.setTitle(title);
 		            updatedPost.setContent(content);
-		            
-		            if (fileName != null) {
-		                List<String> fileNames = new ArrayList<>();
-		                fileNames.add(fileName);
-		                updatedPost.setFileNames(fileNames);
-		            }
-		            
+		            updatedPost.setFileNames(fileNames); // 파일명 리스트 설정
+		            updatedPost.setOfileNames(ofileNames); // 원본 파일명 리스트 설정
 		            updatedPost.setId(id);
 		            updatedPost.setArea(area);
 
@@ -417,7 +415,7 @@ public class friendPostController extends HttpServlet {
 		        // 세션에서 사용자 정보가 없는 경우 로그인 페이지로 이동
 		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
 		    }
-		} else if (action.equals("/likePost.fri")) {
+		}else if (action.equals("/likePost.fri")) {
 		    String numStr = request.getParameter("num");
 		    
 		    if (numStr != null && !numStr.isEmpty()) {

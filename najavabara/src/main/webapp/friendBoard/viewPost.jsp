@@ -118,7 +118,7 @@
                 <div class="mt-3">
                     <img src="<%=filePath%>" alt="첨부 이미지" class="img-fluid rounded-image">
                 </div>
-                <% } else { %>
+                <% } else {  %>
                 <div class="mt-3">
                    <p>첨부 파일: <a href="download.fri?fileName=<%=fileName%>"><%=post.getOfileNames().get(i)%></a></p>
                 </div>

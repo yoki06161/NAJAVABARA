@@ -374,21 +374,39 @@ public class friendBoardDAO {
 
         try {
             conn = JDBCConnect.getConnection();
-            String sql = "SELECT * FROM friendBoard WHERE num = ?";
+            String sql = "SELECT p.*, f.fileName, f.ofileName FROM friendBoard p " +
+                         "LEFT JOIN friendBoardFiles f ON p.num = f.postNum " +
+                         "WHERE p.num = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, postNum);
             rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                int num = rs.getInt("num");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-                String id = rs.getString("id");
-                Timestamp postdate = rs.getTimestamp("postdate");
-                int visitcount = rs.getInt("visitcount");
-                String area = rs.getString("area"); // 'area'가 DTO의 필드라고 가정합니다.
-                post = new friendBoardDTO(num, title, content, id, postdate, visitcount, area);
+            List<String> fileNames = new ArrayList<>();
+            List<String> ofileNames = new ArrayList<>();
+
+            while (rs.next()) {
+                if (post == null) { // 첫 번째 행만 post 객체 생성
+                    int num = rs.getInt("num");
+                    String title = rs.getString("title");
+                    String content = rs.getString("content");
+                    String id = rs.getString("id");
+                    Timestamp postdate = rs.getTimestamp("postdate");
+                    int visitcount = rs.getInt("visitcount");
+                    String area = rs.getString("area"); // 'area'가 DTO의 필드라고 가정합니다.
+                    post = new friendBoardDTO(num, title, content, id, postdate, visitcount, area);
+                }
+
+                // 파일명 추가
+                String fileName = rs.getString("fileName");
+                String ofileName = rs.getString("ofileName");
+                fileNames.add(fileName);
+                ofileNames.add(ofileName);
             }
+
+            // 파일명 리스트를 post 객체에 설정
+            post.setFileNames(fileNames);
+            post.setOfileNames(ofileNames);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
