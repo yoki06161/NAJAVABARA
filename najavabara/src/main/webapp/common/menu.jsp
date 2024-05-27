@@ -60,15 +60,21 @@ li {
 .menu {
 	padding-right: 20px !important;
 }
+.logo_small {
+	width:50px !important;
+	height:50px !important;
+}
 </style>
 </head>
 <body>
-<div class="d-flex justify-content-between">
-<div class="d-flex">
+<div class="d-flex justify-content-between ">
+<div class="d-flex align-items-center">
     <li class="menu">
         <h5>
             <a href="../user/userMain.usr"
-                class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">로고자리</a>
+              class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">
+				<img src="../user/logo.png" class="logo_small">
+			</a>
         </h5>
     </li>
     <li class="menu">
@@ -110,7 +116,7 @@ li {
 </div>
 
 
-<div class="d-flex">
+<div class="d-flex align-items-end">
 <%
 if (session.getAttribute("idx") == null) {
 %>
@@ -128,7 +134,7 @@ if (session.getAttribute("idx") == null) {
         환영합니다! | </li>
     <li><a href="../user/update.usr"
         class="click link-dark link-underline-opacity-0 link-opacity-50-hover">내
-            정보 수정 | </a></li>
+            정보 수정</a> | </li>
     <li><a href="../user/logout.usr"
         class="click link-dark link-underline-opacity-0 link-opacity-50-hover">로그아웃</a>
     </li>
