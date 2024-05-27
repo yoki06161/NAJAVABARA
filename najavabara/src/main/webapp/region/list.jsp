@@ -11,8 +11,8 @@
 <body>
 <style>
 img {
-	width: 400px !important;
-	height: 400px !important;
+	width: 370px !important;
+	height: 370px !important;
 	object-fit: cover;
 }
 
@@ -25,7 +25,7 @@ a:hover {
 }
 
 .card {
-	width: 402px !important;
+	width: 372px !important;
 }
 
 .card-title {
