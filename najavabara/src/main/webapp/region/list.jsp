@@ -11,8 +11,8 @@
 <body>
 <style>
 img {
-	width: 370px !important;
-	height: 370px !important;
+	width: 100% !important;
+	height: 382px !important;
 	object-fit: cover;
 }
 
@@ -25,7 +25,7 @@ a:hover {
 }
 
 .card {
-	width: 372px !important;
+	max-width: 100% !important;
 }
 
 .card-title {
@@ -91,10 +91,10 @@ a:hover {
 	</form>
 
 	<br><br>
-		<h3 class="text-start">
-			전체 : <%=totalCount%>
-		</h3>
-		<input type="button" class="btn btn-outline-primary" onclick="location.href='write.reg'" value="글쓰기">
+		<div class="d-flex justify-content-between">		
+			<h3 class="text-start">전체 : <%=totalCount%></h3>
+			<input type="button" class="btn btn-outline-primary" onclick="location.href='write.reg'" value="글쓰기">
+		</div>
 	<br>
 	<%
 		if (regionList.isEmpty()) {
