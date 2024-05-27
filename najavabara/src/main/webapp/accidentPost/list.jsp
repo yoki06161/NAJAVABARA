@@ -29,7 +29,7 @@
         </div>
 
         <%
-        List<accidentBoardDTO> boardLists = (List<accidentBoardDTO>) request.getAttribute("boardLists");
+        		List<accidentBoardDTO> boardLists = (List<accidentBoardDTO>) request.getAttribute("boardLists");
                 Integer currentPage = (Integer) request.getAttribute("page");  // 변수명 변경 및 null 처리
                 Integer totalPages = (Integer) request.getAttribute("totalPages");
                 String searchField = (String) request.getAttribute("searchField");
