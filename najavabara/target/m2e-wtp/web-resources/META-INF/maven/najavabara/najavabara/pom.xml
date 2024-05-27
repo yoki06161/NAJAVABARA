@@ -4,6 +4,7 @@
   <artifactId>najavabara</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  
   <dependencies>
 	<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
 	<dependency>
@@ -24,6 +25,12 @@
     	<artifactId>commons-fileupload</artifactId>
     	<version>1.5</version>
 	</dependency>
+	
+	<dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20220320</version>
+    </dependency>
 	
 	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 	<dependency>

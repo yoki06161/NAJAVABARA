@@ -20,6 +20,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/friendBoard/friendBoard.fri">동네 친구 게시판</a>
+                        <a href="list.acc">사건사고 게시글</a> | <a href="write.acc">글쓰기</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0">
