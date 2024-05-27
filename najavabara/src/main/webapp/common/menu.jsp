@@ -48,7 +48,7 @@
 body {
 	max-width: 1200px;
 	margin: 0 auto;
-	padding: 50px ;
+	padding: 30px 0;
 }
 ul {
 	padding-left: 0;
@@ -58,7 +58,7 @@ li {
 	padding-right: 10px !important;
 }
 .menu {
-	padding-right: 20px;
+	padding-right: 20px !important;
 }
 </style>
 </head>
@@ -79,31 +79,31 @@ li {
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/region/list.reg"
+            <a href="/najavabara/accidentPost/list.acc"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">사건사고</a>
         </h5>
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/region/list.reg"
+            <a href="/najavabara/friendBoard/friendBoard.po"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">동네친구</a>
         </h5>
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/region/list.reg"
+            <a href="/najavabara/hobbyboard/list.hob"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">취미</a>
         </h5>
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/region/list.reg"
-                class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">장소 리뷰</a>
+            <a href="/najavabara/Review_board/review_list.jsp"
+                class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">장소리뷰</a>
         </h5>
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/region/list.reg"
+            <a href="/najavabara/free/list.free"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">자유게시판</a>
         </h5>
     </li>
@@ -137,6 +137,6 @@ if (session.getAttribute("idx") == null) {
 </div>
 </div>
 <hr>
-
+<br>
 </body>
 </html>
