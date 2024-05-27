@@ -450,46 +450,38 @@ public class friendPostController extends HttpServlet {
 		        return;
 		    }
 		} else if (action.equals("/download.fri")) {
-		    // 파일 경로 및 파일 이름 파라미터 가져오기
-		    String saveDirectory = getServletContext().getRealPath("/friendBoard/uploads"); // 파일이 저장된 디렉토리 경로
-		    String fileName = request.getParameter("fileName");
+            String saveDirectory = getServletContext().getRealPath("/friendBoard/uploads");
+            String fileName = request.getParameter("fileName");
+            String originalFileName = request.getParameter("ofileName");
 
-		    if (saveDirectory != null && fileName != null) {
-		        // 다운로드할 파일 객체 생성
-		        File downloadFile = new File(saveDirectory, fileName);
+            if (saveDirectory != null && fileName != null) {
+                File downloadFile = new File(saveDirectory, fileName);
 
-		        // 파일이 존재하는지 확인
-		        if (downloadFile.exists()) {
-		            // 다운로드할 파일의 MIME 타입 설정
-		            response.setContentType("application/octet-stream");
-		            // 다운로드할 파일의 크기 설정
-		            response.setContentLength((int) downloadFile.length());
+                if (downloadFile.exists()) {
+                    response.setContentType("application/octet-stream");
+                    response.setContentLength((int) downloadFile.length());
 
-		            // 파일 이름을 인코딩하여 파일 다운로드 헤더 설정
-		            String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
-		            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+                    String encodedFileName = URLEncoder.encode(originalFileName, "UTF-8").replace("+", "%20");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
 
-		            try (FileInputStream in = new FileInputStream(downloadFile);
-		                 OutputStream out = response.getOutputStream()) {
-		                // 파일을 읽어와서 클라이언트에 전송
-		                byte[] buffer = new byte[4096];
-		                int bytesRead = -1;
-		                while ((bytesRead = in.read(buffer)) != -1) {
-		                    out.write(buffer, 0, bytesRead);
-		                }
-		            } catch (IOException e) {
-		                e.printStackTrace();
-		            }
-		        } else {
-		            // 다운로드할 파일을 찾을 수 없는 경우
-		            response.setContentType("text/html");
-		            response.getWriter().println("<h3>다운로드할 파일을 찾을 수 없습니다.</h3>");
-		        }
-		    } else {
-		        // 다운로드할 파일 경로를 찾을 수 없는 경우
-		        response.setContentType("text/html");
-		        response.getWriter().println("<h3>다운로드할 파일 경로를 찾을 수 없습니다.</h3>");
-		    }
-		}
+                    try (FileInputStream in = new FileInputStream(downloadFile);
+                         OutputStream out = response.getOutputStream()) {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead = -1;
+                        while ((bytesRead = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, bytesRead);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    response.setContentType("text/html");
+                    response.getWriter().println("<h3>다운로드할 파일을 찾을 수 없습니다.</h3>");
+                }
+            } else {
+                response.setContentType("text/html");
+                response.getWriter().println("<h3>다운로드할 파일 경로를 찾을 수 없습니다.</h3>");
+            }
+        }
 	}
 }

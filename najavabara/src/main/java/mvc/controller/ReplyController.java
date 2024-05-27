@@ -62,7 +62,7 @@ public class ReplyController extends HttpServlet {
 
 		    if (result) {
 		        // 답글 작성 성공 시, 원래 페이지로 포워드 또는 필요한 처리를 진행
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("/friendBoard/viewPost.po?num=" + postNum);
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("/friendBoard/viewPost.fri?num=" + postNum);
 		        dispatcher.forward(request, response);
 		    }
 		} else if (action.equals("/deleteReply.re")) {
@@ -75,7 +75,7 @@ public class ReplyController extends HttpServlet {
 
             if (result) {
                 // 답글 삭제 성공 시, 다시 게시물 상세보기 페이지로 이동
-                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + postNum);
+                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.fri?num=" + postNum);
             }
         }
 	}

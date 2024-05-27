@@ -58,7 +58,7 @@ public class CommentController extends HttpServlet {
                     request.setAttribute("commentList", updatedCommentList);
                     
                     // 게시물 상세보기 페이지로 리다이렉트
-                    response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + postNum);
+                    response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.fri?num=" + postNum);
                 }
             } else {
                 // 로그인되지 않은 사용자는 로그인 페이지로 이동
@@ -79,7 +79,7 @@ public class CommentController extends HttpServlet {
                 request.setAttribute("commentList", updatedCommentList);
                 
                 // 게시물 상세보기 페이지로 리다이렉트
-                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.po?num=" + postNum);
+                response.sendRedirect(request.getContextPath() + "/friendBoard/viewPost.fri?num=" + postNum);
             }
         } 
     }

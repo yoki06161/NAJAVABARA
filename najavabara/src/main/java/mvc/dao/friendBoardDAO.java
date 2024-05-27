@@ -59,9 +59,9 @@ public class friendBoardDAO {
 	        sql += "GROUP BY p.num ORDER BY p.num DESC ";
 	        sql += "LIMIT ? OFFSET ?";
 
-	        conn = JDBCConnect.getConnection();
 
 	        try {
+	        	conn = JDBCConnect.getConnection();
 	            pstmt = conn.prepareStatement(sql);
 	            int parameterIndex = 1;
 
@@ -122,9 +122,9 @@ public class friendBoardDAO {
 		                 "LEFT JOIN friendBoardFiles f ON p.num = f.postNum " +
 		                 "WHERE p.num = ? " +
 		                 "GROUP BY p.num";
-		    conn = JDBCConnect.getConnection();
 
 		    try {
+		    	conn = JDBCConnect.getConnection();
 		        pstmt = conn.prepareStatement(sql);
 		        pstmt.setInt(1, dto.getNum());
 		        rs = pstmt.executeQuery();
@@ -184,9 +184,9 @@ public class friendBoardDAO {
 			sql += " where " + map.get("searchField") + " like ? ";
 		}
 		System.out.println(sql);
-		conn = JDBCConnect.getConnection();
 
 		try {
+			conn = JDBCConnect.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			if(isSearch) {
 				pstmt.setString(1, "%" + map.get("searchWord") + "%");

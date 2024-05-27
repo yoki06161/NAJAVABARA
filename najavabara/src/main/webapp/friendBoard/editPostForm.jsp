@@ -6,10 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>게시물 수정</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+	<%@ include file="../index.jsp"%>
 	<div class="container mt-5">
 		<h2 class="mb-4">게시물 수정</h2>
 
@@ -21,22 +20,22 @@
 		%>
 		<form action="updatePost.fri" method="post"
 			enctype="multipart/form-data">
-			<div class="form-group">
-				<label for="title">제목</label>
+			<div class="mb-3">
+				<label for="title" class="form-label">제목</label>
 				<!-- 제목 필드에 기존 제목 값을 설정 -->
 				<input type="text" class="form-control" id="title" name="title"
 					value="<%=post.getTitle()%>" required>
 			</div>
-			<div class="form-group">
-				<label for="content">내용</label>
+			<div class="mb-3">
+				<label for="content" class="form-label">내용</label>
 				<!-- 내용 필드에 기존 내용 값을 설정 -->
 				<textarea class="form-control" id="content" name="content" rows="5"
 					required><%=post.getContent()%></textarea>
 			</div>
-			<div class="form-group">
-				<label for="file">파일 첨부</label>
+			<div class="mb-3">
+				<label for="file" class="form-label">파일 첨부</label>
 				<!-- 파일 첨부 필드 -->
-				<input type="file" class="form-control-file" id="file" name="file"
+				<input type="file" class="form-control" id="file" name="file"
 					multiple>
 				<%
 				if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
@@ -51,7 +50,7 @@
 				<!-- 모든 파일에 대해 파일명을 표시 -->
 				<%
 				String ofileName = post.getOfileNames().get(i);
-				currentFiles.append("<a href='" + request.getContextPath() + "/friendBoard/uploads/" + fileName + "' target='_blank'>"
+				currentFiles.append("<a href='" + request.getContextPath() + "/friendBoard/uploads/" + fileName + "' target='_blank' class='link-secondary'>"
 						+ ofileName + "</a>"); // 파일명을 링크로 추가
 				}
 				String currentFilesStr = currentFiles.toString();
@@ -77,7 +76,7 @@
 			<input type="hidden" name="num" value="<%=post.getNum()%>">
 			<button type="submit" class="btn btn-primary">수정 완료</button>
 			<a href="viewPost.fri?num=<%=post.getNum()%>"
-				class="btn btn-secondary ml-2">취소</a>
+				class="btn btn-secondary ms-2">취소</a>
 		</form>
 		<%
 		} else {
