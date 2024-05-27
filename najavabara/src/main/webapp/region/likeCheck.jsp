@@ -1,6 +1,6 @@
+<%@page import="org.json.JSONObject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.io.*, org.json.JSONObject"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.io.BufferedReader"%>
 <%@page import="dto.RegionDTO"%>
