@@ -1,4 +1,4 @@
-package mvc.controller;
+package controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import mvc.dao.CommentDAO;
-import mvc.dto.CommentDTO;
-import mvc.dto.UserDTO;
+import dao.friendCommentDAO;
+import dto.friendCommentDTO;
+import dto.UserDTO;
 
 
 @WebServlet("*.co")
-public class CommentController extends HttpServlet {
+public class friendCommentController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,15 +46,15 @@ public class CommentController extends HttpServlet {
                 String writer = user.getId(); // 댓글 작성자는 현재 로그인한 사용자
 
                 // 댓글 객체 생성
-                CommentDTO newComment = new CommentDTO(postNum, commentContent, writer);
+                friendCommentDTO newComment = new friendCommentDTO(postNum, commentContent, writer);
 
                 // 댓글 추가하는 DAO 호출
-                CommentDAO commentDao = new CommentDAO();
+                friendCommentDAO commentDao = new friendCommentDAO();
                 boolean result = commentDao.insertComment(newComment);
 
                 if (result) {
                     // 댓글 작성 성공 시, 댓글 목록을 다시 불러와서 설정
-                    List<CommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
+                    List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
                     request.setAttribute("commentList", updatedCommentList);
                     
                     // 게시물 상세보기 페이지로 리다이렉트
@@ -70,12 +70,12 @@ public class CommentController extends HttpServlet {
             int postNum = Integer.parseInt(request.getParameter("postNum"));
 
             // CommentDAO를 사용하여 댓글 삭제 수행
-            CommentDAO commentDao = new CommentDAO();
+            friendCommentDAO commentDao = new friendCommentDAO();
             boolean deleted = commentDao.deleteComment(commentNum);
 
             if (deleted) {
                 // 삭제 성공 시, 삭제된 댓글을 제외한 댓글 목록을 다시 가져와 설정
-                List<CommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
+                List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
                 request.setAttribute("commentList", updatedCommentList);
                 
                 // 게시물 상세보기 페이지로 리다이렉트

@@ -36,15 +36,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/user/logout.do">로그아웃</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/user/myPage.do">내 정보</a>
-                        </li>
-                        <%-- 관리자인 경우에만 보이는 관리자 페이지로 이동하는 버튼 --%>
-                        <% if (((mvc.dto.UserDTO) session.getAttribute("user")).getRole().equals("관리자")) { %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminPage.ad">관리자 페이지</a>
-                            </li>
-                        <% } %>
                     <% } %>
                 </ul>
             </div>

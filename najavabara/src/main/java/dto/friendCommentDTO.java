@@ -1,22 +1,22 @@
-package mvc.dto;
+package dto;
 
-public class CommentDTO {
+public class friendCommentDTO {
     private int commentNum;
     private int postNum;
     private String comment;
     private String writer;
     private String regDate;
 
-	public CommentDTO() {}
+	public friendCommentDTO() {}
 
-    public CommentDTO(int postNum, String comment, String writer) {
+    public friendCommentDTO(int postNum, String comment, String writer) {
     	super();
         this.postNum = postNum;
         this.comment = comment;
         this.writer = writer;
     }
 
-    public CommentDTO(int commentNum, int postNum, String comment, String writer, String regDate) {
+    public friendCommentDTO(int commentNum, int postNum, String comment, String writer, String regDate) {
     	super();
         this.commentNum = commentNum;
         this.postNum = postNum;

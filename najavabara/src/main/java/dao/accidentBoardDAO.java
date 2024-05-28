@@ -1,4 +1,4 @@
-package mvc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import mvc.common.JDBCConnect;
-import mvc.dto.accidentBoardDTO;
+import common.JDBCConnect;
+import dto.accidentBoardDTO;
 
 public class accidentBoardDAO {
 

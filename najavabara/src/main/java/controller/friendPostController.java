@@ -1,4 +1,4 @@
-package mvc.controller;
+package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,13 +28,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 
-import mvc.dao.CommentDAO;
-import mvc.dao.friendBoardDAO;
-import mvc.dao.ReplyDAO;
-import mvc.dto.CommentDTO;
-import mvc.dto.friendBoardDTO;
-import mvc.dto.ReplyDTO;
-import mvc.dto.UserDTO;
+import dao.friendCommentDAO;
+import dao.friendBoardDAO;
+import dao.friendReplyDAO;
+import dto.friendCommentDTO;
+import dto.friendBoardDTO;
+import dto.friendReplyDTO;
+import dto.UserDTO;
 
 @WebServlet("*.fri")
 public class friendPostController extends HttpServlet {
@@ -88,9 +88,9 @@ public class friendPostController extends HttpServlet {
 		    int totalCount = dao.selectCount(map); // 전체 글 수 가져오기
 
 		    // 각 글에 대한 댓글 수 가져오기
-		    CommentDAO commentDAO = new CommentDAO();
+		    friendCommentDAO commentDAO = new friendCommentDAO();
 		    for (friendBoardDTO post : postLists) {
-		        List<CommentDTO> comments = commentDAO.getCommentsByPostNum(post.getNum());
+		        List<friendCommentDTO> comments = commentDAO.getCommentsByPostNum(post.getNum());
 		        int commentCount = comments != null ? comments.size() : 0;
 		        post.setCommentCount(commentCount);
 		    }
@@ -216,13 +216,13 @@ public class friendPostController extends HttpServlet {
 		                request.setAttribute("post", post);
 
 		                // 댓글 목록 가져오기
-		                CommentDAO commentDAO = new CommentDAO();
-		                List<CommentDTO> commentList = commentDAO.getCommentsByPostNum(num);
+		                friendCommentDAO commentDAO = new friendCommentDAO();
+		                List<friendCommentDTO> commentList = commentDAO.getCommentsByPostNum(num);
 		                request.setAttribute("commentList", commentList);
 
 		                // 답글 목록 가져오기
-		                ReplyDAO replyDAO = new ReplyDAO();
-		                List<ReplyDTO> replyList = replyDAO.getRepliesByCommentNum(num);
+		                friendReplyDAO replyDAO = new friendReplyDAO();
+		                List<friendReplyDTO> replyList = replyDAO.getRepliesByCommentNum(num);
 		                request.setAttribute("replyList", replyList);
 
 		                // 좋아요 수 가져오기
@@ -256,13 +256,13 @@ public class friendPostController extends HttpServlet {
 		                request.setAttribute("post", post);
 
 		                // 댓글 목록 가져오기
-		                CommentDAO commentDAO = new CommentDAO();
-		                List<CommentDTO> commentList = commentDAO.getCommentsByPostNum(num);
+		                friendCommentDAO commentDAO = new friendCommentDAO();
+		                List<friendCommentDTO> commentList = commentDAO.getCommentsByPostNum(num);
 		                request.setAttribute("commentList", commentList);
 
 		                // 답글 목록 가져오기
-		                ReplyDAO replyDAO = new ReplyDAO();
-		                List<ReplyDTO> replyList = replyDAO.getRepliesByCommentNum(num);
+		                friendReplyDAO replyDAO = new friendReplyDAO();
+		                List<friendReplyDTO> replyList = replyDAO.getRepliesByCommentNum(num);
 		                request.setAttribute("replyList", replyList);
 
 		                // 좋아요 수 가져오기

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import common.JDBConnect;
+import common.JDBCConnect;
 import dto.RegionLikeDTO;
 
 public class RegionLikeDAO {
@@ -16,7 +16,7 @@ public class RegionLikeDAO {
 
 		try {
 			// connection
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql 창- 리스트면 where ..=?부분 수정
 			String sql = "select * from regionLike where id = ? and num = ?";
@@ -40,7 +40,7 @@ public class RegionLikeDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		return ldto;
 	}
@@ -52,7 +52,7 @@ public class RegionLikeDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "insert into regionLike(id, num) values(?, ?)";
@@ -68,7 +68,7 @@ public class RegionLikeDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 	}
 }

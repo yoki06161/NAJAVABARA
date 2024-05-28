@@ -1,4 +1,4 @@
-package mvc.dto;
+package dto;
 
 import java.sql.Timestamp;
 import java.util.List;

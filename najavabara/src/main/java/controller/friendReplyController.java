@@ -1,4 +1,4 @@
-package mvc.controller;
+package controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import mvc.dao.CommentDAO;
-import mvc.dao.ReplyDAO;
-import mvc.dto.CommentDTO;
-import mvc.dto.ReplyDTO;
-import mvc.dto.UserDTO;
+import dao.friendCommentDAO;
+import dao.friendReplyDAO;
+import dto.friendCommentDTO;
+import dto.friendReplyDTO;
+import dto.UserDTO;
 
 @WebServlet("*.re")
-public class ReplyController extends HttpServlet {
+public class friendReplyController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,13 +51,13 @@ public class ReplyController extends HttpServlet {
 		    int commentNum = Integer.parseInt(request.getParameter("commentNum"));
 
 		    // 답글 객체 생성
-		    ReplyDTO newReply = new ReplyDTO();
+		    friendReplyDTO newReply = new friendReplyDTO();
 		    newReply.setCommentNum(commentNum);
 		    newReply.setReply(replyContent);
 		    newReply.setWriter(user.getId()); // 작성자 정보 설정
 
 		    // 답글 추가하는 DAO 호출
-		    ReplyDAO replyDAO = new ReplyDAO();
+		    friendReplyDAO replyDAO = new friendReplyDAO();
 		    boolean result = replyDAO.insertReply(newReply);
 
 		    if (result) {
@@ -70,7 +70,7 @@ public class ReplyController extends HttpServlet {
             int postNum = Integer.parseInt(request.getParameter("postNum"));
 
             // 답글 삭제 처리
-            ReplyDAO replyDAO = new ReplyDAO();
+            friendReplyDAO replyDAO = new friendReplyDAO();
             boolean result = replyDAO.deleteReply(replyNum);
 
             if (result) {

@@ -1,4 +1,4 @@
-package mvc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mvc.common.JDBCConnect;
-import mvc.dto.accidentCommentDTO;
+import common.JDBCConnect;
+import dto.accidentCommentDTO;
 
 public class accidentCommentDAO {
 

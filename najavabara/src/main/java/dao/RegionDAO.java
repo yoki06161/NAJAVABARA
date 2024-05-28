@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import common.JDBConnect;
+import common.JDBCConnect;
 import dto.RegionDTO;
 import dto.RegionLikeDTO;
 
@@ -53,7 +53,7 @@ public class RegionDAO {
 
 		try {
 			// connection
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
 			if(isFilter) {
@@ -84,7 +84,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		return regionList;
 	}
@@ -116,9 +116,9 @@ public class RegionDAO {
 			sql += " and " + map.get("searchField") + " like ? ";
 		}
 		System.out.println(sql);
-		conn = JDBConnect.getConnection();
 
 		try {
+			conn = JDBCConnect.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			if(isFilter) {
 				pstmt.setString(1, "%" + map.get("area") + "%");
@@ -134,7 +134,7 @@ public class RegionDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			JDBConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}		
 
 		return totalCount;
@@ -149,7 +149,7 @@ public class RegionDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "update regionBoard set visitcount = visitcount + 1 ";
@@ -164,7 +164,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
@@ -178,7 +178,7 @@ public class RegionDAO {
 
 		try {
 			// connection
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql 창- 리스트면 where ..=?부분 수정
 			String sql = "select regionBoard.num, title, content, regionBoard.id, user.area, postdate, visitcount, user.name, ofile, sfile, likes ";
@@ -212,7 +212,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		return dto;
 	}
@@ -225,7 +225,7 @@ public class RegionDAO {
 		int rs = 0;
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "insert into regionBoard(title, content, id, ofile, sfile) values(?, ?, ?, ?, ?)";
@@ -244,7 +244,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
@@ -258,7 +258,7 @@ public class RegionDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "update regionBoard set title=?, content=?, ofile=?, sfile=? where num = ?";
@@ -277,7 +277,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
@@ -290,7 +290,7 @@ public class RegionDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "delete from regionBoard where num = ?";
@@ -305,7 +305,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	} 
@@ -318,7 +318,7 @@ public class RegionDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "update regionBoard set likes = likes + 1 ";
@@ -336,7 +336,7 @@ public class RegionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rset;
 	}

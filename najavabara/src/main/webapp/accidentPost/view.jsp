@@ -1,8 +1,8 @@
-<%@page import="mvc.dao.accidentCommentDAO"%>
-<%@page import="mvc.dto.accidentCommentDTO"%>
+<%@page import="dao.accidentCommentDAO"%>
+<%@page import="dto.accidentCommentDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="mvc.dto.accidentBoardDTO"%>
-<%@page import="mvc.dao.accidentBoardDAO"%>
+<%@page import="dto.accidentBoardDTO"%>
+<%@page import="dao.accidentBoardDAO"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,4 +1,4 @@
-package mvc.dao;
+package dao;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import mvc.common.JDBCConnect;
-import mvc.dto.CommentDTO;
-import mvc.dto.friendBoardDTO;
+import common.JDBCConnect;
+import dto.friendCommentDTO;
+import dto.friendBoardDTO;
 
 public class friendBoardDAO {
 	
@@ -450,7 +450,7 @@ public class friendBoardDAO {
         return postList;
     }
 
-    public friendBoardDTO findPostByComment(CommentDTO comment, List<friendBoardDTO> postList) {
+    public friendBoardDTO findPostByComment(friendCommentDTO comment, List<friendBoardDTO> postList) {
         for (friendBoardDTO post : postList) {
             if (post.getNum() == comment.getPostNum()) {
                 return post;

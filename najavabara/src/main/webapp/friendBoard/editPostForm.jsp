@@ -16,7 +16,7 @@
 		// 게시물 정보가 request 속성에 존재하는지 확인
 		if (request.getAttribute("post") != null) {
 			// 게시물 정보를 가져옴
-			mvc.dto.friendBoardDTO post = (mvc.dto.friendBoardDTO) request.getAttribute("post");
+			dto.friendBoardDTO post = (dto.friendBoardDTO) request.getAttribute("post");
 		%>
 		<form action="updatePost.fri" method="post"
 			enctype="multipart/form-data">

@@ -1,4 +1,4 @@
-package mvc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mvc.common.JDBCConnect;
-import mvc.dto.CommentDTO;
-import mvc.dto.ReplyDTO;
+import common.JDBCConnect;
+import dto.friendCommentDTO;
+import dto.friendReplyDTO;
 
-public class ReplyDAO {
-    public boolean insertReply(ReplyDTO reply) {
+public class friendReplyDAO {
+    public boolean insertReply(friendReplyDTO reply) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         boolean result = false;
@@ -38,11 +38,11 @@ public class ReplyDAO {
         return result;
     }
     
-    public List<ReplyDTO> getRepliesByCommentNum(int commentNum) {
+    public List<friendReplyDTO> getRepliesByCommentNum(int commentNum) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<ReplyDTO> replyList = new ArrayList<>();
+        List<friendReplyDTO> replyList = new ArrayList<>();
 
         try {
             conn = JDBCConnect.getConnection();
@@ -52,7 +52,7 @@ public class ReplyDAO {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                ReplyDTO reply = new ReplyDTO();
+            	friendReplyDTO reply = new friendReplyDTO();
                 reply.setReplyNum(rs.getInt("replyNum"));
                 reply.setCommentNum(rs.getInt("commentNum"));
                 reply.setReply(rs.getString("reply"));

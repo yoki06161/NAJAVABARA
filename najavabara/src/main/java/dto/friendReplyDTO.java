@@ -1,13 +1,13 @@
-package mvc.dto;
+package dto;
 
-public class ReplyDTO {
+public class friendReplyDTO {
     private int replyNum;
     private int commentNum;
     private String reply;
     private String writer;
     private String regDate;
     
-    public ReplyDTO() {
+    public friendReplyDTO() {
 	}
    
 	public int getReplyNum() {

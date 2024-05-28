@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.JDBConnect;
+import common.JDBCConnect;
 import dto.UserDTO;
 
 public class UserDAO {
@@ -18,7 +18,7 @@ public class UserDAO {
 
 		try {
 			// connection
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql 창- 리스트면 where ..=?부분 삭제 
 			String sql = "select idx, id, pw, name, area, role, regdate from user where id=?";
@@ -46,7 +46,7 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		return dto;
 	} 
@@ -58,7 +58,7 @@ public class UserDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "insert into user(id, pw, name, area) values(?,?,?,?)";
@@ -76,7 +76,7 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class UserDAO {
 
 		try {
 			// conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "update user set pw=?, name=?, area=? where id=?";
@@ -106,7 +106,7 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	} 
@@ -118,7 +118,7 @@ public class UserDAO {
 
 		try {
 			// 2. conn
-			conn = JDBConnect.getConnection();
+			conn = JDBCConnect.getConnection();
 
 			// sql + 쿼리창
 			String sql = "delete from user where id=?";
@@ -133,7 +133,7 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			JDBConnect.close(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}

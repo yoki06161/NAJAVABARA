@@ -1,4 +1,4 @@
-package mvc.common;
+package common;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 

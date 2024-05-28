@@ -1,4 +1,4 @@
-package mvc.dto;
+package dto;
 
 public class accidentBoardDTO {
 	private int num;

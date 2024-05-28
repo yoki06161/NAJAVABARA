@@ -1,4 +1,4 @@
-package mvc.controller;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import mvc.dao.accidentBoardDAO;
-import mvc.dao.accidentCommentDAO;
-import mvc.dto.accidentBoardDTO;
-import mvc.dto.accidentCommentDTO;
+import dao.accidentBoardDAO;
+import dao.accidentCommentDAO;
+import dto.accidentBoardDTO;
+import dto.accidentCommentDTO;
 
 @WebServlet("*.acc")
 public class accidentBoardController extends HttpServlet {

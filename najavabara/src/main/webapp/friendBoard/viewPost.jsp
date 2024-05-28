@@ -1,13 +1,13 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
-<%@page import="mvc.dao.ReplyDAO"%>
-<%@page import="mvc.dto.ReplyDTO"%>
+<%@page import="dao.friendReplyDAO"%>
+<%@page import="dto.friendReplyDTO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
-<%@ page import="mvc.dto.CommentDTO"%>
+<%@ page import="dto.friendCommentDTO"%>
 <%@ page import="java.util.Set"%>
 <!DOCTYPE html>
 <html>
@@ -117,8 +117,8 @@
 
 		<%
 		if (request.getAttribute("post") != null) {
-			mvc.dto.friendBoardDTO post = (mvc.dto.friendBoardDTO) request.getAttribute("post");
-			mvc.dto.UserDTO user = (mvc.dto.UserDTO) session.getAttribute("user");
+			dto.friendBoardDTO post = (dto.friendBoardDTO) request.getAttribute("post");
+			dto.UserDTO user = (dto.UserDTO) session.getAttribute("user");
 			boolean isOwner = (user != null && user.getId().equals(post.getId()));
 		%>
 		<div class="card">
@@ -145,12 +145,12 @@
 				</p>
 				<%
 				if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
-					for (int i = 0; i < post.getFileNames().size(); i++) {
-						String fileName = post.getFileNames().get(i);
-						String filePath = "uploads/" + fileName;
-						// 이미지 파일인지 확인
-						boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
-						if (isImage) {
+							for (int i = 0; i < post.getFileNames().size(); i++) {
+								String fileName = post.getFileNames().get(i);
+								String filePath = "uploads/" + fileName;
+								// 이미지 파일인지 확인
+								boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
+								if (isImage) {
 				%>
 				<div class="mt-3">
 					<img src="<%=filePath%>" alt="첨부 이미지"
@@ -166,8 +166,8 @@
 				</div>
 				<%
 				}
-				}
-				}
+						}
+						}
 				%>
 			</div>
 		</div>
@@ -188,8 +188,8 @@
 		<hr>
 
 		<%
-		List<CommentDTO> commentList = (List<CommentDTO>) request.getAttribute("commentList");
-		int commentCount = commentList != null ? commentList.size() : 0;
+		List<friendCommentDTO> commentList = (List<friendCommentDTO>) request.getAttribute("commentList");
+				int commentCount = commentList != null ? commentList.size() : 0;
 		%>
 
 		<p>
@@ -202,10 +202,10 @@
 		<h4 class="mt-4">댓글</h4>
 		<%
 		if (commentList != null && !commentList.isEmpty()) {
-			for (CommentDTO comment : commentList) {
+			for (friendCommentDTO comment : commentList) {
 				boolean isCommentOwner = (user != null && user.getId().equals(comment.getWriter()));
-				ReplyDAO replyDAO = new ReplyDAO();
-				List<ReplyDTO> replyList = replyDAO.getRepliesByCommentNum(comment.getCommentNum());
+				friendReplyDAO replyDAO = new friendReplyDAO();
+				List<friendReplyDTO> replyList = replyDAO.getRepliesByCommentNum(comment.getCommentNum());
 		%>
 		<div class="card mt-2">
 			<div class="card-body">
@@ -259,7 +259,7 @@
 
 				<%
 				if (replyList != null && !replyList.isEmpty()) {
-					for (ReplyDTO reply : replyList) {
+					for (friendReplyDTO reply : replyList) {
 						boolean isReplyOwner = (user != null && user.getId().equals(reply.getWriter()));
 				%>
 				<div class="card mt-2">

@@ -1,4 +1,4 @@
-package mvc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mvc.common.JDBCConnect;
-import mvc.dto.CommentDTO;
+import common.JDBCConnect;
+import dto.friendCommentDTO;
 
-public class CommentDAO {
-    public boolean insertComment(CommentDTO comment) {
+public class friendCommentDAO {
+    public boolean insertComment(friendCommentDTO comment) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         boolean result = false;
@@ -37,11 +37,11 @@ public class CommentDAO {
         return result;
     }
 
-    public List<CommentDTO> getCommentsByPostNum(int postNum) {
+    public List<friendCommentDTO> getCommentsByPostNum(int postNum) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<CommentDTO> commentList = new ArrayList<>();
+        List<friendCommentDTO> commentList = new ArrayList<>();
 
         try {
             conn = JDBCConnect.getConnection();
@@ -56,7 +56,7 @@ public class CommentDAO {
                 String writer = rs.getString("writer");
                 String regDate = rs.getString("regDate");
 
-                CommentDTO commentDTO = new CommentDTO(commentNum, postNum, comment, writer, regDate);
+                friendCommentDTO commentDTO = new friendCommentDTO(commentNum, postNum, comment, writer, regDate);
                 commentList.add(commentDTO);
             }
         } catch (SQLException e) {
@@ -95,11 +95,11 @@ public class CommentDAO {
         return deleted;
     }
     
-    public List<CommentDTO> getCommentsByUserId(String userId) {
+    public List<friendCommentDTO> getCommentsByUserId(String userId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<CommentDTO> commentList = new ArrayList<>();
+        List<friendCommentDTO> commentList = new ArrayList<>();
 
         try {
             conn = JDBCConnect.getConnection();
@@ -114,7 +114,7 @@ public class CommentDAO {
                 String comment = rs.getString("comment");
                 String regDate = rs.getString("regDate");
 
-                CommentDTO commentDTO = new CommentDTO(commentNum, postNum, comment, userId, regDate);
+                friendCommentDTO commentDTO = new friendCommentDTO(commentNum, postNum, comment, userId, regDate);
                 commentList.add(commentDTO);
             }
         } catch (SQLException e) {
