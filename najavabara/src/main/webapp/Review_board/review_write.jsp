@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../rev_common/loginCheck.jsp" %>
+<%@ include file="../common/menu.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>글쓰기</title>
 <style type="text/css">
+	body {
+		margin: auto !important;
+	}
+
  	input:focus {
 		outline: none;
  	}
@@ -95,7 +100,7 @@
     	color: #fff;
 		border: none;
 		border-radius: 20px;
-		background: #ff6f0f;
+		background: #0d6efd;
 		padding: 20px 30px;
 		font-size: 15px;
     }
@@ -152,7 +157,7 @@ function delfile() {
     fileInput.value = "";
     
     // 미리보기 이미지 지우기
-    preview.src = "../SaveUploads/당근마켓로고.jpg";
+    preview.src = "../SaveUploads/logo.png";
 }
 </script>
 </head>
@@ -161,7 +166,7 @@ function delfile() {
 <!-- enctype이 파일첨가 허용한단 거 -->
 	<form name="writeF" enctype="multipart/form-data" method="post" action="<%=request.getContextPath()%>/WriteReviewAction.rev_bo">
 	    <div class="img_wrap">
-		    <img alt="미리보기 이미지입니다." id="preview" src="../SaveUploads/당근마켓로고.jpg"/>
+		    <img alt="미리보기 이미지입니다." id="preview" src="../SaveUploads/logo.png"/>
 	    </div>
 	    <div class="file_btn">
 		    <input type="file" id="input_file" name="input_file" onchange="show_file(this);" class="in_file">
