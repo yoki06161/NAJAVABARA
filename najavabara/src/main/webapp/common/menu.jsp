@@ -91,7 +91,7 @@ li {
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/friendBoard/friendBoard.po"
+            <a href="${pageContext.request.contextPath}/friendBoard/friendBoard.fri"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">동네친구</a>
         </h5>
     </li>
