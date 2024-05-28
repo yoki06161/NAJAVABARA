@@ -97,7 +97,7 @@ li {
     </li>
     <li class="menu">
         <h5>
-            <a href="/najavabara/hobbyboard/list.hob"
+            <a href="/najavabara/hobbyboard/listFile.hob"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">취미</a>
         </h5>
     </li>

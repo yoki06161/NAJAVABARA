@@ -95,7 +95,7 @@ if (updatedDto != null) {
         	font-weight: 700;
         }
 		
-		h2{
+		h3{
 			font-size: 18px;
 			font-weight: 700;
 			margin-bottom: 10px;
@@ -109,18 +109,25 @@ if (updatedDto != null) {
 			color: black;
 		}
 		
-		@media (min-width: 768px) {
-			
-		}
-		
 		b {
 			padding-left: 20px;
 		}
+		.grid-item {
+    		cursor: pointer;
+		}
+    .title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 360px; /* 최대 너비 지정 */
+    }
+		
     </style>
 </head>
 <body>
 	<div id="wrap">
 		<%@ include file="../common/menu.jsp" %>
+		<%@ include file="../hobbylist/hobbymenu.jsp" %>
 		<!-- 검색 부분의 파일 -->
 		<%@ include file="../hobbylist/commonsearch.jsp" %>
 		<b>전체 : <%=totalCount%></b>
@@ -173,10 +180,11 @@ if (updatedDto != null) {
 	            		%>
 	            		<span><%= hobby %></span><span>조회수&nbsp; <%= bbs.getVisitcount() %></span>
 	            		</div>
-		                <div class="grid-item">
-		                    <h2><a href="view.hob?num=<%= bbs.getNum() %>"><%= bbs.getTitle() %></a></h2>
+		                <div class="grid-item" onclick="window.location='view.hob?num=<%= bbs.getNum() %>'">
+		                   <h4 class="title"><%= bbs.getTitle() %></h4>
+
 		                    <div class="grid-item_inner">
-								<a href="view.hob?num=<%= bbs.getNum() %>"><img alt="<%=bbs.getOrifile() %>" src="../Uploads/images/<%=bbs.getNewfile() %>"></a>
+								<img alt="<%=bbs.getOrifile() %>" src="../Uploads/images/<%=bbs.getNewfile() %>">
 							</div>
 		                    <div class="grid_item_span">
 		                    	<span>작성자&nbsp; <%= bbs.getId() %></span><span><%= bbs.getPostdate() %></span>

@@ -31,39 +31,18 @@ if (updatedDto != null) {
     	.container {
     		max-width: 1200px;
     	}
-    	.row {
-    		flex-direction: row;
-    		justify-content: space-around;
-    	}
-    	.row span{
-    		display: flex;
-    		align-items: center;
-    		justify-content: flex-end;
-    	}
-        .grid-item {
+    	.grid-item {
             background-color: #dfdfdf;
             border: 1px solid #ccc;
             padding: 10px 20px;
             text-align: center;
             margin-bottom: 30px;
-            width: 380px;
-            height: 410px;
-            border-radius: 20px 20px 30px 30px;
+            width: 100%;
+            border-radius: 20px;
         }
         .grid-item img {
         	max-height: 320px;
-        	max-width: 378px;
-        }
-        .grid-item_inner {
-            background-color: #fdfdfd;
-            height: 320px;
-            display: flex;
-            justify-content: center;
-          	align-items: center;
-          	width: 378px;
-          	margin-left: -20px;
-          	border-top: 1px solid #ccc;
-          	border-bottom: 1px solid #ccc;
+        	max-width: 100%;
         }
         .grid_item_span {
         	display: flex;
@@ -71,13 +50,6 @@ if (updatedDto != null) {
         	align-items: center;
         	margin-top: 10px;  
         }
-        .grid_top_span {
-        	display: flex;
-        	justify-content: flex-end;
-        	align-items: center;
-        	margin: 0 20px 5px;
-        }
-		
 		h2{
 			font-size: 18px;
 			font-weight: 700;
@@ -91,9 +63,6 @@ if (updatedDto != null) {
 			text-decoration: none;
 			color: black;
 		}
-		b {
-			padding-left: 20px;
-		}
     </style>
 </head>
 <body>
@@ -106,21 +75,18 @@ if (updatedDto != null) {
         <div class="row">
             <% for (HBoardDTO bbs : boardLists) { %>
             	<div class="col-md-4">
-            		<div class="grid_top_span">
-            		<span>조회수&nbsp; <%= bbs.getVisitcount() %></span>
-            		</div>
-	                <div class="grid-item">
-	                    <h2><a href="view.hob?num=<%= bbs.getNum() %>"><%= bbs.getTitle() %></a></h2>
-	                    <div class="grid-item_inner">
+            		<div class="grid-item">
+                        <h2><a href="view.hob?num=<%= bbs.getNum() %>"><%= bbs.getTitle() %></a></h2>
+                        <div class="grid-item_inner">
 							<a href="view.hob?num=<%= bbs.getNum() %>"><img alt="<%=bbs.getOrifile() %>" src="../Uploads/images/<%=bbs.getNewfile() %>"></a>
 						</div>
 	                    <div class="grid_item_span">
 	                    	<span><%= bbs.getId() %></span><span><%= bbs.getPostdate() %></span>
 	                    </div>
-	                </div>
+                    </div>
                 </div>
             <% } %>
         </div>
     </div>
-
-
+</body>
+</html>

@@ -19,6 +19,7 @@ int totalCount = (int)request.getAttribute("totalCount");
 <body>
 	<div id="wrap">
 		<%@ include file="../common/menu.jsp" %>
+		<%@ include file="hobbymenu.jsp" %>
 		<%@ include file="commonsearch.jsp" %>
 		<b>전체 : <%=totalCount%></b>
 		<%@include file="commontable.jsp" %>

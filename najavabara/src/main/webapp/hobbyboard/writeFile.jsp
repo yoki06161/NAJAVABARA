@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>board/write.jsp</title>
+<title>글 작성하기</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript">
 function validateFileForm(event) {
 	const form = document.writeFileForm;
@@ -36,7 +37,7 @@ function validateFileForm(event) {
 		alert('.jpg .png .gif .jpeg 확장자명만 업로드 가능합니다.');
 		form.input_file.focus();
 		event.preventDefault(); // 폼 제출 방지
-		return;
+		return false;
 	}
 	return true; // 폼 제출 허용
 }
@@ -49,32 +50,27 @@ function validateFileForm(event) {
     	}
 	form {
 		border: 1px solid #cfcfcf;
-		padding: 10px 0 20px;
+		padding: 20px;
 	}
-	td {
-		padding: 0 10px;
-		height: 40px;
-		width: 120px;
+	.form-group {
+		margin-bottom: 1rem;
 	}
-	textarea{
-		width: 1000px;
-		min-height: 400px;
-		font-size: 15px;
-		resize: none;
+	.form-control {
+		height: calc(2.25rem + 2px);
+		font-size: 1rem;
+		line-height: 1.5;
+		padding: .375rem .75rem;
+		border: 1px solid #ced4da;
+		border-radius: .25rem;
 	}
-	input[type=text]{
-		height: 25px;
-		line-height: 25px;
-		font-size: 16px;
-		width: 700px;
+	.textarea-control {
+		min-height: 200px;
 	}
-	input[type=file]{
-		height: 25px;
+	.file-control {
+		margin-top: .5rem;
 	}
-	input[type=submit]{
-		margin-left: 154px;
-		height: 25px;
-		width: 90px;
+	.submit-btn {
+		margin-top: 1rem;
 	}
 </style>
 </head>
@@ -84,29 +80,35 @@ function validateFileForm(event) {
 	<h2>글 작성하기</h2>
 	<%String id = (String)session.getAttribute("id"); %>
 	<form name="writeFileForm" enctype="multipart/form-data" method="post" action="<%=request.getContextPath()%>/writeFileProc.hob">
-		<table>
-			<tr><td align="right">ID</td><td><%=id %></td></tr>
-			<tr><td align="right">Title</td><td><input type="text" name="input_title" placeholder="제목을 입력해주세요."></td></tr>
-			<tr><td align="right">Hobby</td><td>
-				<select name="input_hobby" required="required" style="width:10%; height:30px">
-					<option value="gardening">원예</option>
-					<option value="art">아트</option>
-					<option value="puzzle">퍼즐</option>
-					<option value="collection">수집</option>
-					<option value="reading">독서</option>
-					<option value="exercise">운동</option>
-					<option value="photo">포토</option>
-					<option value="handmade">수공예</option>
-					<option value="instrument">악기 연주</option>
-					<option value="astronomical">천체 관측</option>
-				</select></td></tr>
-			<tr><td align="right">Content</td>
-			<td><textarea name="input_content" placeholder="내용을 입력해주세요."></textarea></td></tr>
-			<tr><td></td><td><input type="file" name="input_file"></td></tr>
-		</table>
-		<input type="submit" value="작성하기" onclick="validateFileForm(event);">
+		<div class="form-group">
+			<label for="input_title">Title</label>
+			<input type="text" id="input_title" name="input_title" class="form-control" placeholder="제목을 입력해주세요.">
+		</div>
+		<div class="form-group">
+			<label for="input_hobby">Hobby</label>
+			<select name="input_hobby" id="input_hobby" class="form-control" required>
+				<option value="gardening">원예</option>
+				<option value="art">아트</option>
+				<option value="puzzle">퍼즐</option>
+				<option value="collection">수집</option>
+				<option value="reading">독서</option>
+				<option value="exercise">운동</option>
+				<option value="photo">포토</option>
+				<option value="handmade">수공예</option>
+				<option value="instrument">악기 연주</option>
+				<option value="astronomical">천체 관측</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="input_content">Content</label>
+			<textarea name="input_content" id="input_content" class="form-control textarea-control" placeholder="내용을 입력해주세요."></textarea>
+		</div>
+		<div class="form-group">
+			<label for="input_file">File</label>
+			<input type="file" id="input_file" name="input_file" class="form-control file-control">
+		</div>
+		<button type="submit" class="btn btn-primary submit-btn" onclick="validateFileForm(event);">작성하기</button>
 	</form>
 </div>
-
 </body>
 </html>
