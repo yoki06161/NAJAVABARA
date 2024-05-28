@@ -144,7 +144,7 @@ public class friendPostController extends HttpServlet {
 		                                File uploadDir = new File(filePath);
 		                                // filePath에 디렉토리가 없으면 생성
 		                                if (!uploadDir.exists()) {
-		                                    boolean dirCreated = uploadDir.mkdirs(); // 디렉토리 생성
+		                                    uploadDir.mkdirs();
 		                                }
 		                                String originalFileName = new File(item.getName()).getName();
 		                                String fileExtension = FilenameUtils.getExtension(originalFileName);
@@ -182,7 +182,7 @@ public class friendPostController extends HttpServlet {
 		        }
 		    } else {
 		        // 세션에서 사용자 정보가 없는 경우 로그인 페이지로 이동
-		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
+		        response.sendRedirect(request.getContextPath() + "/user/login.usr");
 		    }
 		} else if (action.equals("/viewPost.fri")) {
 		    // 게시물 번호를 받아옴
@@ -413,7 +413,7 @@ public class friendPostController extends HttpServlet {
 		        }
 		    } else {
 		        // 세션에서 사용자 정보가 없는 경우 로그인 페이지로 이동
-		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
+		        response.sendRedirect(request.getContextPath() + "/user/login.usr");
 		    }
 		}else if (action.equals("/likePost.fri")) {
 		    String numStr = request.getParameter("num");

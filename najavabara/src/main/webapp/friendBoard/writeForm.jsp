@@ -6,7 +6,7 @@
     <title>글 작성</title>
 </head>
 <body>
-    <%@ include file="../index.jsp"%>
+    <%@ include file="../common/menu.jsp"%>
     <div class="container mt-5">
         <h1>글 작성</h1>
         <form action="write.fri" method="post" enctype="multipart/form-data">

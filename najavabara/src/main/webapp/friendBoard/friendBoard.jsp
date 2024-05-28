@@ -121,7 +121,7 @@ if (selectedArea == null) {
 </head>
 
 <body>
-    <%@ include file="../index.jsp"%>
+    <%@ include file="../common/menu.jsp"%>
     <div class="container mt-5">
         <h1 class="mb-4" id="boardTitle"><%=selectedArea != null && !selectedArea.isEmpty() ? selectedArea + " " : ""%>동네
             친구 게시판

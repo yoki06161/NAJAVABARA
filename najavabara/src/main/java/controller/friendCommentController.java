@@ -62,7 +62,7 @@ public class friendCommentController extends HttpServlet {
                 }
             } else {
                 // 로그인되지 않은 사용자는 로그인 페이지로 이동
-                response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
+                response.sendRedirect(request.getContextPath() + "/user/login.usr");
             } 
         } else if (action.equals("/deleteComment.co")) {
             // 삭제할 댓글의 ID와 게시물 번호를 파라미터에서 가져옴

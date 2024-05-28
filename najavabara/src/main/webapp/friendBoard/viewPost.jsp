@@ -111,7 +111,7 @@
 </script>
 </head>
 <body>
-	<%@ include file="../index.jsp"%>
+	<%@ include file="../common/menu.jsp"%>
 	<div class="container mt-5">
 		<h2 class="mb-4">게시물 상세보기</h2>
 

@@ -42,7 +42,7 @@ public class friendReplyController extends HttpServlet {
 
 		    // 로그인되어 있지 않으면 로그인 페이지로 이동
 		    if (user == null) {
-		        response.sendRedirect(request.getContextPath() + "/user/loginForm.jsp");
+		        response.sendRedirect(request.getContextPath() + "/user/login.usr");
 		        return;
 		    }
 

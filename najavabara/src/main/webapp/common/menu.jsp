@@ -30,7 +30,8 @@
 <a href="/myproject/user/userlist.usr">User List</a>
 </li>  -->
 <li>
-<a href="../list.reg">지역 게시판</a> 
+<a href="../list.reg">지역 게시판</a>
+<a class="nav-link" href="${pageContext.request.contextPath}/friendBoard/friendBoard.fri">동네 친구 게시판</a>
 <a href="list.acc">사건사고 게시글</a> | <a href="write.acc">글쓰기</a>
 </li>
 </ul>

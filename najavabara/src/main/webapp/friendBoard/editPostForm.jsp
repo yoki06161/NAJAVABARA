@@ -8,7 +8,7 @@
 <title>게시물 수정</title>
 </head>
 <body>
-	<%@ include file="../index.jsp"%>
+	<%@ include file="../common/menu.jsp"%>
 	<div class="container mt-5">
 		<h2 class="mb-4">게시물 수정</h2>
 
