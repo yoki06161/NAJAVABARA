@@ -67,6 +67,19 @@ $(function(){
         idCheck();
     });
 });
+//문서가 준비되면 실행될 함수를 정의합니다.
+$(document).ready(function(){
+  // select 요소의 변경 사항을 감지하는 이벤트 핸들러를 추가합니다.
+  $('select[name="area"]').change(function(){
+    // 선택된 옵션의 값을 가져옵니다.
+    var selectedValue = $(this).val();
+    
+    // 선택된 값이 빈 문자열인 경우, alert를 표시합니다.
+    if(selectedValue === "") {
+      alert("지역을 선택해주세요");
+    }
+  });
+});
 </script>
 </head>
 <body>
@@ -98,7 +111,7 @@ $(function(){
 				<td>
 					<h4>
 					<select class="form-select" name="area" required>
-					  <option selected>지역을 선택해주세요</option>
+					  <option selected value="">지역을 선택해주세요</option>
 					  <option value="서울특별시">서울특별시</option>
 					  <option value="경기도">경기도</option>
 					  <option value="강원도">강원도</option>
@@ -115,10 +128,9 @@ $(function(){
 					  <option value="전라남도">전라남도</option>
 					  <option value="경상북도">경상북도</option>
 					  <option value="경상남도">경상남도</option>
-					  <option value="제주특별시">제주특별시</option>
+					  <option value="제주특별자치도">제주특별자치도</option>
 					</select>
-					</h4>
-					
+					</h4>	
 				</td>
 			</tr>
 <!-- 			<tr>

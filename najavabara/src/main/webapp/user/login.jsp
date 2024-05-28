@@ -32,6 +32,7 @@
 			</tr>
 		</table>
 		<br>
+		<br>
 		<h4>아직 회원이 아니신가요?</h4>
 		<a href="../user/join.usr" class="btn btn-outline-primary">회원가입</a>
 	</form>

@@ -1,13 +1,17 @@
 package controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,7 +74,7 @@ public class RegionController extends HttpServlet {
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("area", area);
 
-			String path = "./region/list.jsp"; // 1
+			String path = "./list.jsp"; // 1
 			request.getRequestDispatcher(path).forward(request, response);
 
 		} else if (action.equals("/view.reg")) {
@@ -203,8 +207,8 @@ public class RegionController extends HttpServlet {
 			dto.setNum(num);
 
 			String fileName = mr.getFilesystemName("file");
-
-			if (fileName != null) {
+		
+			if(fileName != null) {	
 				String ext = fileName.substring(fileName.lastIndexOf("."));
 				String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
 				String newFileName = now + ext;
@@ -221,8 +225,26 @@ public class RegionController extends HttpServlet {
 				// 나머지 값 받아오기
 				String title = mr.getParameter("title");
 				String content = mr.getParameter("content");
-				HttpSession session = request.getSession();
-				String id = (String) session.getAttribute("id");
+
+				HttpSession session = request.getSession();    
+				String id = (String)session.getAttribute("id");
+				
+				dto.setNum(num);
+				dto.setTitle(title);
+				dto.setContent(content);
+				
+				System.out.println(num);
+				System.out.println(title);
+				System.out.println(content);
+				System.out.println(id);
+			} else if(fileName == null && dto.getOfile() != null) {
+				dto.setOfile(dto.getOfile());
+				dto.setSfile(dto.getSfile());
+				// 값 받아오기			
+				String title = mr.getParameter("title");
+				String content = mr.getParameter("content");
+				HttpSession session = request.getSession();    
+				String id = (String)session.getAttribute("id");
 
 				dto.setNum(num);
 				dto.setTitle(title);

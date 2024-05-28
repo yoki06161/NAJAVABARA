@@ -327,11 +327,11 @@ public class RegionDAO {
 			pstmt = conn.prepareStatement(sql);
 			// 세팅
 			pstmt.setInt(1, dto.getNum());
-			System.out.println("게시물 번호" + dto.getNum());
+			//System.out.println("게시물 번호" + dto.getNum());
 			
 			// execute 실행
 			rset = pstmt.executeUpdate();
-			System.out.println("try문 안: " + rset);
+			//System.out.println("try문 안: " + rset);
 
 		} catch (Exception e) {
 			e.printStackTrace();

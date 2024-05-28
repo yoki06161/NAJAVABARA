@@ -38,17 +38,15 @@ function del(num) {
     }
 }
 
+//페이지가 로드될 때 실행되는 코드
 $(document).ready(function() {
-	// 페이지가 로드될 때 실행되는 코드
-	//로그인한 사용자 아이디 
+	// 로그인한 사용자 아이디 
 	const id = '<%=session.getAttribute("id")%>';  
 	// 게시물 작성자 아이디
 	const did = '<%=dto.getId()%>';
 	// 게시물 번호
 	const num = '<%=dto.getNum()%>';
-	// 현재 좋아요 수 가져오기
-	var currentLikes = parseInt($(this).data('likes'));
-	
+
 	// 삭제 버튼 클릭 시 함수 호출
 	$("button.delete-button").click(function() {
          del(num);
@@ -56,67 +54,53 @@ $(document).ready(function() {
 	 
 	// 좋아요 버튼 클릭 시 이벤트
 	$(".like-btn").click(function() {
-	     //console.log("ID: ", id, "Num: ", num);  // num 값을 로그로 확인
-	     //console.log(id, num); // 출력: dto.getNum() 값: num
 	     const $button = $(this); // 클릭된 버튼을 변수에 저장
-
-	     // 콘솔에 클릭된 요소 출력
-	     //console.log("클릭된 요소:", $button);
 	     
-	     // 콘솔에 did 출력
-	     console.log("dto.getid: ", did);
-
-	    // ajax 요청 보낼 때 확인할 것
+	    // ajax 요청 보내기 전 확인할 것
 		if (id === 'null') {
-	    // id === null일 땐 요청 보내지 않기
-			console.log(id);
+	    	// id === null일 땐(문자열로 찍힘) 요청 보내지 않기
 			alert("로그인이 필요한 기능입니다");
 			window.location.href = "../user/login.jsp";
-		} else if (id === did){
-			// id === did일땐 요청 보내지 않기
+			return;
+		} 
+	    if (id === did){
+			// id === did일때 요청 보내지 않기
 			alert("자신의 게시물에는 좋아요할 수 없습니다");
-		} else {
-		     // AJAX 요청 보내기
-		     $.ajax({
-		     	url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
-				contentType : "application/json",
-				type : "POST",
-				dataType:'json',
-				data : JSON.stringify({
-					id : id,
-					num : num,
-					did : did
-				}),				
-				success : function(data) {
-					console.log("data: ", data);
-			     	console.log("id: ", id);
-			     	console.log("did: ", did);
-					console.log("data.rs ", data.rs);
-	 				
-					if (data.rs === 0) {
-					    	// 사용자가 해당 게시물에서 좋아요를 누르지 않았을 때 좋아요를 눌렀다면
-							console.log("data['rs']: ", data['rs']);
-							// btn-outline-danger와 btn-danger 클래스를 토글해서 좋아요를 눌렀을때 버튼디자인 변경
-		                    $button.removeClass("btn-outline-danger").addClass("btn-danger");
-		                    // 현재 좋아요 수 가져오기
-		                    var currentLikes = parseInt($button.data('likes'));
-		                    // 좋아요 수 증가
-		                    currentLikes++;
-		                    // 업데이트된 좋아요 수를 버튼의 data-likes 속성에 저장
-		                    $button.data('likes', currentLikes);
-		                    // 좋아요 수 업데이트
-		                    $("#likeCount").text("좋아요 " + currentLikes);
-					} else if (data.rs === 1){
-							alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
-					} 
-				},
-				error : function(request, status, error) {
-					console.log(request, status, error);
-			     	console.log("data,id: ", data,id);
-					console.log("data.rs ", data.rs);
+			return;
+		} 
+
+		// 자신의 게시물이 아닐 경우, 버튼에 btn-danger 클래스가 있는지 확인하기
+		// 클래스가 있다면 좋아요는 게시물 당 한 번만 누를 수 있다고 alert 띄우고, 
+		if($button.hasClass("btn-danger")) {
+			alert("좋아요는 게시물 당 한 번만 누를 수 있습니다");
+			return;
+		}     	 
+		
+		// btn-danger 클래스가 없다면 버튼 디자인+숫자 변경 후 ajax 요청()
+		$button.removeClass("btn-outline-danger").addClass("btn-danger");
+		// 현재 좋아요 수 가져오고 업데이트
+		var likeCount = parseInt($("#likeCount").text());
+		$("#likeCount").text(likeCount + 1);
+				 
+		// ajax 요청 보내기
+		$.ajax({
+			url: '<%=request.getContextPath()%>/region/likeCheck.jsp',
+			contentType : "application/json",
+			type : "POST",
+			dataType:'json',
+			data: JSON.stringify({ id, num, did }),   		
+			success : function(data) {
+				console.log("data: ", data);
+				if (data.rs === 0) {			       
+					console.log("rs success!");
 				}
-			});
-		}
+			},
+			error : function(request, status, error) {
+				console.log(request, status, error);
+				console.log("data,id: ", data,id);
+				console.log("data.rs ", data.rs);
+			}
+		});
 	});
 });
 </script>
@@ -152,23 +136,17 @@ img {
 			<td><h5><%=dto.getContent()%></h5></td>
 		</tr>
 		<tr>
-			<%
-			if (dto.getOfile() == null) {
-			%>
-			<td style="color: gray;">등록한 이미지가 없습니다.</td>
-			<%
-			} else {
-			%>
-			<td><img src="<%=fullpath%>"></td>
-			<%
-			}
-			%>
+			<td>
+				<% if (dto.getOfile() == null) { %>
+				<p style="color: gray;">등록한 이미지가 없습니다.</p> <% } else { %> <img
+				src="<%=fullpath%>"> <% } %>
+			</td>
 		</tr>
 		<tr>
 			<td>
 				<!-- 버튼색상: btn-outline-danger, btn-warning -> 좋아요 버튼이 클릭 처리되면 버튼의 디자인 변경 -->
-				<button type="button" class="<%=buttonClass %>"  data-likes="<%=dto.getLikes()%>">
-					<span id="likeCount">좋아요 <%=dto.getLikes()%></span>
+				<button type="button" class="<%=buttonClass %>">
+					<span id="likeCount"><%=dto.getLikes()%></span>
 				</button>
 			</td>
 		</tr>
@@ -188,6 +166,5 @@ img {
 	<%
 	}
 	%>
-
 </body>
 </html>

@@ -52,7 +52,7 @@ public class UserController extends HttpServlet {
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String area = request.getParameter("area");
-			//System.out.printf("%s,%s,%s,%s",id,pw,name,area);
+			System.out.printf("%s,%s,%s,%s",id,pw,name,area);
 			
 			// db 처리
 			UserDAO dao = new UserDAO();
