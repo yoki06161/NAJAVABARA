@@ -61,16 +61,16 @@ hr {
 
 <div class="hobby_menu">
 	<a href="../hobbyboard/listFile.hob">전체 게시물</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/gardening.hob">원예</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/art.hob">아트</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/puzzle.hob">퍼즐</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/collection.hob">수집</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/reading.hob">독서</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/exercise.hob">운동</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/photo.hob">포토</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/handmade.hob">수공예</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/instrument.hob">악기연주</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-	<a href="../hobbylist/astronomical.hob">천체관측</a>
+	<a href="gardening.hob">원예</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="art.hob">아트</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="puzzle.hob">퍼즐</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="collection.hob">수집</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="reading.hob">독서</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="exercise.hob">운동</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="photo.hob">포토</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="handmade.hob">수공예</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="instrument.hob">악기연주</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="astronomical.hob">천체관측</a>
 </div>
 <br>
 <hr>
