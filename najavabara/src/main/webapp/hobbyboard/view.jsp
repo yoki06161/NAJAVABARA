@@ -165,7 +165,7 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <h2>댓글</h2>
-            <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(dto.getId())) { %>
+            <% if(session.getAttribute("id") != null) { %>
 			    <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
 			        <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
 			        <div class="form-group">
@@ -181,7 +181,7 @@
 			    <script type="text/javascript">
 			        function loginAlert() {
 			            alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
-			            window.location.href = "<%=request.getContextPath()%>/login.hob"; // 로그인 페이지 URL로 수정
+			            window.location.href = "<%=request.getContextPath()%>/user/login.jsp"; // 로그인 페이지 URL로 수정
 			        }
 			    </script>
 			<% } %>
