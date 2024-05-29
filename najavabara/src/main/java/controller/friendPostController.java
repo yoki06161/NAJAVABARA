@@ -114,11 +114,12 @@ public class friendPostController extends HttpServlet {
 		    List<String> ofileNames = new ArrayList<>();
 
 		    HttpSession session = request.getSession();
-		    UserDTO user = (UserDTO) session.getAttribute("user");
-
+		    String user = (String) session.getAttribute("id");
+		    System.out.println(user);
 		    if (user != null) {
-		        String id = user.getId();
-		        String area = user.getArea();
+		        // 세션에서 name과 area 값을 가져옵니다.
+		        String id = (String) session.getAttribute("name");
+		        String area = (String) session.getAttribute("area");
 
 		        // 파일 업로드 처리를 위한 설정
 		        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -139,7 +140,7 @@ public class friendPostController extends HttpServlet {
 		                    } else {
 		                        // 파일 필드 처리
 		                        if (!item.getName().isEmpty()) {
-		                            String filePath = getServletContext().getRealPath("/friendBoard/uploads");
+		                            String filePath = "C:/Users/TJ/git/NAJAVABARA/najavabara/src/main/webapp/friendBoard/uploads";
 		                            if (filePath != null) {
 		                                File uploadDir = new File(filePath);
 		                                // filePath에 디렉토리가 없으면 생성
@@ -150,13 +151,9 @@ public class friendPostController extends HttpServlet {
 		                                String fileExtension = FilenameUtils.getExtension(originalFileName);
 		                                String uniqueFileName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString() + "." + fileExtension;
 		                                File uploadFile = new File(filePath + File.separator + uniqueFileName);
-		                                try {
-		                                    item.write(uploadFile);
-		                                    fileNames.add(uniqueFileName); // 파일명을 리스트에 추가
-		                                    ofileNames.add(originalFileName); // 원본 파일명을 리스트에 추가
-		                                } catch (Exception e) {
-		                                    e.printStackTrace();
-		                                }
+		                                item.write(uploadFile); // 파일을 직접 저장
+		                                fileNames.add(uniqueFileName); // 파일명을 리스트에 추가
+		                                ofileNames.add(originalFileName); // 원본 파일명을 리스트에 추가
 		                            }
 		                        }
 		                    }
@@ -321,11 +318,11 @@ public class friendPostController extends HttpServlet {
 		    List<String> fileNames = new ArrayList<>(); // 파일명 리스트 초기화
 		    List<String> ofileNames = new ArrayList<>(); // 원본 파일명 리스트 초기화
 		    HttpSession session = request.getSession();
-		    UserDTO user = (UserDTO) session.getAttribute("user");
+		    String user = (String) session.getAttribute("id");
 
 		    if (user != null) {
-		        String id = user.getId();
-		        String area = user.getArea();
+		    	String id = (String) session.getAttribute("name");
+		    	String area = (String) session.getAttribute("area");
 		        
 		        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		        if (isMultipart) {

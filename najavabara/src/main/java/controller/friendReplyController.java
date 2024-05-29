@@ -37,7 +37,7 @@ public class friendReplyController extends HttpServlet {
 
 		if (action.equals("/writeReply.re")) {
 		    HttpSession session = request.getSession();
-		    UserDTO user = (UserDTO) session.getAttribute("user");
+		    String user = (String) session.getAttribute("name");
 		    int postNum = Integer.parseInt(request.getParameter("postNum"));
 
 		    // 로그인되어 있지 않으면 로그인 페이지로 이동
@@ -52,9 +52,9 @@ public class friendReplyController extends HttpServlet {
 
 		    // 답글 객체 생성
 		    friendReplyDTO newReply = new friendReplyDTO();
-		    newReply.setCommentNum(commentNum);
+		    newReply.setCommentNum(commentNum);	
 		    newReply.setReply(replyContent);
-		    newReply.setWriter(user.getId()); // 작성자 정보 설정
+		    newReply.setWriter(user); 
 
 		    // 답글 추가하는 DAO 호출
 		    friendReplyDAO replyDAO = new friendReplyDAO();

@@ -15,9 +15,22 @@
 <meta charset="UTF-8">
 <title>게시물 상세보기</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+	crossorigin="anonymous"></script>
 <style>
 .rounded-image {
 	border-radius: 15px; /* 이미지의 모서리를 둥글게 만듦 */
+}
+.author-badge {
+    background-color: #007bff;
+    color: white;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    display: inline-block;
+    margin-left: 0.5rem;
 }
 </style>
 <script>
@@ -118,8 +131,8 @@
 		<%
 		if (request.getAttribute("post") != null) {
 			dto.friendBoardDTO post = (dto.friendBoardDTO) request.getAttribute("post");
-			dto.UserDTO user = (dto.UserDTO) session.getAttribute("user");
-			boolean isOwner = (user != null && user.getId().equals(post.getId()));
+			String user = (String) session.getAttribute("name");
+			boolean isOwner = (user != null && session.getAttribute("name").equals(post.getId()));
 		%>
 		<div class="card">
 			<div class="card-header">
@@ -129,6 +142,7 @@
 				<p class="card-text">
 					작성자:
 					<%=post.getId()%>
+					<span class="author-badge">작성자</span>
 					<small class="text-muted"> <%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%>
 						<%
 						LocalDateTime postDateTime = post.getPostdate().toLocalDateTime();
@@ -203,7 +217,7 @@
 		<%
 		if (commentList != null && !commentList.isEmpty()) {
 			for (friendCommentDTO comment : commentList) {
-				boolean isCommentOwner = (user != null && user.getId().equals(comment.getWriter()));
+				boolean isCommentOwner = (user != null && session.getAttribute("name").equals(comment.getWriter()));
 				friendReplyDAO replyDAO = new friendReplyDAO();
 				List<friendReplyDTO> replyList = replyDAO.getRepliesByCommentNum(comment.getCommentNum());
 		%>
@@ -214,7 +228,7 @@
 					<%
 					if (post.getId().equals(comment.getWriter())) {
 					%>
-					<span class="badge badge-secondary">작성자</span>
+					<span class="author-badge">작성자</span>
 					<%
 					}
 					%>
@@ -248,7 +262,7 @@
 						<input type="hidden" name="commentNum"
 							value="<%=comment.getCommentNum()%>"> <input
 							type="hidden" name="writer"
-							value="<%=user != null ? user.getName() : ""%>">
+							value="<%=user != null ? session.getAttribute("name") : ""%>">
 						<button type="submit"
 							id="replySubmit_<%=comment.getCommentNum()%>"
 							class="btn btn-primary btn-sm">등록</button>
@@ -260,7 +274,7 @@
 				<%
 				if (replyList != null && !replyList.isEmpty()) {
 					for (friendReplyDTO reply : replyList) {
-						boolean isReplyOwner = (user != null && user.getId().equals(reply.getWriter()));
+						boolean isReplyOwner = (user != null && session.getAttribute("name").equals(reply.getWriter()));
 				%>
 				<div class="card mt-2">
 					<div class="card-body">
@@ -269,7 +283,7 @@
 							<%
 							if (post.getId().equals(reply.getWriter())) {
 							%>
-							<span class="badge badge-secondary">작성자</span>
+							<span class="author-badge">작성자</span>
 							<%
 							}
 							%>
@@ -312,7 +326,7 @@
 				</div>
 				<input type="hidden" name="postNum" value="<%=post.getNum()%>">
 				<input type="hidden" name="writer"
-					value="<%=user != null ? user.getName() : ""%>">
+					value="<%=user != null ? session.getAttribute("name") : ""%>">
 				<button type="submit" id="commentSubmit" class="btn btn-primary">등록</button>
 			</form>
 		</div>

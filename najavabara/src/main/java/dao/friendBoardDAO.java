@@ -206,38 +206,38 @@ public class friendBoardDAO {
 		return totalCount;
 	}
 
-	 public int insertWrite(friendBoardDTO dto) {
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
-	        ResultSet rs = null;
-	        int result = 0;
+	public int insertWrite(friendBoardDTO dto) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    int result = 0;
 
-	        try {
-	            conn = JDBCConnect.getConnection();
-	            String sql = "INSERT INTO friendBoard (title, content, id, area) VALUES (?, ?, ?, ?)";
-	            pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-	            pstmt.setString(1, dto.getTitle());
-	            pstmt.setString(2, dto.getContent());
-	            pstmt.setString(3, dto.getId());
-	            pstmt.setString(4, dto.getArea());
+	    try {
+	        conn = JDBCConnect.getConnection();
+	        String sql = "INSERT INTO friendBoard (title, content, id, area) VALUES (?, ?, ?, ?)";
+	        pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+	        pstmt.setString(1, dto.getTitle());
+	        pstmt.setString(2, dto.getContent());
+	        pstmt.setString(3, dto.getId());
+	        pstmt.setString(4, dto.getArea());
 
-	            result = pstmt.executeUpdate();
+	        result = pstmt.executeUpdate();
 
-	            if (result > 0) {
-	                rs = pstmt.getGeneratedKeys();
-	                if (rs.next()) {
-	                    int postNum = rs.getInt(1);
-	                    insertFiles(postNum, dto.getFileNames(), dto.getOfileNames());
-	                }
+	        if (result > 0) {
+	            rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                int postNum = rs.getInt(1);
+	                insertFiles(postNum, dto.getFileNames(), dto.getOfileNames());
 	            }
-
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        } finally {
-	            JDBCConnect.close(rs, pstmt, conn);
 	        }
-	        return result;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCConnect.close(rs, pstmt, conn);
 	    }
+	    return result;
+	}
 	 
 	// 파일명 삽입
 	 private void insertFiles(int postNum, List<String> fileNames, List<String> ofileNames) throws SQLException {

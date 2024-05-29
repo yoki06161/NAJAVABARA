@@ -40,10 +40,10 @@ public class friendCommentController extends HttpServlet {
 
             // 현재 로그인한 사용자 정보 가져오기
             HttpSession session = request.getSession();
-            UserDTO user = (UserDTO) session.getAttribute("user");
+            String user = (String) session.getAttribute("id");
 
             if (user != null) {
-                String writer = user.getId(); // 댓글 작성자는 현재 로그인한 사용자
+                String writer = (String) session.getAttribute("name"); // 댓글 작성자는 현재 로그인한 사용자
 
                 // 댓글 객체 생성
                 friendCommentDTO newComment = new friendCommentDTO(postNum, commentContent, writer);
