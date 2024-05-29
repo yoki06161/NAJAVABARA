@@ -18,31 +18,32 @@
 	crossorigin="anonymous"></script>
 <script>
 	//메뉴 클릭 시 이벤트
-	$(document).ready(
-			function() {
-				// 페이지 로드 시 localStorage에서 활성 링크를 가져와 클래스 적용
-				var activeLink = localStorage.getItem('activeLink');
-				if (activeLink) {
-					$('a[href="' + activeLink + '"]').removeClass("link-dark")
-							.addClass("link-primary");
-				}
+	$(document).ready(function() {
+		// 페이지 로드 시 모든 링크에 기본 클래스 추가
+	    $(".click").removeClass("link-primary").addClass("link-dark");
+	 	// 로그인 페이지 로드 시 localStorage에서 activeLink 제거
+	 	localStorage.removeItem('activeLink');
+			
+		// 페이지 로드 시 localStorage에서 활성 링크를 가져와 클래스 적용
+		var activeLink = localStorage.getItem('activeLink');
+		if (activeLink) {
+			$('a[href="' + activeLink + '"]').removeClass("link-dark")
+				.addClass("link-primary");
+		}
 
-				// 클릭 이벤트 핸들러
-				$(".click").click(
-						function() {
-							// 기존 활성 링크 클래스 제거
-							$(".click").removeClass("link-primary").addClass(
-									"link-dark");
+		// 클릭 이벤트 핸들러
+		$(".click").click(function() {
+			// 기존 활성 링크 클래스 제거
+			$(".click").removeClass("link-primary").addClass("link-dark");
 
-							// 현재 클릭된 링크에 클래스 추가
-							$(this).removeClass("link-dark").addClass(
-									"link-primary");
+			// 현재 클릭된 링크에 클래스 추가
+			$(this).removeClass("link-dark").addClass("link-primary");
 
-							// 현재 클릭된 링크의 href를 localStorage에 저장
-							var href = $(this).attr('href');
-							localStorage.setItem('activeLink', href);
-						});
-			});
+			// 현재 클릭된 링크의 href를 localStorage에 저장
+			var href = $(this).attr('href');
+			localStorage.setItem('activeLink', href);
+		});
+	});
 </script>
 <style>
 body {
@@ -71,9 +72,8 @@ li {
 <div class="d-flex align-items-center">
     <li class="menu">
         <h5>
-            <a href="../user/userMain.usr"
-              class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">
-				<img src="../user/logo.png" class="logo_small">
+            <a href="../user/userMain.usr">
+				<img src="../user/logo.png" class="logo_small" alt="파란당근">
 			</a>
         </h5>
     </li>
@@ -122,7 +122,7 @@ if (session.getAttribute("idx") == null) {
 %>
 <ul class="d-flex">
     <li><a href="../user/login.usr"
-        class="click link-dark link-underline-opacity-0 link-opacity-50-hover">로그인</a>
+        class="link-dark link-underline-opacity-0 link-opacity-50-hover">로그인</a>
     </li>
 </ul>
 
@@ -133,10 +133,10 @@ if (session.getAttribute("idx") == null) {
     <li><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님
         환영합니다! | </li>
     <li><a href="../user/update.usr"
-        class="click link-dark link-underline-opacity-0 link-opacity-50-hover">내
+        class="link-dark link-underline-opacity-0 link-opacity-50-hover">내
             정보 수정</a> | </li>
     <li><a href="../user/logout.usr"
-        class="click link-dark link-underline-opacity-0 link-opacity-50-hover">로그아웃</a>
+        class="link-dark link-underline-opacity-0 link-opacity-50-hover">로그아웃</a>
     </li>
 </ul>
 <% } %>

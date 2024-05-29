@@ -146,6 +146,7 @@ img {
 			<td>
 				<!-- 버튼색상: btn-outline-danger, btn-warning -> 좋아요 버튼이 클릭 처리되면 버튼의 디자인 변경 -->
 				<button type="button" class="<%=buttonClass %>">
+					<span>좋아요 </span>
 					<span id="likeCount"><%=dto.getLikes()%></span>
 				</button>
 			</td>

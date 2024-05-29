@@ -101,6 +101,11 @@ public class UserController extends HttpServlet {
 			String jspFile = "";
 			if (isLogin){ // 로그인 성공 시 사용자 정보 반환 
 				response.setContentType("text/html; charset=utf-8");
+				//PrintWriter w = response.getWriter();
+		        //w.write("<script>alert('로그인 성공');history.go(-2);</script>");
+		        //w.flush();
+		        //w.close();		
+				
 				HttpSession session =  request.getSession();
 				session.setAttribute("idx", dto.getIdx());
 				session.setAttribute("id", id);
