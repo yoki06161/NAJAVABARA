@@ -46,6 +46,7 @@ public class HBoardDAO {
 				String hobby = rs.getString("hobby");
 				String id = rs.getString("id");
 				String postdate = rs.getString("postdate");
+
 				int visitcount = rs.getInt("visitcount");
 				String orifile = rs.getString("orifile");
 				String newfile = rs.getString("newfile");
@@ -72,7 +73,7 @@ public class HBoardDAO {
 	    int rs = 0;
 	    
 	    try {
-	    	String sql = "INSERT INTO hobbyBoard(title, id, hobby, content, postdate, orifile, newfile) VALUES(?, ?, ?, ?, NOW(), ?, ?)";
+	    	String sql = "INSERT INTO hobbyBoard(title, id, hobby, content, orifile, newfile) VALUES(?, ?, ?, ?, ?, ?)";
 	        conn = HJDBCConnect.getConnection();
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, dto.getTitle());
@@ -188,6 +189,7 @@ public class HBoardDAO {
                 String content = rs.getString("content");
                 String id = rs.getString("id");
                 String postdate = rs.getString("postdate");
+
                 int visitcount = rs.getInt("visitcount");
                 String orifile = rs.getString("orifile");
                 String newfile = rs.getString("newfile");
@@ -299,6 +301,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -342,6 +345,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -384,6 +388,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -426,6 +431,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -468,6 +474,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -510,6 +517,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -552,6 +560,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -594,6 +603,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -636,6 +646,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
@@ -678,6 +689,7 @@ public class HBoardDAO {
 	                String content = rs.getString("content");
 	                String id = rs.getString("id");
 	                String postdate = rs.getString("postdate");
+
 	                int visitcount = rs.getInt("visitcount");
 	                String orifile = rs.getString("orifile");
 	                String newfile = rs.getString("newfile");
