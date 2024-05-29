@@ -18,45 +18,31 @@
 <head>
 <meta charset="UTF-8">
 <title>수정하기</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
-   	#wrap {
-   		max-width: 1200px;
-   		margin: 0 auto;
-   		}
-   	form {
-   		margin-top: 50px;
-   	}
     .up_title {
-        height: 30px;
-        width: 800px;
         font-size: 17px;
-        border: 1px solid #cfcfcf;
-   		border-radius: 10px;
-   		margin-bottom: 20px;
-   		padding: 3px 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
 
     .up_cont {
-        width: 1000px;
-        height: 250px;
         font-size: 15px;
         resize: none;
         margin-bottom: 20px;
     }
     
     .img_wrap img {
-        max-width: 900px;
-        max-height: 900px;
+        max-width: 100%;
+        max-height: 400px;
         border: 1px solid #cfcfcf;
         object-position: center;
         margin-bottom: 20px;
     }
     
     .ubtn {
-        color: #555;
-        border: 1px solid #cfcfcf;
         border-radius: 5px;
-        padding: 3px 10px;
+        padding: 10px 20px;
         font-size: 15px;
     }
 </style>
@@ -95,20 +81,29 @@
 </script>
 </head>
 <body>
-<div id="wrap">
+<div class="container mt-5">
 <form id="updateF" name="updateF" enctype="multipart/form-data" method="post" action="<%=request.getContextPath()%>/updateFileProc.hob">
     <input type="hidden" name="update_num" value="<%=dto.getNum()%>">
     <input type="hidden" name="existing_orifile" value="<%=dto.getOrifile()%>">
     <input type="hidden" name="existing_newfile" value="<%=dto.getNewfile()%>">
-    제목 : <input type="text" name="update_title" placeholder="제목을 넣어주세요" value="<%=dto.getTitle()%>" class="up_title"><br>
-    <div class="img_wrap">
+    <div class="mb-3">
+        <label for="update_title" class="form-label">제목</label>
+        <input type="text" name="update_title" id="update_title" class="form-control up_title" placeholder="제목을 넣어주세요" value="<%=dto.getTitle()%>">
+    </div>
+    <div class="img_wrap mb-3">
         <% if (dto.getNewfile() != null) { %>
-            <img alt="미리보기 이미지입니다." id="preview" src="../Uploads/images/<%=dto.getNewfile()%>"/><br>
+            <img alt="미리보기 이미지입니다." id="preview" src="../Uploads/images/<%=dto.getNewfile()%>" class="img-fluid"/>
         <% } %>
     </div>
-    <textarea name="update_content" placeholder="내용을 넣어주세요" class="up_cont"><%=dto.getContent() %></textarea>
-    <input type="file" id="update_file" name="update_file" onchange="show_preview(this);">
-    <input type="button" value="수정하기" onclick="sendReview()" class="ubtn">
+    <div class="mb-3">
+        <label for="update_content" class="form-label">내용</label>
+        <textarea name="update_content" id="update_content" class="form-control up_cont" placeholder="내용을 넣어주세요" rows="6"><%=dto.getContent() %></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="update_file" class="form-label">이미지 업로드</label>
+        <input type="file" id="update_file" name="update_file" class="form-control" onchange="show_preview(this);">
+    </div>
+    <input type="button" value="수정하기" onclick="sendReview()" class="btn btn-primary ubtn">
 </form>
 </div>
 </body>

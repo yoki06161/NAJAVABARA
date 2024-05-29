@@ -75,210 +75,158 @@
     		max-width: 1200px;
     		margin: 0 auto;
     	}
-    h2 {
-    	padding-left: 20px;
-    }
-    p {
-    	padding-left: 20px;
-    }
-    table {
-    	width: 1200px;
-    }
-    table:nth-child(1){
-    	padding: 20px;
-    }
-    img {
-    	max-width: 900px;
-    	max-height: 900px;
-    }
-    .content {
-    	padding: 30px 50px;
-    	min-height: 130px;
-    	height: 130px;
-    	border: 1px solid #cfcfcf;
-    }
-    td {
-    	height: 30px;
-    	padding: 10px 20px;
-    }
-    th {
-    	padding: 20px 0;
-    }
-    button {
-    	height: 29px;
-    	line-height: 15px;
-    	padding: 5px 10px;
-    	color: #555;
-    	border: 1px solid #cfcfcf;
-    	border-radius: 4px;
-    	font-weight: 700;
-    	font-size: 15px;
-    }
-    textarea {
-    	resize: none;
-    	width: 800px;
-    	min-height: 130px;
-    	height: 130px;
-    	border: 1px solid #cfcfcf;
-    	border-radius: 20px;
-    	padding: 20px;
-    }
-    input[type=submit]{
-    	height: 29px;
-    	line-height: 15px;
-    	padding: 3px 10px;
-    	color: #555;
-    	border: 1px solid #cfcfcf;
-    	border-radius: 4px;
-    	margin-left: 20px;
-    	
-    }
-    #comments td {
-    	padding: 5px 0;
-    }
-    #comments .com_content {
-    	border: 1px solid #cfcfcf;
-    	border-radius: 10px;
-    	height: 70px;
-    	min-height: 50px;
-    	padding: 10px 20px;
-    	width: 800px;
-    }
+
 </style>
 </head>
 <body>
-<div id="wrap">
-<%@ include file="../common/menu.jsp" %>
-<%
-HBoardDTO dto = (HBoardDTO)session.getAttribute("dto");
+<div class="container">
+    <%@ include file="../common/menu.jsp" %>
+    <%
+    HBoardDTO dto = (HBoardDTO)session.getAttribute("dto");
     if (dto != null) {
-%>    
-<h2><%=dto.getTitle()%></h2>
-<table>
-    <tr>
-        <td align="left">작성자 ID : <%=dto.getId()%></td>
-        <td align="right"><%=dto.getPostdate()%></td>
-    </tr>
-        
-    <tr><td></td><td align="right">조회수 <%=dto.getVisitcount()%></td></tr>
-    <tr>
-    <%if(dto.getOrifile() != null){ %>
-		<th colspan="2">
-		<img alt="<%=dto.getOrifile()%>" src="../Uploads/images/<%=dto.getNewfile()%>">
-		</th>
-		<%}%>
-	</tr>
-    <tr><td colspan="2" class="content"><%=dto.getContent()%></td></tr>
-    <tr>
-        <td>
-            <button type="button" onclick="location.href='listFile.hob';">전체 게시물 보기</button>
-            	        <%
-	            			String hobby = "";
-		            		switch (dto.getHobby()) {
-		            	    case "gardening":
-		            	        hobby = "원예";
-		            	        break;
-		            	    case "art":
-		            	    	hobby = "아트";
-		            	        break;
-		            	    case "puzzle":
-		            	    	hobby = "퍼즐";
-		            	        break;
-		            	    case "collection":
-		            	    	hobby = "수집";
-		            	        break;
-		            	    case "reading":
-		            	    	hobby = "독서";
-		            	        break;
-		            	    case "exercise":
-		            	    	hobby = "운동";
-		            	        break;
-		            	    case "photo":
-		            	    	hobby = "포토";
-		            	        break;
-		            	    case "handmade":
-		            	    	hobby = "수공예";
-		            	        break;
-		            	    case "instrument":
-		            	    	hobby = "악기연주";
-		            	        break;
-		            	    case "astronomical":
-		            	    	hobby = "천체관측";
-		            	        break;
-		            	    default:
-		            	    	hobby = "취미";
-		            		}
-	            		%>
-            <button type="button" onclick="location.href='<%=dto.getHobby()%>.hob';"><%=hobby%> 게시물 보기</button>
-        </td>
-            <%
-            if(session.getAttribute("id") != null && session.getAttribute("id").equals(dto.getId())) {
-            %>
-            	<td align="right">
-	            <button type="button" onclick="location.href='updateFile.jsp?num=<%=dto.getNum()%>';">게시물 수정하기</button>
-	            <button type="button" onclick="del('<%=dto.getNum()%>');">게시물 삭제하기</button>
-				</td>
-			<%
-			}
-			%>
-    </tr>
-</table>
-
-
-<br><br>
-<h2>댓글</h2>
-<%
-String id = (String)session.getAttribute("id");
-%>
-<form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
-    <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
-    <table>
-        <tr>
-            <td>ID : <%=id%></td>
-        </tr>
-        <tr>
-            <td><textarea id="content" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다."></textarea></td>
-        </tr>
-    </table>
-    <input type="submit" value="작성하기" onclick="validateFileForm();">
-</form>
-
-
-<br><br>
-<h2>댓글 리스트</h2>
-    <div id="comments">
-        <%
-        	List<HBoardCTO> commentLists = (List<HBoardCTO>)session.getAttribute("commentLists");
-            if (commentLists != null && !commentLists.isEmpty()) {
-        %>
-        <table>
-            <tr><td>&nbsp;<b>전체 : <%=commentLists.size()%></b></td></tr>
-            <%
-            for (HBoardCTO cbs : commentLists) {
-            %>
-            <tr>
-                <td>ID : <%= cbs.getId() %></td>
-            </tr>
-            <tr>
-                <td class="com_content" width="80%"><%= cbs.getContent() %></td>
-                <td align="center"><%= cbs.getPostdate() %></td>
-            </tr>
-                <tr>
-                    <td>
-                        <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(cbs.getId())) { %>
-                           <button type="button" onclick="delComment('<%= cbs.getNumx() %>');">댓글 삭제</button>
-                        <% } %>
-                    </td>
-                </tr>
-            <% } %>
-        </table>
-        <% } else { %>
-        <p>댓글이 없습니다.</p>
-        <% } %>
+    %>    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2 class="text-center"><%=dto.getTitle()%></h2>
+            <div class="row text-center">
+                <div class="col-md-6">작성자 ID : <%=dto.getId()%></div>
+                <div class="col-md-6 text-right"><%=dto.getPostdate()%></div>
+            </div>
+            <div class="row mt-2 text-center">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-right">조회수 <%=dto.getVisitcount()%></div>
+            </div>
+            <div class="row mt-2 text-center">
+                <div class="col-md-12 ">
+                    <% if(dto.getOrifile() != null){ %>
+                    <img class="img-fluid" alt="<%=dto.getOrifile()%>" src="../Uploads/images/<%=dto.getNewfile()%>">
+                    <% } %>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <p class="border rounded p-3" style="height: 150px;"><%=dto.getContent()%></p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" onclick="location.href='listFile.hob';">전체 게시물 보기</button>
+                    <%
+                    String hobby = "";
+                    switch (dto.getHobby()) {
+                        case "gardening":
+                            hobby = "원예";
+                            break;
+                        case "art":
+                            hobby = "아트";
+                            break;
+                        case "puzzle":
+                            hobby = "퍼즐";
+                            break;
+                        case "collection":
+                            hobby = "수집";
+                            break;
+                        case "reading":
+                            hobby = "독서";
+                            break;
+                        case "exercise":
+                            hobby = "운동";
+                            break;
+                        case "photo":
+                            hobby = "포토";
+                            break;
+                        case "handmade":
+                            hobby = "수공예";
+                            break;
+                        case "instrument":
+                            hobby = "악기연주";
+                            break;
+                        case "astronomical":
+                            hobby = "천체관측";
+                            break;
+                        default:
+                            hobby = "취미";
+                    }
+                    %>
+                    <button type="button" class="btn btn-primary" onclick="location.href='<%=dto.getHobby()%>.hob';"><%=hobby%> 게시물 보기</button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <%
+                    if(session.getAttribute("id") != null && session.getAttribute("id").equals(dto.getId())) {
+                    %>
+                    <button type="button" class="btn btn-info" onclick="location.href='updateFile.jsp?num=<%=dto.getNum()%>';">게시물 수정하기</button>
+                    <button type="button" class="btn btn-danger" onclick="del('<%=dto.getNum()%>');">게시물 삭제하기</button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
     </div>
-<% } else { %>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>댓글</h2>
+            <% if(session.getAttribute("id") != null) { %>
+			    <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
+			        <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
+			        <div class="form-group">
+			            <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px;resize=none;" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다." required></textarea>
+			        </div>
+			        <button type="submit" class="btn btn-primary">작성하기</button>
+			    </form>
+			<% } else { %>
+			    <div class="form-group">
+			        <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px" name="content" placeholder="로그인 후에 댓글을 작성할 수 있습니다." disabled></textarea>
+			    </div>
+			    <button type="button" class="btn btn-primary" onclick="loginAlert()">작성하기</button>
+			    <script type="text/javascript">
+			        function loginAlert() {
+			            alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+			            window.location.href = "<%=request.getContextPath()%>/user/login.jsp"; // 로그인 페이지 URL로 수정
+			        }
+			    </script>
+			<% } %>
+
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>댓글 리스트</h2>
+            <div id="comments">
+                <%
+                List<HBoardCTO> commentLists = (List<HBoardCTO>)session.getAttribute("commentLists");
+                if (commentLists != null && !commentLists.isEmpty()) {
+                %>
+                <table class="table">
+                    <tbody>
+                        <tr><td>&nbsp;<b>전체 : <%=commentLists.size()%></b></td></tr>
+                        <% for (HBoardCTO cbs : commentLists) { %>
+                        <tr>
+                            <td>ID : <%= cbs.getId() %></td>
+                            <td align="right"><%= cbs.getPostdate() %></td>
+                        </tr>
+                        <tr>
+                            <td class="com_content border rounded" style="height:100px;margin-bottom: 10px;"><%= cbs.getContent() %></td>
+                        </tr>
+                        <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(cbs.getId())) { %>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="delComment('<%= cbs.getNumx() %>');">댓글 삭제</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <p>댓글이 없습니다.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% } else { %>
     <p>게시물을 찾을 수 없습니다.</p>
-<% } %>
+    <% } %>
 </div>
 
 </body>
