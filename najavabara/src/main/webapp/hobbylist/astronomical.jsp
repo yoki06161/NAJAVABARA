@@ -16,7 +16,7 @@ int totalCount = (int)request.getAttribute("totalCount");
   		margin: 0 auto;
   	}
 </style>
-<body>
+<body style="margin:0 auto;">
 	<div id="wrap">
 		<%@ include file="../common/menu.jsp" %>
 		<%@ include file="hobbymenu.jsp" %>

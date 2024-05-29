@@ -11,18 +11,16 @@ int totalCount = (int)request.getAttribute("totalCount");
 <title>handmade.jsp</title>
 </head>
 <style>
-   	#wrap {
+   	body {
   		max-width: 1200px;
   		margin: 0 auto;
   	}
 </style>
-<body>
-	<div id="wrap">
-		<%@ include file="../common/menu.jsp" %>
-		<%@ include file="hobbymenu.jsp" %>
-		<%@ include file="commonsearch.jsp" %>
-		<b>전체 : <%=totalCount%></b>
-		<%@include file="commontable.jsp" %>
-	</div>
+<body style="margin:0 auto;">
+	<%@ include file="../common/menu.jsp" %>
+	<%@ include file="hobbymenu.jsp" %>
+	<%@ include file="commonsearch.jsp" %>
+	<b>전체 : <%=totalCount%></b>
+	<%@include file="commontable.jsp" %>
 </body>
 </html>

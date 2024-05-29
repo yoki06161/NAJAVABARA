@@ -165,13 +165,27 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <h2>댓글</h2>
-            <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
-                <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
-                <div class="form-group">
-                    <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">작성하기</button>
-            </form>
+            <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(dto.getId())) { %>
+			    <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
+			        <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
+			        <div class="form-group">
+			            <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px;resize=none;" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다." required></textarea>
+			        </div>
+			        <button type="submit" class="btn btn-primary">작성하기</button>
+			    </form>
+			<% } else { %>
+			    <div class="form-group">
+			        <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px" name="content" placeholder="로그인 후에 댓글을 작성할 수 있습니다." disabled></textarea>
+			    </div>
+			    <button type="button" class="btn btn-primary" onclick="loginAlert()">작성하기</button>
+			    <script type="text/javascript">
+			        function loginAlert() {
+			            alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+			            window.location.href = "<%=request.getContextPath()%>/login.hob"; // 로그인 페이지 URL로 수정
+			        }
+			    </script>
+			<% } %>
+
         </div>
     </div>
 
@@ -183,16 +197,16 @@
                 List<HBoardCTO> commentLists = (List<HBoardCTO>)session.getAttribute("commentLists");
                 if (commentLists != null && !commentLists.isEmpty()) {
                 %>
-                <table class="table table-striped">
+                <table class="table">
                     <tbody>
                         <tr><td>&nbsp;<b>전체 : <%=commentLists.size()%></b></td></tr>
                         <% for (HBoardCTO cbs : commentLists) { %>
                         <tr>
                             <td>ID : <%= cbs.getId() %></td>
+                            <td align="right"><%= cbs.getPostdate() %></td>
                         </tr>
                         <tr>
-                            <td class="com_content" style="height:100px;margin-bottom: 10px;"><%= cbs.getContent() %></td>
-                            <td align="center"><%= cbs.getPostdate() %></td>
+                            <td class="com_content border rounded" style="height:100px;margin-bottom: 10px;"><%= cbs.getContent() %></td>
                         </tr>
                         <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(cbs.getId())) { %>
                         <tr>

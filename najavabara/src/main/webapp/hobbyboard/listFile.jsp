@@ -181,7 +181,7 @@ if (updatedDto != null) {
 	            		<span><%= hobby %></span><span>조회수&nbsp; <%= bbs.getVisitcount() %></span>
 	            		</div>
 		                <div class="grid-item" onclick="window.location='view.hob?num=<%= bbs.getNum() %>'">
-		                   <h4 class="title"><%= bbs.getTitle() %></h4>
+		                   <h2 class="title" style="font-size:20px"><%= bbs.getTitle() %></h2>
 
 		                    <div class="grid-item_inner">
 								<img alt="<%=bbs.getOrifile() %>" src="../Uploads/images/<%=bbs.getNewfile() %>">

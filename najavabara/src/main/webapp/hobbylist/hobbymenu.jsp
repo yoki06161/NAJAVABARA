@@ -14,43 +14,43 @@
 	font-size: 17px;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(3){
+.hobby_menu a:hover:nth-child(2){
 	color: #33d433;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(4){
+.hobby_menu a:hover:nth-child(3){
 	color: #ed74c1;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(5){
+.hobby_menu a:hover:nth-child(4){
 	color: #bb5fe3;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(6){
+.hobby_menu a:hover:nth-child(5){
 	color: #ed8632;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(7){
+.hobby_menu a:hover:nth-child(6){
 	color: #85c71a;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(8){
+.hobby_menu a:hover:nth-child(7){
 	color: #479fd6;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(9){
+.hobby_menu a:hover:nth-child(8){
 	color: #31ded5;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(10){
+.hobby_menu a:hover:nth-child(9){
 	color: #de4e57;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(11){
+.hobby_menu a:hover:nth-child(10){
 	color: #ded952;
 	transition: all 0.2s;
 }
-.hobby_menu a:hover:nth-child(12){
+.hobby_menu a:hover:nth-child(11){
 	color: #4145b5;
 	transition: all 0.2s;
 }
