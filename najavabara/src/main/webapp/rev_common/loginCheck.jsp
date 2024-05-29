@@ -4,6 +4,6 @@
 	System.out.println("로그인 체크");
 	System.out.println(session.getAttribute("id"));
 	if(session.getAttribute("id") == null){
-		response.sendRedirect("../login.jsp");
+		response.sendRedirect("../user/login.jsp");
 	}
 %>

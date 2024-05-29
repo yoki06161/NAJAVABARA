@@ -5,6 +5,7 @@
 <%@page import="Review_Comment.ReviewCommentDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../common/menu.jsp" %>
 <%
 // review_boardList에서 보낸 content.jsp?cnum=의 값을 받아들임
 String snum = request.getParameter("cnum");
@@ -38,6 +39,10 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 	  color: black;
 	}
 	
+	.border {
+		border: none !important;
+	}
+	
  	input:focus {
 		outline: none;
  	}
@@ -66,7 +71,6 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 	.comment_area {
 		padding: 30px 40px;
 		border-radius: 100px;
-		height: 90px;
 		width: 700px;
 		font-size: 20px;
 		resize: none;
@@ -76,7 +80,7 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 		color: #fff;
 		border: none;
 		border-radius: 20px;
-		background: #ff6f0f;
+		background: #0d6efd;
 		padding: 20px 30px;
 		font-size: 15px;
 	}

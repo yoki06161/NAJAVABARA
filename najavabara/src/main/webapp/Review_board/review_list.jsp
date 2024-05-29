@@ -5,7 +5,7 @@
 <%@page import="Review_Board.Review_BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../rev_common/menu.jsp" %>
+<%@ include file="../common/menu.jsp" %>
 <%
 //검색 기능
 String searching = request.getParameter("search_bar");
@@ -73,7 +73,7 @@ List<Review_BoardDTO> rlist = dao.ShowReviewBoard(map);
  		height: 50px;
  		width: 80px;
  		border-radius:10px;
- 		background: #ff6f0f;
+ 		background: #0d6efd;
  		display: flex;
  		align-items: center;
  		justify-content: center;
@@ -161,7 +161,7 @@ List<Review_BoardDTO> rlist = dao.ShowReviewBoard(map);
 		<% if(dto.getOriFile() != null) { %>
 			<img alt="<%=dto.getOriFile() %>" src="../SaveUploads/<%=dto.getNewFile()%>">
 		<%} else { %>
-			<img alt="<%=dto.getOriFile() %>" src="../SaveUploads/당근마켓로고.jpg">
+			<img alt="<%=dto.getOriFile() %>" src="../SaveUploads/logo.png">
 		<% }%>
 		</div>
 		<div class="review_content">

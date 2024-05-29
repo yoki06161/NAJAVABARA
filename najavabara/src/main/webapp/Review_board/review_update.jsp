@@ -3,6 +3,7 @@
 <%@page import="Review_Board.Review_BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../common/menu.jsp" %>
 <%
 	request.setCharacterEncoding("utf-8");
 
@@ -112,7 +113,7 @@
     	color: #fff;
 		border: none;
 		border-radius: 20px;
-		background: #ff6f0f;
+		background: #0d6efd;
 		padding: 20px 30px;
 		font-size: 15px;
     }
@@ -171,7 +172,7 @@ function delfile() {
     fileInput.value = "";
     
     // 미리보기 이미지 지우기
-    preview.src = "../SaveUploads/당근마켓로고.jpg";
+    preview.src = "../SaveUploads/logo.png";
     delf.value = "삭제";
 }
 
@@ -184,7 +185,7 @@ function delfile() {
 	<%if(dto.getNewFile() != null){ %>
 		<img alt="미리보기 이미지입니다." id="preview" src="../SaveUploads/<%=dto.getNewFile()%>"/><br>
 	<%} else { %>
-		<img alt="미리보기 이미지입니다." id="preview" src="../SaveUploads/당근마켓로고.jpg"/><br>
+		<img alt="미리보기 이미지입니다." id="preview" src="../SaveUploads/logo.png"/><br>
 	<%} %>
 </div>
 <div class="file_btn">

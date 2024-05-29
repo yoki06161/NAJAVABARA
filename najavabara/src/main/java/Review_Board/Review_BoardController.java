@@ -178,7 +178,7 @@ public class Review_BoardController extends HttpServlet {
 			System.out.println("수정된 파일 " + upfile);
 			System.out.println("삭제 " + delf);
 			
-			// 파일 여부. 추가된 파일이 널이 아닐시 실행
+			// 파일 여부. 추가된 파일이 있을시 실행
 			if(upfile != null) {
 				String filename = mr.getFilesystemName("update_file");
 				
@@ -197,10 +197,16 @@ public class Review_BoardController extends HttpServlet {
 				
 				dto.setOriFile(filename);
 				dto.setNewFile(fTimeName);
+			// 이전에 파일을 올리지 않았고, 또 글만 수정하고 파일을 올리지 않았을시
+			}else if(upfile == null && bfOrifile.equals("null")) {
+				// bfOrifile을 string형태로 받아버려서 문자열로 인식되는듯 함.
+				System.out.println("널임");
+			}
 			// 이전에 파일을 올렸고, 그 파일을 유지한채로 글쓰기.
-			} else if(upfile == null && bfOrifile != null && delf.equals("")) {
-				String filename = mr.getParameter("bfOrifile");
+			else if(upfile == null && bfOrifile != null && delf.equals("")) {
 				
+				String filename = mr.getParameter("bfOrifile");
+				System.out.println(filename);
 				String fTimeName = mr.getParameter("bfTfile");
 
 				// update_file에 올려진 오리지널 파일명 나오는거.
