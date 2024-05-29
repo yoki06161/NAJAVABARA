@@ -14,10 +14,10 @@
 <form name="writeForm" method="post" action="<%=request.getContextPath()%>/region/writeProc.reg" enctype="multipart/form-data">
 	<img>
 	<table class="table table-bordered">
-		<tr><td>제목</td><td><input type="text" name="title" class="form-control" required></td></tr>
-		<tr><td>내용</td>
-		<td><textarea name="content" style="height:100px"class="form-control" required></textarea></td></tr>
-		<tr><td>이미지 첨부</td>
+		<tr class="align-middle"><td>제목</td><td><input type="text" name="title" class="form-control" required></td></tr>
+		<tr class="align-middle"><td>내용</td>
+		<td><textarea name="content" class="form-control"  rows="10" required></textarea></td></tr>
+		<tr class="align-middle"><td>이미지 첨부</td>
 		<td><input type="file" name="file" class="form-control"></td></tr>
 	</table>
 	<input type="submit" value="게시물 작성" class="btn btn-primary">
