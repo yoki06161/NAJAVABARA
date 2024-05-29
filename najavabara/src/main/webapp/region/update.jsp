@@ -76,6 +76,9 @@ img {
 	width: 50%;
 	height: 50%;
 }
+ {
+	
+}
 </style>
 </head>
 <body>
@@ -85,18 +88,17 @@ img {
 		onsubmit="handleFormSubmit(event);" enctype="multipart/form-data">
 		<input type="hidden" name="num" value="<%=dto.getNum()%>">
 		<table class="table table-bordered">
-			<tr>
+			<tr class="align-middle">
 				<td>제목</td>
 				<td><input type="text" name="title"
 					class="form-control" value="<%=dto.getTitle()%>"></td>
 			</tr>
-			<tr>
+			<tr class="align-middle">
 				<td>내용</td>
-				<td><input type="text" name="content"
-					class="form-control" value="<%=dto.getContent()%>"></td>
+				<td><textarea name="content" class="form-control"  rows="10"><%= dto.getContent() %></textarea></td>
 			</tr>
-			<tr>
-				<td>이미지 첨부</td>
+			<tr class="align-middle">
+				<td>이미지 첨부<br>(수정 전 이미지 출력)<br></td>
 				<td><input type="file" name="file"
 					class="form-control">	
 				<br>
