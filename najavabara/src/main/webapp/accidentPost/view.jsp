@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@page import="dto.accidentBoardDTO"%>
 <%@page import="dao.accidentBoardDAO"%>
+<%@ include file="../common/sessionCheck.jsp"%>  
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -105,8 +106,10 @@
 				<!-- 댓글 작성 폼 -->
 				<form action="addComment.acc" method="post" id="commentForm">
 					<div class="form-group">
-						<label for="writer">이름</label> <input type="text"
-							class="form-control" name="writer" id="writer" required>
+						 <label for="id">Writer:</label> <input type="text" id="id" name="id"
+					value="<%=session.getAttribute("id")%>" class="form-control"
+					readonly required>
+				<div class="invalid-feedback">Writer is required.</div>
 					</div>
 					<div class="form-group">
 						<label for="comment">내용</label>
