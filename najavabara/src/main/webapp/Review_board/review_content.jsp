@@ -79,6 +79,7 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 	}
 	
 	.img_wrap {
+		width: 860px;
 		height: 500px;
 		border-radius: 50px;
 		overflow: hidden;
