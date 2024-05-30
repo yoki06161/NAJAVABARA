@@ -1,36 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
+<%@page import="java.io.PrintWriter"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.Set"%>
+<%@ page import="dto.friendCommentDTO"%>
+<%@page import="dto.friendBoardDTO"%>
 <%@page import="dao.friendReplyDAO"%>
 <%@page import="dto.friendReplyDTO"%>
-<%@page import="java.io.PrintWriter"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="java.util.List"%>
-<%@ page import="dto.friendCommentDTO"%>
-<%@ page import="java.util.Set"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>게시물 상세보기</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <style>
 .rounded-image {
 	border-radius: 15px; /* 이미지의 모서리를 둥글게 만듦 */
 }
+
 .author-badge {
-    background-color: #007bff;
-    color: white;
-    border-radius: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    display: inline-block;
-    margin-left: 0.5rem;
+	background-color: #007bff;
+	color: white;
+	border-radius: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	display: inline-block;
+	margin-left: 0.5rem;
 }
 </style>
 <script>
@@ -121,6 +125,25 @@
         // 폼 제출
         return true;
     }
+    
+    function sortComments(order) {
+        var postNum = <%=((friendBoardDTO) request.getAttribute("post")).getNum()%>;
+        
+        $.ajax({
+            url: "viewPost.fri",
+            type: "GET",
+            data: { num: postNum, order: order },
+            success: function(response) {
+                // 받아온 HTML에서 댓글 영역만 추출하여 업데이트합니다.
+                var commentArea = $(response).find("#commentArea").html();
+                $("#commentArea").html(commentArea);
+            },
+            error: function() {
+                alert("댓글 정렬 중 오류가 발생했습니다.");
+            }
+        });
+    }
+    
 </script>
 </head>
 <body>
@@ -130,7 +153,7 @@
 
 		<%
 		if (request.getAttribute("post") != null) {
-			dto.friendBoardDTO post = (dto.friendBoardDTO) request.getAttribute("post");
+			friendBoardDTO post = (friendBoardDTO) request.getAttribute("post");
 			String user = (String) session.getAttribute("name");
 			boolean isOwner = (user != null && session.getAttribute("name").equals(post.getId()));
 		%>
@@ -142,11 +165,11 @@
 				<p class="card-text">
 					작성자:
 					<%=post.getId()%>
-					<span class="author-badge">작성자</span>
-					<small class="text-muted"> <%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%>
-						<%
-						LocalDateTime postDateTime = post.getPostdate().toLocalDateTime();
-						%> <%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
+					<span class="author-badge">작성자</span> <small class="text-muted">
+						<%-- 작성일시를 더 보기 쉬운 형식으로 표시 --%> 
+					<%
+ 					LocalDateTime postDateTime = post.getPostdate().toLocalDateTime();%> 
+ 					<%=postDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))%>
 					</small>
 				</p>
 				<p class="card-text">
@@ -159,12 +182,12 @@
 				</p>
 				<%
 				if (post.getFileNames() != null && !post.getFileNames().isEmpty()) {
-							for (int i = 0; i < post.getFileNames().size(); i++) {
-								String fileName = post.getFileNames().get(i);
-								String filePath = "uploads/" + fileName;
-								// 이미지 파일인지 확인
-								boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
-								if (isImage) {
+					for (int i = 0; i < post.getFileNames().size(); i++) {
+						String fileName = post.getFileNames().get(i);
+						String filePath = "uploads/" + fileName;
+						// 이미지 파일인지 확인
+						boolean isImage = fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png|gif)$");
+						if (isImage) {
 				%>
 				<div class="mt-3">
 					<img src="<%=filePath%>" alt="첨부 이미지"
@@ -175,13 +198,14 @@
 				%>
 				<div class="mt-3">
 					<p>
-						첨부 파일: <a href="download.fri?fileName=<%=fileName%>&ofileName=<%=post.getOfileNames().get(i)%>"><%=post.getOfileNames().get(i)%></a>
+						첨부 파일: <a
+							href="download.fri?fileName=<%=fileName%>&ofileName=<%=post.getOfileNames().get(i)%>"><%=post.getOfileNames().get(i)%></a>
 					</p>
 				</div>
 				<%
 				}
-						}
-						}
+				}
+				}
 				%>
 			</div>
 		</div>
@@ -203,7 +227,7 @@
 
 		<%
 		List<friendCommentDTO> commentList = (List<friendCommentDTO>) request.getAttribute("commentList");
-				int commentCount = commentList != null ? commentList.size() : 0;
+		int commentCount = commentList != null ? commentList.size() : 0;
 		%>
 
 		<p>
@@ -213,7 +237,20 @@
 			</button>
 			<span>댓글 <%=commentCount%></span>
 		</p>
-		<h4 class="mt-4">댓글</h4>
+		<div class="d-flex justify-content-end align-items-center">
+			<h4 class="mt-4 me-auto">댓글</h4>
+			<div class="btn-group" role="group"
+				aria-label="Basic radio toggle button group">
+				<input type="radio" class="btn-check" name="sortOption"
+					id="ascendingOption" autocomplete="off" checked> <label
+					class="btn btn-outline-primary" for="ascendingOption"
+					onclick="sortComments('asc')">등록순</label> <input type="radio"
+					class="btn-check" name="sortOption" id="descendingOption"
+					autocomplete="off"> <label class="btn btn-outline-primary"
+					for="descendingOption" onclick="sortComments('desc')">최신순</label>
+			</div>
+		</div>
+		<div id="commentArea">
 		<%
 		if (commentList != null && !commentList.isEmpty()) {
 			for (friendCommentDTO comment : commentList) {
@@ -316,6 +353,7 @@
 		<%
 		}
 		%>
+		</div>
 		<div class="mt-4">
 			<form id="commentForm" action="writeComment.co" method="post"
 				onsubmit="return submitComment()">
