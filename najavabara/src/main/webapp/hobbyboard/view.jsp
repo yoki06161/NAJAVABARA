@@ -83,7 +83,11 @@
     <%@ include file="../common/menu.jsp" %>
     <%
     HobbyBoardDTO dto = (HobbyBoardDTO)session.getAttribute("dto");
-                if (dto != null) {
+    if (dto != null) {
+        String content = dto.getContent();
+        if (content != null) {
+            content = content.replaceAll("\r\n|\n", "<br>");
+        }
     %>    
     <div class="row mt-4">
         <div class="col-md-12">
@@ -109,7 +113,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-12">
-                    <p class="border rounded p-3" style="height: 150px;"><%=dto.getContent()%></p>
+                    <p class="border rounded p-3" style="min-height: 150px;"><%=content%></p>
                 </div>
             </div>
             <div class="row mt-4">
@@ -177,7 +181,7 @@
 			    <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
 			        <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
 			        <div class="form-group">
-			            <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px;resize=none;" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다." required></textarea>
+			            <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px;resize:none;" name="content" placeholder="한 번 작성한 댓글은 수정이 불가합니다." required></textarea>
 			        </div>
 			        <button type="submit" class="btn btn-primary">작성하기</button>
 			    </form>
@@ -207,20 +211,25 @@
             <div id="comments">
                 <%
                 List<HobbyCommentDTO> commentLists = (List<HobbyCommentDTO>)session.getAttribute("commentLists");
-                                                if (commentLists != null && !commentLists.isEmpty()) {
+                if (commentLists != null && !commentLists.isEmpty()) {
                 %>
                 <table class="table">
                     <tbody>
                         <tr><td>&nbsp;<b>전체 : <%=commentLists.size()%></b></td></tr>
                         <%
                         for (HobbyCommentDTO cbs : commentLists) {
+                            if (cbs != null) {
+                                String comment_content = cbs.getContent();
+                                if (comment_content != null) {
+                                	comment_content = comment_content.replaceAll("\r\n|\n", "<br>");
+                                }
                         %>
                         <tr>
                             <td>ID : <%= cbs.getId() %></td>
                             <td align="right"><%= cbs.getPostdate() %></td>
                         </tr>
                         <tr>
-                            <td class="com_content border rounded" style="height:100px;margin-bottom: 10px;"><%= cbs.getContent() %></td>
+                            <td class="com_content border rounded" style="min-height:100px;max-height:300px;margin-bottom: 10px;"><%= comment_content %></td>
                         </tr>
                         <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(cbs.getId())) { %>
                         <tr>
@@ -228,6 +237,7 @@
                                 <button type="button" class="btn btn-danger" onclick="delComment('<%= cbs.getNumx() %>');">댓글 삭제</button>
                             </td>
                         </tr>
+                        <% } %>
                         <% } %>
                         <% } %>
                     </tbody>

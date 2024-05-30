@@ -101,7 +101,7 @@ function validateFileForm(event) {
 		</div>
 		<div class="form-group">
 			<label for="input_content">Content</label>
-			<textarea name="input_content" id="input_content" class="form-control textarea-control" placeholder="내용을 입력해주세요."></textarea>
+			<textarea name="input_content" id="input_content" class="form-control textarea-control" style="min-height: 200px;resize:none;" placeholder="내용을 입력해주세요."></textarea>
 		</div>
 		<div class="form-group">
 			<label for="input_file">File</label>
