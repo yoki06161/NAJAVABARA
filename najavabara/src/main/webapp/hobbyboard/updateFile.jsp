@@ -100,7 +100,7 @@
         <textarea name="update_content" id="update_content" class="form-control up_cont" placeholder="내용을 넣어주세요" rows="6"><%=dto.getContent() %></textarea>
     </div>
     <div class="mb-3">
-        <label for="update_file" class="form-label">이미지 업로드</label>
+        <label for="update_file" class="form-label">이미지 업로드 [현재 파일 : <%=dto.getOrifile()%>]</label>
         <input type="file" id="update_file" name="update_file" class="form-control" onchange="show_preview(this);">
     </div>
     <input type="button" value="수정하기" onclick="sendReview()" class="btn btn-primary ubtn">
