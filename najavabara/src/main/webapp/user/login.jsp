@@ -10,6 +10,7 @@
 	crossorigin="anonymous"></script>
 <script>
 $(document).ready(function() {
+	//헤더 메뉴 글자색바뀌는 것 제거
     localStorage.removeItem('activeLink');
 });
 </script>
