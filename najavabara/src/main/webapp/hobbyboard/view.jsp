@@ -128,6 +128,9 @@
                                                                 case "art":
                                                                     hobby = "아트";
                                                                     break;
+                                                                case "cook":
+                                                                    hobby = "요리";
+                                                                    break;
                                                                 case "puzzle":
                                                                     hobby = "퍼즐";
                                                                     break;
@@ -189,7 +192,7 @@
 			} else {
 			%>
 			    <div class="form-group">
-			        <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px" name="content" placeholder="로그인 후에 댓글을 작성할 수 있습니다." disabled></textarea>
+			        <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px;resize:none;" name="content" placeholder="로그인 후에 댓글을 작성할 수 있습니다." disabled></textarea>
 			    </div>
 			    <button type="button" class="btn btn-primary" onclick="loginAlert()">작성하기</button>
 			    <script type="text/javascript">
@@ -229,7 +232,11 @@
                             <td align="right"><%= cbs.getPostdate() %></td>
                         </tr>
                         <tr>
-                            <td class="com_content border rounded" style="min-height:100px;max-height:300px;margin-bottom: 10px;"><%= comment_content %></td>
+                            <td class="com_content border rounded" style="min-height:100px;max-height:300px;margin-bottom: 10px;">
+                            	<div style="max-height:300px; overflow: auto;">
+                            		<%= comment_content %>
+                            	</div>
+                            </td>
                         </tr>
                         <% if(session.getAttribute("id") != null && session.getAttribute("id").equals(cbs.getId())) { %>
                         <tr>

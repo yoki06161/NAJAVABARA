@@ -408,6 +408,48 @@ public class HobbyBoardDAO {
 	    return bbs;
 	}
 	
+	public List<HobbyBoardDTO> selectCookList(Map<String, String> map){
+	    List<HobbyBoardDTO> bbs = new ArrayList<>();
+	    String sql = "SELECT num, title, content, id, postdate, visitcount, orifile, newfile FROM hobbyBoard WHERE hobby='cook'";
+
+	    boolean isSearch = map.get("searchWord") != null && !map.get("searchWord").isEmpty();
+	    if (isSearch) {
+	        sql += " AND " + map.get("searchField") + " LIKE ?";
+	    }
+	    sql += " ORDER BY num DESC";
+
+	    try (Connection conn = JDBCConnect.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        if (isSearch) {
+	            pstmt.setString(1, "%" + map.get("searchWord") + "%");
+	        }
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                int num = rs.getInt("num");
+	                String title = rs.getString("title");
+	                String content = rs.getString("content");
+	                String id = rs.getString("id");
+	                String postdate = rs.getString("postdate");
+
+	                int visitcount = rs.getInt("visitcount");
+	                String orifile = rs.getString("orifile");
+	                String newfile = rs.getString("newfile");
+
+	                HobbyBoardDTO dto = new HobbyBoardDTO(num, title, content, id, postdate, visitcount);
+	                dto.setOrifile(orifile);
+	                dto.setNewfile(newfile);
+	                bbs.add(dto);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return bbs;
+	}
+	
 	
 	public List<HobbyBoardDTO> selectPuzzleList(Map<String, String> map){
 	    List<HobbyBoardDTO> bbs = new ArrayList<>();
@@ -878,6 +920,48 @@ public class HobbyBoardDAO {
 			JDBCConnect.close(rs, pstmt, conn);
 		}		
 
+		return totalCount;
+	}
+	
+	public int selectCookCount(Map<String, String> map){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;				
+		
+		int totalCount = 0;
+		
+		// search 여부
+		boolean isSearch = false;
+		if(map.get("searchWord") != null && map.get("searchWord").length() != 0) {
+			isSearch = true;
+		}		
+		
+		String sql = "select count(num) as cnt from hobbyBoard where hobby='art'";
+		if(isSearch) {
+			//sql += " and " + map.get("searchField") + " like concat('%',?,'%')";
+			sql += " and " + map.get("searchField") + " like ? ";
+		}
+		System.out.println(sql);
+		
+		try {
+			conn = JDBCConnect.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			if(isSearch) {
+				//pstmt.setString(1, map.get("searchWord"));
+				pstmt.setString(1, "%" + map.get("searchWord") + "%");
+			}
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				totalCount = rs.getInt("cnt");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCConnect.close(rs, pstmt, conn);
+		}		
+		
 		return totalCount;
 	}
 	

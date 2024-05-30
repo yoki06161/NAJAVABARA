@@ -89,6 +89,7 @@ function validateFileForm(event) {
 			<select name="input_hobby" id="input_hobby" class="form-control" required>
 				<option value="gardening">원예</option>
 				<option value="art">아트</option>
+				<option value="cook">요리</option>
 				<option value="puzzle">퍼즐</option>
 				<option value="collection">수집</option>
 				<option value="reading">독서</option>
