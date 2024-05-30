@@ -56,6 +56,16 @@ function idCheck(){
 	        }
 	    });
     }
+    
+    // 폼 제출 이벤트 핸들러
+    $('#joinForm').on('submit', function(event) {
+    	const isIdTrue = $('#idIdtrue').show();
+    	
+        if (isIdTrue) {
+            event.preventDefault();
+            alert('중복된 아이디로 가입할 수 없습니다.');
+        }
+    });
 }
 
 $(function(){
@@ -86,7 +96,7 @@ $(document).ready(function(){
 	<%@ include file="../common/menu.jsp"%>
 	<h1>회원가입</h1>
 	<br>
-	<form action="joinProc.usr" method="post" name="join">
+	<form action="joinProc.usr" method="post" name="joinForm" id="joinForm">
 		<table>
 			<tr>
 				<td><h3>아이디:</h3></td>
@@ -133,15 +143,6 @@ $(document).ready(function(){
 					</h4>	
 				</td>
 			</tr>
-<!-- 			<tr>
-				<td><h3>역할:</h3></td>
-				<td>
-					<input type="radio" name="role" value="User" checked="checked">User
-				</td>
-				<td>
-					<input type="radio" name="role" value="Admin">Admin<br>
-				</td>
-				</tr> -->
 			<tr>
 				<td><input type="submit" value="회원가입" class="btn btn-primary">
 				</td>
