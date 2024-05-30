@@ -8,7 +8,7 @@ int totalCount = (int)request.getAttribute("totalCount");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>art.jsp</title>
+<title>mine.jsp</title>
 </head>
 <style>
    	#wrap {

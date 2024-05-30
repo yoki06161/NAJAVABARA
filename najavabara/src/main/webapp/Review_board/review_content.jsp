@@ -24,6 +24,13 @@ dto = dao.ShowContentBynum(dto);
 ReviewCommentDAO cao = new ReviewCommentDAO();
 // 위의 넘값을 메소드에 넣어서 넘값에 맞춘 리스트 출력후 반환
 List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
+// 댓글 로그인 체크
+Boolean islogin = session.getAttribute("id") == null;
+System.out.println("테스트");
+
+// 좋아요 추가
+boolean islike = false;
+int like_num = 0;
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -167,6 +174,8 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 <!--  gpt -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+//자바 변수를 js로 전달
+var islogin = <%=islogin ? "true" : "false" %>;
 	function deleteAction(dnum) {
 		const alert = confirm("정말 삭제하시겠습니까?");
 		if(alert){
@@ -178,6 +187,17 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 	}
 	// const alert = confirm("상대에게 불쾌감을 안겨줄수 있는 내용은 신고의 대상이 될 수 있습니다.");
 	function submit_comment() {
+		if(islogin){
+			alert("로그인 후 사용가능한 기능입니다.");
+			return;
+		}
+		// 글쓴 내용 없으면 띄우는거
+		const inco = document.getElementById('input_comment');
+	    if(inco.value === ""){
+	        alert('댓글을 적어주세요');
+	        
+	        return;
+	    }
 		const cform = document.getElementById('commentF');
 		console.dir(cform);
 		
@@ -193,24 +213,41 @@ List<ReviewCommentDTO> clist = cao.ShowCommentbyNum(num);
 			return;
 		}
 	}
-	
-	function submit_like() {
-		$.ajax({
-			type: "post",
-			//  action="< %request.getContextPath() %>/WriteReviewComment.rev_co"마냥 서블렛에 보내는거.
-			url: "<%=request.getContextPath()%>/LikeCount.rev_bo",
-			// input_conum의 데이터값을 < %=dto.getNum()%>으로 정의
-			// input_conum이란 이름의 데이터 필드 설정. 값은 dto.getnum()으로 정의
-			data: { input_conum: <%=dto.getNum()%> },
-			// ajax의 if문 같은것. sucees와 error
-			success: function(data) {
-				// 좋아요 카운트 업뎃
-				$('#like_count').text(data);
-			},
-			error: function() {
-				alert("오류발생");
+	// 추가한부분
+	function click_like() {
+		const alert = confirm("인식확인");
+		// title속성이 on인 img찾기
+		const isHeart = document.querySelector("img[title=on]");
+		
+		// 버튼 누르기 전까지는 title값이 없으니 html의 if(islike)는 else문을 실행. 누르기전 좋아요를 보여줌
+		// 그래서 두번째로 누르면 if의 전좋아용이 실행됨.
+		if(isHeart){
+			// 이건 걍 이미지 src값을 off좋아요로 바꾸기
+			document.getElementById('likeb').setAttribute('src','../SaveUploads/전하트.png');
+			// likeb라는 아이디의 title값을 off로 설정하겠단 뜻
+			document.getElementById('likeb').setAttribute('title','off');
+		}else{
+			document.getElementById('likeb').setAttribute('src','../SaveUploads/후하트.png');
+			document.getElementById('likeb').setAttribute('title','on');
+		}
+		
+		// 서버에 요청을 보내기 위해 XMLHttpRequest객체 생성
+		const xhr = new XMLHttpRequest();
+		// onreadystatechange 이벤트는 XMLHttpRequest가 변할때마다 호출됨?
+		xhr.onreadystatechange = function() {
+			// xhr.readyState는 요청의 현재 상태를 나타냄.
+			// XMLHttpRequest.DONE은 요청이 완료됐단 뜻.
+			// xhr.status는 HTTP 상태 코드를 나타내며, 200은 성공이란 뜻
+			// 요청이 완료되면, 서버로부터 받은 응답(xhr.responseText)을 id가 like_s인 요소의 innerHTML로 설정하여 웹 페이지를 업데이트
+			// like_s는 숫자 span
+			if(xhr.readyState == XMLHttpRequest.DONE && xhr.status ==200) {
+				document.getElementById('like_s').innerHTML = xhr.responseText;
 			}
-		});
+		}
+		// xhr.open 메소드를 이용해 get요청 초기화. true는 비동기 요청을 의미. 보내는 코드인듯
+		xhr.open('get', 'review_like.jsp?snum=<%=dto.getNum()%>', true);
+		// xhr.send(); 초기화된 요청을 서버에 전송함
+		xhr.send();
 	}
 </script>
 </head>
@@ -244,27 +281,26 @@ dto의 원래 파일명 = <%=dto.getOriFile() %><br>
 </div>
 <div class="content">
 	<%=dto.getContent() %>
+	
 </div>
+<!--추가한부분 
 <div class="like_wrap">
-<!-- 빅빅 꼼수 전
- <input type="button" value="좋아용0" onclick="like_count()">
- -->
- <!-- !!!!!!!!!!!!!!!!!!!!!!주석 
- <form id="likeF" name="likeF" method="post" action="<%=request.getContextPath()%>/LikeCount.rev_bo">
-	<input name="input_conum" type="hidden" value="<%=dto.getNum()%>">
- 	<input type="button" value="좋아용" onclick="submit_like()">
- 	<span id='like_count'><%=dto.getLike() %></span>
- </form>
-<input type="button" value="싫어용">
- -->
+	<%if(islike) { %>
+		<img id="likeb" alt="누르기후 좋아용" src="../SaveUploads/후하트.png" width="100px" onclick="click_like()">
+	<%}else{ %>
+		<img id="likeb" alt="누르기전 좋아용" src="../SaveUploads/전하트.png" width="100px" onclick="click_like()">
+	<%} %><br>
+	게시물 번호 <%=dto.getNum() %><br>
+	라이크값 <span id="like_s"><%=dto.getLike()%></span>
 </div>
+-->
 
 <!-- 댓글 쓰기 -->
 <div class="co_write">
 <form id="commentF" name="commentF" method="post" action="<%=request.getContextPath() %>/WriteReviewComment.rev_co">
 	<div class="writeCo_wrap">
 		<input name="input_conum" type="hidden" value="<%=dto.getNum()%>">
-		<textarea name="input_comment" placeholder="청정한 댓글쓰기 문화를 지킵시다." class="comment_area"></textarea>
+		<textarea id="input_comment" name="input_comment" placeholder="청정한 댓글쓰기 문화를 지킵시다." class="comment_area"></textarea>
 		<input type="button" value="댓글쓰기" onclick="submit_comment()" class="wcbtn">
 	</div>
 </form>

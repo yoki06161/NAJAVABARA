@@ -1,6 +1,6 @@
-package proj.dto;
+package dto;
 
-public class HBoardDTO {
+public class HobbyBoardDTO {
     private int num;
     private String hobby;
     private String title;
@@ -12,22 +12,22 @@ public class HBoardDTO {
     private String orifile;
     private String newfile;
 
-    public HBoardDTO() {
+    public HobbyBoardDTO() {
     }
 
-    public HBoardDTO(int num) {
+    public HobbyBoardDTO(int num) {
         super();
         this.num = num;
     }
 
-    public HBoardDTO(int num, String title, String content) {
+    public HobbyBoardDTO(int num, String title, String content) {
         super();
         this.num = num;
         this.title = title;
         this.content = content;
     }
 
-    public HBoardDTO(String title, String id, String hobby, String content) {
+    public HobbyBoardDTO(String title, String id, String hobby, String content) {
         super();
         this.title = title;
         this.id = id;
@@ -35,7 +35,7 @@ public class HBoardDTO {
         this.content = content;
     }
 
-    public HBoardDTO(int num, String title, String content, String id, String postdate, int visitcount) {
+    public HobbyBoardDTO(int num, String title, String content, String id, String postdate, int visitcount) {
         super();
         this.num = num;
         this.title = title;
@@ -45,7 +45,7 @@ public class HBoardDTO {
         this.visitcount = visitcount;
     }
 
-    public HBoardDTO(int num, String title, String id, String hobby, String content) {
+    public HobbyBoardDTO(int num, String title, String id, String hobby, String content) {
         super();
         this.num = num;
         this.hobby = hobby;
@@ -54,7 +54,7 @@ public class HBoardDTO {
         this.id = id;
     }
 
-    public HBoardDTO(int num, String title, String hobby, String content, String id, String postdate, int visitcount) {
+    public HobbyBoardDTO(int num, String title, String hobby, String content, String id, String postdate, int visitcount) {
         super();
         this.num = num;
         this.title = title;
@@ -65,7 +65,7 @@ public class HBoardDTO {
         this.visitcount = visitcount;
     }
 
-    public HBoardDTO(int num, String title, String hobby, String id, String postdate, int visitcount, 
+    public HobbyBoardDTO(int num, String title, String hobby, String id, String postdate, int visitcount, 
             String orifile, String newfile) {
         super();
         this.num = num;
@@ -78,7 +78,7 @@ public class HBoardDTO {
         this.newfile = newfile;
     }
 
-    public HBoardDTO(int num, String hobby, String title, String content, String id, String postdate, int visitcount,
+    public HobbyBoardDTO(int num, String hobby, String title, String content, String id, String postdate, int visitcount,
             String orifile, String newfile) {
         super();
         this.num = num;
@@ -92,7 +92,7 @@ public class HBoardDTO {
         this.newfile = newfile;
     }
 
-    public HBoardDTO(int num, String hobby, String title, String content, String id, String postdate, int visitcount,
+    public HobbyBoardDTO(int num, String hobby, String title, String content, String id, String postdate, int visitcount,
             String name, String orifile, String newfile) {
         super();
         this.num = num;

@@ -1,5 +1,5 @@
-<%@ page import="proj.dao.HBoardDAO"%>
-<%@ page import="proj.dto.HBoardDTO"%>
+<%@ page import="dao.HobbyBoardDAO"%>
+<%@ page import="dto.HobbyBoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     request.setCharacterEncoding("utf-8");
@@ -7,10 +7,10 @@
     String snum = request.getParameter("num");
     int num = Integer.parseInt(snum);
 
-    HBoardDTO dto = new HBoardDTO();
+    HobbyBoardDTO dto = new HobbyBoardDTO();
     dto.setNum(num);
 
-    HBoardDAO dao = new HBoardDAO();
+    HobbyBoardDAO dao = new HobbyBoardDAO();
     dto = dao.selectView(dto);
 %>
 <!DOCTYPE html>

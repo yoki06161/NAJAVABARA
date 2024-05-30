@@ -1,4 +1,4 @@
-package proj.controller;
+package controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +17,14 @@ import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 
-import proj.cao.HBoardCAO;
-import proj.cto.HBoardCTO;
-import proj.dao.HBoardDAO;
-import proj.dto.HBoardDTO;
+import dao.HobbyBoardDAO;
+import dao.HobbyCommentDAO;
+import dto.HobbyBoardDTO;
+import dto.HobbyCommentDTO;
 
 
 @WebServlet("*.hob")
-public class HBoardController extends HttpServlet {
+public class HobbyController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,9 +55,9 @@ public class HBoardController extends HttpServlet {
 			map.put("searchWord", searchWord);
 
 			
-			HBoardDAO dao = new HBoardDAO();
+			HobbyBoardDAO dao = new HobbyBoardDAO();
 			
-			List<HBoardDTO> boardLists = dao.selectFileList(map);
+			List<HobbyBoardDTO> boardLists = dao.selectFileList(map);
 			int totalCount = dao.selectCount(map);
 
 			
@@ -68,6 +68,28 @@ public class HBoardController extends HttpServlet {
 			String path =  "./listFile.jsp"; // 1
 			request.getRequestDispatcher(path).forward(request, response);
 
+		}else if(action.equals("/myFile.hob")) {
+		    System.out.println(action);
+
+		    String searchField = request.getParameter("searchField");
+		    String searchWord = request.getParameter("searchWord");
+
+		    Map<String, String> map = new HashMap<>();
+		    map.put("searchField", searchField);
+		    map.put("searchWord", searchWord);
+
+		    // HttpSession 객체 가져오기
+		    HttpSession session = request.getSession();
+
+		    HobbyBoardDAO dao = new HobbyBoardDAO();
+		    List<HobbyBoardDTO> boardLists = dao.selectmyList(map, session);
+		    int totalCount = dao.selectMineCount(map,session);
+
+		    request.setAttribute("boardLists", boardLists);
+		    request.setAttribute("totalCount", totalCount);
+		        
+		    String path = "/hobbylist/mine.jsp";
+		    request.getRequestDispatcher(path).forward(request, response);
 		}else if(action.equals("/view.hob")) {
 		    System.out.println(action);
 
@@ -83,14 +105,14 @@ public class HBoardController extends HttpServlet {
 		    int num = Integer.parseInt(numStr);
 		    System.out.println("num 파라미터: " + num);
 
-		    HBoardDAO dao = new HBoardDAO();
-		    HBoardCAO cao = new HBoardCAO();
+		    HobbyBoardDAO dao = new HobbyBoardDAO();
+		    HobbyCommentDAO cao = new HobbyCommentDAO();
 
 		    // 1. visitcount 증가
 		    dao.updateVisitcount(num); // 5초
-		    HBoardDTO dto = dao.selectView(new HBoardDTO(num));
+		    HobbyBoardDTO dto = dao.selectView(new HobbyBoardDTO(num));
 
-		    List<HBoardCTO> commentLists = cao.commentLists(num);
+		    List<HobbyCommentDTO> commentLists = cao.commentLists(num);
 
 		    if (dto != null && commentLists != null) {
 		        // 2. 세션에 저장
@@ -123,7 +145,7 @@ public class HBoardController extends HttpServlet {
 		    String title = mr.getParameter("update_title");
 		    String content = mr.getParameter("update_content");
 
-		    HBoardDTO dto = new HBoardDTO(num, title, content);
+		    HobbyBoardDTO dto = new HobbyBoardDTO(num, title, content);
 
 		    String existingOrifile = mr.getParameter("existing_orifile");
 		    String existingNewfile = mr.getParameter("existing_newfile");
@@ -147,7 +169,7 @@ public class HBoardController extends HttpServlet {
 		        dto.setNewfile(existingNewfile);
 		    }
 
-		    HBoardDAO dao = new HBoardDAO();
+		    HobbyBoardDAO dao = new HobbyBoardDAO();
 		    dao.updateFileWrite(dto);
 
 		    String path = request.getContextPath() + "/hobbyboard/listFile.hob";
@@ -162,11 +184,11 @@ public class HBoardController extends HttpServlet {
 			//System.out.println(num);
 
 			// 3. DTO
-			HBoardDTO dto = new HBoardDTO();		
+			HobbyBoardDTO dto = new HobbyBoardDTO();		
 			dto.setNum(num);
 
 			// 4. DAO 
-			HBoardDAO dao = new HBoardDAO();
+			HobbyBoardDAO dao = new HobbyBoardDAO();
 			dao.deleteWrite(dto);
 
 			// 5. move : get
@@ -190,11 +212,11 @@ public class HBoardController extends HttpServlet {
 		    System.out.println("Received numx: " + numx);
 
 		    // 3. CTO
-		    HBoardCTO cto = new HBoardCTO();        
+		    HobbyCommentDTO cto = new HobbyCommentDTO();        
 		    cto.setNumx(numx);
 
 		    // 4. CAO 
-		    HBoardCAO cao = new HBoardCAO();
+		    HobbyCommentDAO cao = new HobbyCommentDAO();
 		    cao.delete(cto);
 
 		    // 5. move : get
@@ -211,11 +233,11 @@ public class HBoardController extends HttpServlet {
 		    System.out.println("Received num: " + num);
 
 		    // 3. CTO
-		    HBoardCTO cto = new HBoardCTO();        
+		    HobbyCommentDTO cto = new HobbyCommentDTO();        
 		    cto.setNum(num);
 
 		    // 4. CAO 
-		    HBoardCAO cao = new HBoardCAO();
+		    HobbyCommentDAO cao = new HobbyCommentDAO();
 		    cao.deleteAll(cto);
 
 		    // 5. move : get
@@ -267,12 +289,12 @@ public class HBoardController extends HttpServlet {
 		            System.out.println("id: " + id);
 		            System.out.println("hobby: " + hobby);
 
-		            HBoardDTO dto = new HBoardDTO(title, id, hobby, content);
+		            HobbyBoardDTO dto = new HobbyBoardDTO(title, id, hobby, content);
 		            dto.setOrifile(fileName);
 		            dto.setNewfile(newFileName);  // 추가 설정
 
 		            // 4. DAO 
-		            HBoardDAO dao = new HBoardDAO();
+		            HobbyBoardDAO dao = new HobbyBoardDAO();
 		            dao.insertFileWrite(dto);
 
 		            // 5. move
@@ -299,16 +321,16 @@ public class HBoardController extends HttpServlet {
 		    System.out.println("Content: " + content);
 
 		    // 3. DTO 및 CTO 객체 생성
-		    HBoardDTO dto = new HBoardDTO(num);
-		    HBoardCTO cto = new HBoardCTO(content);
+		    HobbyBoardDTO dto = new HobbyBoardDTO(num);
+		    HobbyCommentDTO cto = new HobbyCommentDTO(content);
 		    cto.setId(id);
 
 		    // 4. CAO 호출
-		    HBoardCAO cao = new HBoardCAO();
+		    HobbyCommentDAO cao = new HobbyCommentDAO();
 		    cao.insertCommentWrite(cto, dto);
 
 		    // 댓글 목록 세션에 저장 (필요시 사용)
-		    List<HBoardCTO> commentLists = cao.commentLists(num);
+		    List<HobbyCommentDTO> commentLists = cao.commentLists(num);
 		    session.setAttribute("commentLists", commentLists);
 
 		    // 리다이렉트
@@ -327,8 +349,8 @@ public class HBoardController extends HttpServlet {
 		    map.put("searchField", searchField);
 		    map.put("searchWord", searchWord);
 
-		    HBoardDAO dao = new HBoardDAO();
-		    List<HBoardDTO> boardLists = dao.selectGardeningList(map);
+		    HobbyBoardDAO dao = new HobbyBoardDAO();
+		    List<HobbyBoardDTO> boardLists = dao.selectGardeningList(map);
 		    int totalCount = dao.selectGardeningCount(map);
 
 		    request.setAttribute("boardLists", boardLists);
@@ -347,14 +369,34 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectArtList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectArtList(map);
 			int totalCount = dao.selectArtCount(map);
 
 			request.setAttribute("boardLists", boardLists);
 			request.setAttribute("totalCount", totalCount);
 				
 			String path = "/hobbylist/art.jsp";
+			request.getRequestDispatcher(path).forward(request, response);
+			
+		}else if(action.equals("/cook.hob")) {
+			System.out.println(action);
+
+			String searchField = request.getParameter("searchField");
+			String searchWord = request.getParameter("searchWord");
+
+			Map<String, String> map = new HashMap<>();
+			map.put("searchField", searchField);
+			map.put("searchWord", searchWord);
+
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectCookList(map);
+			int totalCount = dao.selectCookCount(map);
+
+			request.setAttribute("boardLists", boardLists);
+			request.setAttribute("totalCount", totalCount);
+				
+			String path = "/hobbylist/cook.jsp";
 			request.getRequestDispatcher(path).forward(request, response);
 			
 		}else if(action.equals("/puzzle.hob")) {
@@ -367,8 +409,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectPuzzleList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectPuzzleList(map);
 			int totalCount = dao.selectPuzzleCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -387,8 +429,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectCollectionList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectCollectionList(map);
 			int totalCount = dao.selectCollectionCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -407,8 +449,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectReadingList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectReadingList(map);
 			int totalCount = dao.selectReadingCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -427,8 +469,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectExerciseList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectExerciseList(map);
 			int totalCount = dao.selectExerciseCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -447,8 +489,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectPhotoList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectPhotoList(map);
 			int totalCount = dao.selectPhotoCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -467,8 +509,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectHandmadeList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectHandmadeList(map);
 			int totalCount = dao.selectHandmadeCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -487,8 +529,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectInstrumentList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectInstrumentList(map);
 			int totalCount = dao.selectInstrumentCount(map);
 
 			request.setAttribute("boardLists", boardLists);
@@ -507,8 +549,8 @@ public class HBoardController extends HttpServlet {
 			map.put("searchField", searchField);
 			map.put("searchWord", searchWord);
 
-			HBoardDAO dao = new HBoardDAO();
-			List<HBoardDTO> boardLists = dao.selectAstronomicalList(map);
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectAstronomicalList(map);
 			int totalCount = dao.selectAstronomicalCount(map);
 
 			request.setAttribute("boardLists", boardLists);

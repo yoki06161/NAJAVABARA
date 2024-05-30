@@ -1,20 +1,20 @@
-<%@page import="proj.dto.HBoardDTO"%>
+<%@page import="dto.HobbyBoardDTO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-List<HBoardDTO> boardLists = (List<HBoardDTO>)request.getAttribute("boardLists");
+List<HobbyBoardDTO> boardLists = (List<HobbyBoardDTO>)request.getAttribute("boardLists");
 Integer totalCountObj = (Integer)request.getAttribute("totalCount");
 int totalCount = totalCountObj != null ? totalCountObj : 0;
 
 //visitcount를 위한 session
 HttpSession ses = request.getSession();
-HBoardDTO updatedDto = (HBoardDTO)ses.getAttribute("dto");
+HobbyBoardDTO updatedDto = (HobbyBoardDTO)ses.getAttribute("dto");
 
 if (updatedDto != null) {
- for (HBoardDTO board : boardLists) {
+ for (HobbyBoardDTO board : boardLists) {
      if (board.getNum() == updatedDto.getNum()) {
          board.setVisitcount(updatedDto.getVisitcount());
          session.removeAttribute("dto");
@@ -138,7 +138,7 @@ if (updatedDto != null) {
 		
 	    <div class="container mt-4">
 	        <div class="row">
-	            <% for (HBoardDTO bbs : boardLists) { %>
+	            <% for (HobbyBoardDTO bbs : boardLists) { %>
 	            	<div class="col-md-4">
 	            		<div class="grid_top_span">
 	            		<%
@@ -149,6 +149,9 @@ if (updatedDto != null) {
 		            	        break;
 		            	    case "art":
 		            	    	hobby = "아트";
+		            	        break;
+		            	    case "cook":
+		            	    	hobby = "요리";
 		            	        break;
 		            	    case "puzzle":
 		            	    	hobby = "퍼즐";

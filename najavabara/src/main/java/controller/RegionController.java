@@ -139,10 +139,6 @@ public class RegionController extends HttpServlet {
 				// 4. DAO
 				RegionDAO dao = new RegionDAO();
 				dao.insertWrite(dto);
-
-				System.out.println(title);
-				System.out.println(content);
-				System.out.println(id);
 			} else if (fileName == null) {
 				// 값 받아오기
 				String title = mr.getParameter("title");
@@ -155,10 +151,6 @@ public class RegionController extends HttpServlet {
 				// 4. DAO
 				RegionDAO dao = new RegionDAO();
 				dao.insertWrite(dto);
-
-				System.out.println(title);
-				System.out.println(content);
-				System.out.println(id);
 			}
 
 			// 5. move

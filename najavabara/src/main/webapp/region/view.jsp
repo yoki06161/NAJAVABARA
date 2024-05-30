@@ -97,8 +97,6 @@ $(document).ready(function() {
 			},
 			error : function(request, status, error) {
 				console.log(request, status, error);
-				console.log("data,id: ", data,id);
-				console.log("data.rs ", data.rs);
 			}
 		});
 	});
