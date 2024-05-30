@@ -1,7 +1,7 @@
 <%@page import="java.util.List"%>
-<%@page import="proj.cto.HBoardCTO"%>
-<%@page import="proj.dao.HBoardDAO"%>
-<%@page import="proj.dto.HBoardDTO"%>
+<%@page import="dto.HobbyCommentDTO"%>
+<%@page import="dao.HobbyBoardDAO"%>
+<%@page import="dto.HobbyBoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -82,8 +82,8 @@
 <div class="container">
     <%@ include file="../common/menu.jsp" %>
     <%
-    HBoardDTO dto = (HBoardDTO)session.getAttribute("dto");
-    if (dto != null) {
+    HobbyBoardDTO dto = (HobbyBoardDTO)session.getAttribute("dto");
+                if (dto != null) {
     %>    
     <div class="row mt-4">
         <div class="col-md-12">
@@ -98,9 +98,13 @@
             </div>
             <div class="row mt-2 text-center">
                 <div class="col-md-12 ">
-                    <% if(dto.getOrifile() != null){ %>
+                    <%
+                    if(dto.getOrifile() != null){
+                    %>
                     <img class="img-fluid" alt="<%=dto.getOrifile()%>" src="../Uploads/images/<%=dto.getNewfile()%>">
-                    <% } %>
+                    <%
+                    }
+                    %>
                 </div>
             </div>
             <div class="row mt-2">
@@ -113,40 +117,40 @@
                     <button type="button" class="btn btn-primary" onclick="location.href='listFile.hob';">전체 게시물 보기</button>
                     <%
                     String hobby = "";
-                    switch (dto.getHobby()) {
-                        case "gardening":
-                            hobby = "원예";
-                            break;
-                        case "art":
-                            hobby = "아트";
-                            break;
-                        case "puzzle":
-                            hobby = "퍼즐";
-                            break;
-                        case "collection":
-                            hobby = "수집";
-                            break;
-                        case "reading":
-                            hobby = "독서";
-                            break;
-                        case "exercise":
-                            hobby = "운동";
-                            break;
-                        case "photo":
-                            hobby = "포토";
-                            break;
-                        case "handmade":
-                            hobby = "수공예";
-                            break;
-                        case "instrument":
-                            hobby = "악기연주";
-                            break;
-                        case "astronomical":
-                            hobby = "천체관측";
-                            break;
-                        default:
-                            hobby = "취미";
-                    }
+                                                            switch (dto.getHobby()) {
+                                                                case "gardening":
+                                                                    hobby = "원예";
+                                                                    break;
+                                                                case "art":
+                                                                    hobby = "아트";
+                                                                    break;
+                                                                case "puzzle":
+                                                                    hobby = "퍼즐";
+                                                                    break;
+                                                                case "collection":
+                                                                    hobby = "수집";
+                                                                    break;
+                                                                case "reading":
+                                                                    hobby = "독서";
+                                                                    break;
+                                                                case "exercise":
+                                                                    hobby = "운동";
+                                                                    break;
+                                                                case "photo":
+                                                                    hobby = "포토";
+                                                                    break;
+                                                                case "handmade":
+                                                                    hobby = "수공예";
+                                                                    break;
+                                                                case "instrument":
+                                                                    hobby = "악기연주";
+                                                                    break;
+                                                                case "astronomical":
+                                                                    hobby = "천체관측";
+                                                                    break;
+                                                                default:
+                                                                    hobby = "취미";
+                                                            }
                     %>
                     <button type="button" class="btn btn-primary" onclick="location.href='<%=dto.getHobby()%>.hob';"><%=hobby%> 게시물 보기</button>
                 </div>
@@ -156,7 +160,9 @@
                     %>
                     <button type="button" class="btn btn-info" onclick="location.href='updateFile.jsp?num=<%=dto.getNum()%>';">게시물 수정하기</button>
                     <button type="button" class="btn btn-danger" onclick="del('<%=dto.getNum()%>');">게시물 삭제하기</button>
-                    <% } %>
+                    <%
+                    }
+                    %>
                 </div>
             </div>
         </div>
@@ -165,7 +171,9 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <h2>댓글</h2>
-            <% if(session.getAttribute("id") != null) { %>
+            <%
+            if(session.getAttribute("id") != null) {
+            %>
 			    <form name="writeForm" method="post" action="<%=request.getContextPath()%>/writeCommentProc.hob">
 			        <input type="hidden" id="num" name="num" value="<%=dto.getNum()%>">
 			        <div class="form-group">
@@ -173,7 +181,9 @@
 			        </div>
 			        <button type="submit" class="btn btn-primary">작성하기</button>
 			    </form>
-			<% } else { %>
+			<%
+			} else {
+			%>
 			    <div class="form-group">
 			        <textarea class="form-control" id="content" style="height: 100px;margin-bottom: 20px" name="content" placeholder="로그인 후에 댓글을 작성할 수 있습니다." disabled></textarea>
 			    </div>
@@ -184,7 +194,9 @@
 			            window.location.href = "<%=request.getContextPath()%>/user/login.jsp"; // 로그인 페이지 URL로 수정
 			        }
 			    </script>
-			<% } %>
+			<%
+			}
+			%>
 
         </div>
     </div>
@@ -194,13 +206,15 @@
             <h2>댓글 리스트</h2>
             <div id="comments">
                 <%
-                List<HBoardCTO> commentLists = (List<HBoardCTO>)session.getAttribute("commentLists");
-                if (commentLists != null && !commentLists.isEmpty()) {
+                List<HobbyCommentDTO> commentLists = (List<HobbyCommentDTO>)session.getAttribute("commentLists");
+                                                if (commentLists != null && !commentLists.isEmpty()) {
                 %>
                 <table class="table">
                     <tbody>
                         <tr><td>&nbsp;<b>전체 : <%=commentLists.size()%></b></td></tr>
-                        <% for (HBoardCTO cbs : commentLists) { %>
+                        <%
+                        for (HobbyCommentDTO cbs : commentLists) {
+                        %>
                         <tr>
                             <td>ID : <%= cbs.getId() %></td>
                             <td align="right"><%= cbs.getPostdate() %></td>
