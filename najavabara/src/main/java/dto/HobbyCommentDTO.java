@@ -1,32 +1,32 @@
-package proj.cto;
+package dto;
 
-public class HBoardCTO {
+public class HobbyCommentDTO {
 	private int numx;
 	private int num;
 	private String content;
 	private String postdate;
 	private String id;
 	
-	public HBoardCTO() {
+	public HobbyCommentDTO() {
 	}
 	
 	
 	
-	public HBoardCTO(int num) {
+	public HobbyCommentDTO(int num) {
 		super();
 		this.num = num;
 	}
 
 
 
-	public HBoardCTO(String content) {
+	public HobbyCommentDTO(String content) {
 		super();
 		this.content = content;
 	}
 
 
 
-	public HBoardCTO(String id, int num, String content) {
+	public HobbyCommentDTO(String id, int num, String content) {
 		super();
 		this.id = id;
 		this.num = num;
@@ -34,7 +34,7 @@ public class HBoardCTO {
 	}
 
 
-	public HBoardCTO(int numx, int num, String id, String postdate, String content) {
+	public HobbyCommentDTO(int numx, int num, String id, String postdate, String content) {
 		super();
 		this.numx = numx;
 		this.num = num;

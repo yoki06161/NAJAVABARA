@@ -1,4 +1,4 @@
-package proj.cao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import proj.connect.HJDBCConnect;
-import proj.cto.HBoardCTO;
-import proj.dto.HBoardDTO;
+import dto.HobbyBoardDTO;
+import dto.HobbyCommentDTO;
+import common.JDBCConnect;
 
 
-public class HBoardCAO {
+public class HobbyCommentDAO {
 	
-	public List<HBoardCTO> commentLists(int num) {
+	public List<HobbyCommentDTO> commentLists(int num) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
 
-	    HBoardCTO cto = new HBoardCTO();
-	    List<HBoardCTO> cbs = new ArrayList<HBoardCTO>();
+	    HobbyCommentDTO cto = new HobbyCommentDTO();
+	    List<HobbyCommentDTO> cbs = new ArrayList<HobbyCommentDTO>();
 	    String sql = "SELECT * FROM hobbyComments WHERE num=? ORDER BY numx DESC;";
 	    try {
-	        conn = HJDBCConnect.getConnection();
+	        conn = JDBCConnect.getConnection();
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, num);
 	        rs = pstmt.executeQuery();
@@ -36,14 +36,14 @@ public class HBoardCAO {
 	            String id = rs.getString("id");
 	            String postdate = rs.getString("postdate");
 
-	            cto = new HBoardCTO(numx, snum, id, postdate, content);
+	            cto = new HobbyCommentDTO(numx, snum, id, postdate, content);
 	            cbs.add(cto);
 	        }
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
-	        HJDBCConnect.close(rs, pstmt, conn);
+	        JDBCConnect.close(rs, pstmt, conn);
 	    }
 
 	    return cbs;
@@ -69,9 +69,9 @@ public class HBoardCAO {
 			sql += " where " + map.get("searchField") + " like ? ";
 		}
 		System.out.println(sql);
-		conn = HJDBCConnect.getConnection();
 
 		try {
+			conn = JDBCConnect.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			if(isSearch) {
 				//pstmt.setString(1, map.get("searchWord"));
@@ -86,20 +86,20 @@ public class HBoardCAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			HJDBCConnect.close(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}		
 
 		return totalCount;
 	}
 	
 
-	public int insertCommentWrite(HBoardCTO cto, HBoardDTO dto) {
+	public int insertCommentWrite(HobbyCommentDTO cto, HobbyBoardDTO dto) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;  
 	    int rs = 0;
 	    try {
 	       // 2. conn
-	       conn = HJDBCConnect.getConnection();
+	       conn = JDBCConnect.getConnection();
 	       
 	       // 3. sql + 쿼리창
 	       String sql = "insert into hobbyComments(id, num, content) values(?,?,?)";
@@ -116,7 +116,7 @@ public class HBoardCAO {
 	    } catch (Exception e) {
 	       e.printStackTrace();
 	    } finally {
-	       HJDBCConnect.close(pstmt, conn);
+	       JDBCConnect.close(pstmt, conn);
 	    }
 	    return rs;
 	}
@@ -130,25 +130,25 @@ public class HBoardCAO {
 	        String sql = "update hobbyBoard set visitcount = visitcount + 1 WHERE num = ?";
 	        
 	        try {
-	            conn = HJDBCConnect.getConnection();
+	            conn = JDBCConnect.getConnection();
 	            pstmt = conn.prepareStatement(sql);
 	            pstmt.setInt(1, num);
 	            pstmt.executeUpdate();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        } finally {
-	            HJDBCConnect.close(pstmt, conn);
+	            JDBCConnect.close(pstmt, conn);
 	        }
 	    }
 	 
 
-	public int updateWrite(HBoardCTO cto) {
+	public int updateWrite(HobbyCommentDTO cto) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;  
 	    int rs = 0;
 	    try {
 	       // 2. conn
-	       conn = HJDBCConnect.getConnection();
+	       conn = JDBCConnect.getConnection();
 	       
 	       // 3. sql + 쿼리창
 	       String sql = "update hobbyBoard set content = ? ";
@@ -165,18 +165,18 @@ public class HBoardCAO {
 	    } catch (Exception e) {
 	       e.printStackTrace();
 	    }finally {
-	       HJDBCConnect.close(pstmt, conn);
+	       JDBCConnect.close(pstmt, conn);
 	    }
 	    return rs;
 	}
 
-	public int delete(HBoardCTO cto) {
+	public int delete(HobbyCommentDTO cto) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;  
 	    int rs = 0;
 	    try {
 	       // 2. conn
-	       conn = HJDBCConnect.getConnection();
+	       conn = JDBCConnect.getConnection();
 	       
 	       // 3. sql + 쿼리창
 	       String sql = "delete from hobbyComments ";
@@ -192,18 +192,18 @@ public class HBoardCAO {
 	    } catch (Exception e) {
 	       e.printStackTrace();
 	    }finally {
-	       HJDBCConnect.close(pstmt, conn);
+	       JDBCConnect.close(pstmt, conn);
 	    }
 	    return rs;
 	}
 	
-	public int deleteAll(HBoardCTO cto) {
+	public int deleteAll(HobbyCommentDTO cto) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;  
 	    int rs = 0;
 	    try {
 	       // 2. conn
-	       conn = HJDBCConnect.getConnection();
+	       conn = JDBCConnect.getConnection();
 	       
 	       // 3. sql + 쿼리창
 	       String sql = "delete from hobbyComments ";
@@ -219,7 +219,7 @@ public class HBoardCAO {
 	    } catch (Exception e) {
 	       e.printStackTrace();
 	    }finally {
-	       HJDBCConnect.close(pstmt, conn);
+	       JDBCConnect.close(pstmt, conn);
 	    }
 	    return rs;
 	}
