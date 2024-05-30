@@ -279,9 +279,13 @@ dto의 원래 파일명 = <%=dto.getOriFile() %><br>
 		<a href="javascript:deleteAction('<%=dto.getNum()%>');">삭제하기</a>
 	<%} %>
 </div>
+<%
+// 줄바꿈처리
+	String content = dto.getContent();
+	content = content.replaceAll("\r\n|\n", "<br>");
+%>
 <div class="content">
-	<%=dto.getContent() %>
-	
+	<%=content %>
 </div>
 <!--추가한부분 
 <div class="like_wrap">
@@ -320,8 +324,13 @@ dto의 원래 파일명 = <%=dto.getOriFile() %><br>
 		<%} %></span>
 		</div>
 	</div>
+<%
+// 줄바꿈처리
+	String comment = cto.getComment();
+	comment = comment.replaceAll("\r\n|\n", "<br>");
+%>	
 	<div class="co_conmments">
-		<%=cto.getComment()%>
+		<%=comment%>
 	</div>
 </div>
 <% } } %>
