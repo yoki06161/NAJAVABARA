@@ -37,6 +37,10 @@
 			// 현재 클릭된 링크의 href를 localStorage에 저장
 			var href = $(this).attr('href');
 			localStorage.setItem('activeLink', href);
+			
+			if (href === "/najavabara/friendBoard/friendBoard.fri") {
+                sessionStorage.removeItem('selectedArea');
+            }
 		});
 	});
 </script>
@@ -84,7 +88,7 @@ li {
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">사건사고</a>
         </h5>
     </li>
-    <li class="menu">
+    <li class="menu"> 
         <h5>
             <a href="/najavabara/friendBoard/friendBoard.fri"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">동네친구</a>
