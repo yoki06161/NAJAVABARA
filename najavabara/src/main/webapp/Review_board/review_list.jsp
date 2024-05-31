@@ -1,8 +1,8 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="Review_Board.Review_BoardDTO"%>
-<%@page import="Review_Board.Review_BoardDAO"%>
+<%@page import="dto.Review_BoardDTO"%>
+<%@page import="dao.Review_BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../common/menu.jsp" %>
@@ -18,12 +18,10 @@ Map<String, String> map = new HashMap<>();
 map.put("searching", searching);
 
 // dao에 서치값 넣기
-Review_BoardDAO dao = new Review_BoardDAO();
+dao.Review_BoardDAO dao = new dao.Review_BoardDAO();
 dao.ShowReviewBoard(map);
 //dao의 reviewList를 rlist에 담기
-List<Review_BoardDTO> rlist = dao.ShowReviewBoard(map);
-
-
+List<dto.Review_BoardDTO> rlist = dao.ShowReviewBoard(map);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -150,12 +148,16 @@ List<Review_BoardDTO> rlist = dao.ShowReviewBoard(map);
 <div class="wrap">
 
 <div class="review_grid">
-<%if(rlist.isEmpty()) { %>
+<%
+if(rlist.isEmpty()) {
+%>
 <div cla>
 	앗..게시물이 없네요. 우리가 첫글을 남겨보아요!
 </div>
-<%} else {
-	for(Review_BoardDTO dto : rlist) { %>
+<%
+} else {
+	for(dto.Review_BoardDTO dto : rlist) {
+%>
 	<a href="<%=request.getContextPath()%>/Visitors.rev_bo?cnum=<%=dto.getNum()%>">
 		<div class="review_img">
 		<% if(dto.getOriFile() != null) { %>

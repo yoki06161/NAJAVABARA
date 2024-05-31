@@ -1,4 +1,4 @@
-package Review_Comment;
+package controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import dao.ReviewCommentDAO;
+import dto.ReviewCommentDTO;
 
 @WebServlet("*.rev_co")
 public class ReviewCommentController extends HttpServlet{

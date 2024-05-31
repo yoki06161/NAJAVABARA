@@ -1,4 +1,4 @@
-package Review_Board;
+package controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,9 @@ import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 
-import Review_Comment.ReviewCommentDAO;
+import dao.ReviewCommentDAO;
+import dao.Review_BoardDAO;
+import dto.Review_BoardDTO;
 
 @WebServlet("*.rev_bo")
 // 앞에 뭐가붙든 rev_bo라는 경로?를 갖고 오겠단 뜻

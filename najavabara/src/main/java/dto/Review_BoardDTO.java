@@ -1,4 +1,4 @@
-package Review_Board;
+package dto;
 
 import java.util.Date;
 

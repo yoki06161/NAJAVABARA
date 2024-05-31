@@ -1,4 +1,4 @@
-package Review_Comment;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import Review_Board.Review_BoardDTO;
 import common.JDBCConnect;
+import dto.ReviewCommentDTO;
+import dto.Review_BoardDTO;
 
 public class ReviewCommentDAO {
 	

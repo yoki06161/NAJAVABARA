@@ -1,4 +1,4 @@
-package Review_Board;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.JDBCConnect;
+import dto.Review_BoardDTO;
 
 public class Review_BoardDAO {
 
