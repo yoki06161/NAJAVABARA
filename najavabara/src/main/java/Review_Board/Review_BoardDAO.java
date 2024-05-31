@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import User.Conn;
+import common.JDBCConnect;
 
 public class Review_BoardDAO {
 
@@ -38,7 +38,7 @@ public class Review_BoardDAO {
 		
 		System.out.println("sql 최종 명령 " + sql);
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			pstmt = conn.prepareStatement(sql);
 			
@@ -67,7 +67,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.allClose(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		// 리스트 순서 뒤집는거
 		Collections.reverse(reviewList);
@@ -84,7 +84,7 @@ public class Review_BoardDAO {
 		String sql = "select * from reviewBoard where num = ?";
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getNum());
@@ -109,7 +109,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.allClose(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		return dto;
 	}
@@ -123,7 +123,7 @@ public class Review_BoardDAO {
 		String sql = "insert into reviewBoard(title, content, id, originalFile, newFile) values(?,?,?,?,?)";
 
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getTitle());
@@ -137,7 +137,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
@@ -149,7 +149,7 @@ public class Review_BoardDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			String sql = "update reviewBoard set title = ?, content = ?, originalFile = ?, newFile = ? where num = ?";
 		
@@ -165,7 +165,7 @@ public class Review_BoardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		return rs;
@@ -178,7 +178,7 @@ public class Review_BoardDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 			
 			String sql = "delete from reviewBoard where num = ?";
 			
@@ -191,7 +191,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		
@@ -205,7 +205,7 @@ public class Review_BoardDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 			
 			String sql = "update reviewBoard set visitcount = visitcount + 1 where num = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -217,7 +217,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		return rs;
@@ -230,7 +230,7 @@ public class Review_BoardDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 			
 			String sql = "update reviewBoard set love = love + 1 where num = ?";
 			pstmt= conn.prepareStatement(sql);
@@ -243,7 +243,7 @@ public class Review_BoardDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		return rs;
