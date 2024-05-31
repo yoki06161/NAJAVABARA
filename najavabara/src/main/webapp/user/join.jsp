@@ -59,7 +59,8 @@ function idCheck(){
     
     // 폼 제출 이벤트 핸들러
     $('#joinForm').on('submit', function(event) {
-    	const isIdTrue = $('#idIdtrue').show();
+    	// 요소가 보이는지 확인
+    	const isIdTrue = $('#isIdTrue').is(':visible');
     	
         if (isIdTrue) {
             event.preventDefault();
