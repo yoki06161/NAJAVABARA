@@ -177,7 +177,6 @@
 					<%=post.getVisitcount()%>
 				</p>
 				<p class="card-text">
-					내용:
 					<%=post.getContent()%>
 				</p>
 				<%
