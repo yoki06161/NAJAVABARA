@@ -64,7 +64,7 @@
 
         const fileInput = uform.update_file; // 파일 입력 필드 가져오기
         if (fileInput.value === "") { // 파일 입력 필드의 값 검사
-            alert('file 필수값 입니다.');
+            alert('사진을 넣어주세요.');
             fileInput.focus();
             return;
         }

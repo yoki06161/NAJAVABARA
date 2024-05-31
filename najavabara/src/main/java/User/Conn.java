@@ -16,7 +16,7 @@ public class Conn {
 		try {
 			// 원래 jdbc:mysql://localhost:3306/teampro?serverTimezone=UTC;로만 써왔지만 localhost가아니라 서버 주소(54.253.205.165) 써야함. 뒤에 :3306은 동일해서 넣음
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://54.253.205.165:3306/teampro?serverTimezone=UTC";
+			String url = "jdbc:mysql://54.153.195.68:3306/teampro?serverTimezone=UTC";
 			String user = "review";
 			String pw = "review";
 		

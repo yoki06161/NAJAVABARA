@@ -13,20 +13,20 @@ function validateFileForm(event) {
 	console.dir(form); // input
 
 	if (form.input_title.value === "") {
-		alert('title 필수값 입니다.');
+		alert('제목을 적어주세요.');
 		form.input_title.focus();
 		event.preventDefault(); // 폼 제출 방지
 		return false;
 	}
 	if (form.input_content.value === "") {
-		alert('content 필수값 입니다.');
+		alert('내용을 적어주세요.');
 		form.input_content.focus();
 		event.preventDefault(); // 폼 제출 방지
 		return false;
 	}
     const fileInput = form.input_file; // 수정: 파일 입력 필드 자체를 가져옴
     if (fileInput.value === "") { // 수정: 파일 입력 필드의 값 검사
-        alert('file 필수값 입니다.');
+        alert('사진을 넣어주세요.');
         fileInput.focus();
         event.preventDefault(); // 폼 제출 방지
         return false;

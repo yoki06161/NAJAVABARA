@@ -14,7 +14,7 @@ public class JDBCConnect {
         // 데이터베이스 연결 정보 설정
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://54.253.205.165:3306/teampro?serverTimezone=UTC");
+        dataSource.setUrl("jdbc:mysql://54.153.195.68:3306/teampro?serverTimezone=UTC");
         dataSource.setUsername("friend");
         dataSource.setPassword("friend");
         dataSource.setInitialSize(10); // 초기 연결 개수
