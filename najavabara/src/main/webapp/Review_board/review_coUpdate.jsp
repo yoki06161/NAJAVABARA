@@ -1,8 +1,8 @@
 <%@page import="java.util.List"%>
-<%@page import="Review_Comment.ReviewCommentDAO"%>
-<%@page import="Review_Board.Review_BoardDTO"%>
-<%@page import="Review_Board.Review_BoardDAO"%>
-<%@page import="Review_Comment.ReviewCommentDTO"%>
+<%@page import="dao.ReviewCommentDAO"%>
+<%@page import="dto.Review_BoardDTO"%>
+<%@page import="dao.Review_BoardDAO"%>
+<%@page import="dto.ReviewCommentDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../common/menu.jsp" %>
@@ -12,8 +12,8 @@ String snum = request.getParameter("cnum");
 int num = Integer.parseInt(snum);
 String tdate = request.getParameter("cdate");
 
-Review_BoardDAO dao = new Review_BoardDAO();
-Review_BoardDTO dto = new Review_BoardDTO();
+dao.Review_BoardDAO dao = new dao.Review_BoardDAO();
+dto.Review_BoardDTO dto = new dto.Review_BoardDTO();
 
 // dto의 num에 전달 받은 num값 넣기
 dto.setNum(num);

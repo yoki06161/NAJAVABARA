@@ -1,16 +1,16 @@
-<%@page import="proj.dto.HBoardDTO"%>
+<%@page import="dto.HobbyBoardDTO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-List<HBoardDTO> boardLists = (List<HBoardDTO>)request.getAttribute("boardLists");
+List<HobbyBoardDTO> boardLists = (List<HobbyBoardDTO>)request.getAttribute("boardLists");
 
 //visitcount를 위한 session
 HttpSession ses = request.getSession();
-HBoardDTO updatedDto = (HBoardDTO)ses.getAttribute("dto");
+HobbyBoardDTO updatedDto = (HobbyBoardDTO)ses.getAttribute("dto");
 
 if (updatedDto != null) {
- for (HBoardDTO board : boardLists) {
+ for (HobbyBoardDTO board : boardLists) {
      if (board.getNum() == updatedDto.getNum()) {
          board.setVisitcount(updatedDto.getVisitcount());
          session.removeAttribute("dto");
@@ -123,13 +123,19 @@ if (updatedDto != null) {
 </head>
 <body>
 <div id="wrap">
-	<%if(boardLists == null || boardLists.isEmpty()) {%>
+	<%
+	if(boardLists == null || boardLists.isEmpty()) {
+	%>
 	<br><br>
 		<b>게시물이 없습니다.</b>
-	<%} %>
+	<%
+	}
+	%>
     <div class="container mt-4">
 	        <div class="row">
-	            <% for (HBoardDTO bbs : boardLists) { %>
+	            <%
+	             for (HobbyBoardDTO bbs : boardLists){
+	            %>
 	            	<div class="col-md-4">
 	            		<div class="grid_top_span">
 	            		<span>조회수&nbsp; <%= bbs.getVisitcount() %></span>

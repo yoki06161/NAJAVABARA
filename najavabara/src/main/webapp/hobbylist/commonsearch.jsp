@@ -17,9 +17,14 @@
             <option value="id" <%= "id".equals(searchField) ? "selected" : "" %>>작성자ID</option>
         </select>
         <input type="text" name="searchWord" class="form-control">
-        <button type="submit" class="btn btn-primary">검색</button>
+        <button type="submit" class="btn btn-primary" style="width:150px;">검색</button>
     </div>
-    <div class="writeFile">
+    <div class="my_write_File">
+		<%
+            if(session.getAttribute("id") != null) {
+        %>
+        <a href="myFile.hob" class="btn btn-success">내가 작성한 글</a>
+        <%} %>
         <a href="writeFile.hob" class="btn btn-success">글 작성하기</a>
     </div>
 </form>

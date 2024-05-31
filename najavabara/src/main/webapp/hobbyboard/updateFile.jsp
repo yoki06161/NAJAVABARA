@@ -1,5 +1,5 @@
-<%@ page import="proj.dao.HBoardDAO"%>
-<%@ page import="proj.dto.HBoardDTO"%>
+<%@ page import="dao.HobbyBoardDAO"%>
+<%@ page import="dto.HobbyBoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     request.setCharacterEncoding("utf-8");
@@ -7,10 +7,10 @@
     String snum = request.getParameter("num");
     int num = Integer.parseInt(snum);
 
-    HBoardDTO dto = new HBoardDTO();
+    HobbyBoardDTO dto = new HobbyBoardDTO();
     dto.setNum(num);
 
-    HBoardDAO dao = new HBoardDAO();
+    HobbyBoardDAO dao = new HobbyBoardDAO();
     dto = dao.selectView(dto);
 %>
 <!DOCTYPE html>
@@ -62,6 +62,20 @@
             return;
         }
 
+        const fileInput = uform.update_file; // 파일 입력 필드 가져오기
+        if (fileInput.value === "") { // 파일 입력 필드의 값 검사
+            alert('사진을 넣어주세요.');
+            fileInput.focus();
+            return;
+        }
+        
+        // 파일 확장자 검사
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.test(fileInput.value)) { // 파일 입력 필드의 값을 검사
+            alert('.jpg .png .gif .jpeg 확장자명만 업로드 가능합니다.');
+            fileInput.focus();
+            return;
+        }
         uform.submit();
     }
 
@@ -100,7 +114,7 @@
         <textarea name="update_content" id="update_content" class="form-control up_cont" placeholder="내용을 넣어주세요" rows="6"><%=dto.getContent() %></textarea>
     </div>
     <div class="mb-3">
-        <label for="update_file" class="form-label">이미지 업로드</label>
+        <label for="update_file" class="form-label">이미지 업로드 [현재 파일 : <%=dto.getOrifile()%>]</label>
         <input type="file" id="update_file" name="update_file" class="form-control" onchange="show_preview(this);">
     </div>
     <input type="button" value="수정하기" onclick="sendReview()" class="btn btn-primary ubtn">

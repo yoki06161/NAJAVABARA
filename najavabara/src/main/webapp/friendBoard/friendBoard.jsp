@@ -17,6 +17,10 @@ if (selectedArea == null) {
 } else {
 	session.setAttribute("selectedArea", selectedArea);
 }
+String selectedField = (String) request.getParameter("searchField");
+if (selectedField == null) {
+	selectedField = "title";
+}
 %>
 
 <!DOCTYPE html>
@@ -130,12 +134,12 @@ if (selectedArea == null) {
 			<div class="row mb-3">
 				<div class="col-auto">
 					<select class="form-select" name="searchField">
-						<option value="title">제목</option>
-						<option value="content">내용</option>
+						<option value="title" <%= "title".equals(selectedField) ? "selected" : "" %>>제목</option>
+						<option value="content" <%= "content".equals(selectedField) ? "selected" : "" %>>내용</option>
 					</select>
 				</div>
 				<div class="col">
-					<input type="text" class="form-control" name="searchWord">
+					<input type="text" class="form-control" name="searchWord" value="<%= request.getParameter("searchWord") != null ? request.getParameter("searchWord") : "" %>">
 				</div>
 
 				<div class="col-auto">
@@ -145,7 +149,7 @@ if (selectedArea == null) {
 			<div class="row mb-3">
 				<div class="col-auto">
 					<select class="form-select" name="searchArea" id="searchArea">
-						<option value="">전체</option>
+						<option value="" <%= selectedArea == null || selectedArea.isEmpty() ? "selected" : "" %>>전체</option>
 						<option value="서울특별시">서울특별시</option>
 						<option value="부산광역시">부산광역시</option>
 						<option value="대구광역시">대구광역시</option>

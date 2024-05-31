@@ -19,11 +19,6 @@
 <script>
 	//메뉴 클릭 시 이벤트
 	$(document).ready(function() {
-		// 페이지 로드 시 모든 링크에 기본 클래스 추가
-	    $(".click").removeClass("link-primary").addClass("link-dark");
-	 	// 로그인 페이지 로드 시 localStorage에서 activeLink 제거
-	 	localStorage.removeItem('activeLink');
-			
 		// 페이지 로드 시 localStorage에서 활성 링크를 가져와 클래스 적용
 		var activeLink = localStorage.getItem('activeLink');
 		if (activeLink) {
@@ -42,6 +37,10 @@
 			// 현재 클릭된 링크의 href를 localStorage에 저장
 			var href = $(this).attr('href');
 			localStorage.setItem('activeLink', href);
+			
+			if (href === "/najavabara/friendBoard/friendBoard.fri") {
+                sessionStorage.removeItem('selectedArea');
+            }
 		});
 	});
 </script>
@@ -89,7 +88,7 @@ li {
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">사건사고</a>
         </h5>
     </li>
-    <li class="menu">
+    <li class="menu"> 
         <h5>
             <a href="/najavabara/friendBoard/friendBoard.fri"
                 class="fw-bold click link-dark link-underline-opacity-0 link-opacity-50-hover">동네친구</a>

@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import dao.friendCommentDAO;
 import dto.friendCommentDTO;
-import dto.UserDTO;
-
 
 @WebServlet("*.co")
 public class friendCommentController extends HttpServlet {
@@ -28,7 +25,7 @@ public class friendCommentController extends HttpServlet {
     }
 
     protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8"); // 한글처리
+        request.setCharacterEncoding("utf-8"); // 한글 처리
 
         String uri = request.getRequestURI();
         String action = uri.substring(uri.lastIndexOf("/"));
@@ -54,7 +51,7 @@ public class friendCommentController extends HttpServlet {
 
                 if (result) {
                     // 댓글 작성 성공 시, 댓글 목록을 다시 불러와서 설정
-                    List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
+                    List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum, "asc");
                     request.setAttribute("commentList", updatedCommentList);
                     
                     // 게시물 상세보기 페이지로 리다이렉트
@@ -75,7 +72,7 @@ public class friendCommentController extends HttpServlet {
 
             if (deleted) {
                 // 삭제 성공 시, 삭제된 댓글을 제외한 댓글 목록을 다시 가져와 설정
-                List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum);
+                List<friendCommentDTO> updatedCommentList = commentDao.getCommentsByPostNum(postNum, "asc");
                 request.setAttribute("commentList", updatedCommentList);
                 
                 // 게시물 상세보기 페이지로 리다이렉트
