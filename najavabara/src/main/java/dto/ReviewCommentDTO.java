@@ -1,4 +1,4 @@
-package Review_Comment;
+package dto;
 
 import java.util.Date;
 
