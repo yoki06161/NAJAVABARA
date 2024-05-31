@@ -1,8 +1,8 @@
 <%@page import="java.util.List"%>
-<%@page import="Review_Comment.ReviewCommentDTO"%>
-<%@page import="Review_Comment.ReviewCommentDAO"%>
-<%@page import="Review_Board.Review_BoardDTO"%>
-<%@page import="Review_Board.Review_BoardDAO"%>
+<%@page import="dto.ReviewCommentDTO"%>
+<%@page import="dao.ReviewCommentDAO"%>
+<%@page import="dto.Review_BoardDTO"%>
+<%@page import="dao.Review_BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../common/menu.jsp" %>
@@ -11,8 +11,8 @@
 String snum = request.getParameter("cnum");
 int num = Integer.parseInt(snum);
 
-Review_BoardDAO dao = new Review_BoardDAO();
-Review_BoardDTO dto = new Review_BoardDTO();
+dao.Review_BoardDAO dao = new dao.Review_BoardDAO();
+dto.Review_BoardDTO dto = new dto.Review_BoardDTO();
 
 // dto의 num에 전달 받은 num값 넣기
 dto.setNum(num);
@@ -279,9 +279,13 @@ dto의 원래 파일명 = <%=dto.getOriFile() %><br>
 		<a href="javascript:deleteAction('<%=dto.getNum()%>');">삭제하기</a>
 	<%} %>
 </div>
+<%
+// 줄바꿈처리
+	String content = dto.getContent();
+	content = content.replaceAll("\r\n|\n", "<br>");
+%>
 <div class="content">
-	<%=dto.getContent() %>
-	
+	<%=content %>
 </div>
 <!--추가한부분 
 <div class="like_wrap">
@@ -320,8 +324,13 @@ dto의 원래 파일명 = <%=dto.getOriFile() %><br>
 		<%} %></span>
 		</div>
 	</div>
+<%
+// 줄바꿈처리
+	String comment = cto.getComment();
+	comment = comment.replaceAll("\r\n|\n", "<br>");
+%>	
 	<div class="co_conmments">
-		<%=cto.getComment()%>
+		<%=comment%>
 	</div>
 </div>
 <% } } %>

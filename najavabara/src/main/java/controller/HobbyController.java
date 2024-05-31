@@ -379,6 +379,26 @@ public class HobbyController extends HttpServlet {
 			String path = "/hobbylist/art.jsp";
 			request.getRequestDispatcher(path).forward(request, response);
 			
+		}else if(action.equals("/cook.hob")) {
+			System.out.println(action);
+
+			String searchField = request.getParameter("searchField");
+			String searchWord = request.getParameter("searchWord");
+
+			Map<String, String> map = new HashMap<>();
+			map.put("searchField", searchField);
+			map.put("searchWord", searchWord);
+
+			HobbyBoardDAO dao = new HobbyBoardDAO();
+			List<HobbyBoardDTO> boardLists = dao.selectCookList(map);
+			int totalCount = dao.selectCookCount(map);
+
+			request.setAttribute("boardLists", boardLists);
+			request.setAttribute("totalCount", totalCount);
+				
+			String path = "/hobbylist/cook.jsp";
+			request.getRequestDispatcher(path).forward(request, response);
+			
 		}else if(action.equals("/puzzle.hob")) {
 			System.out.println(action);
 

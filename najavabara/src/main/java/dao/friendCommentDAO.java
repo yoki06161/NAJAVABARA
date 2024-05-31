@@ -37,7 +37,7 @@ public class friendCommentDAO {
         return result;
     }
 
-    public List<friendCommentDTO> getCommentsByPostNum(int postNum) {
+    public List<friendCommentDTO> getCommentsByPostNum(int postNum, String order) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -45,7 +45,10 @@ public class friendCommentDAO {
 
         try {
             conn = JDBCConnect.getConnection();
-            String sql = "SELECT * FROM comments WHERE postNum = ?";
+            String sql = "SELECT * FROM comments WHERE postNum = ? ORDER BY regDate";
+            if ("desc".equals(order)) {
+                sql += " DESC";
+            }
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, postNum);
             rs = pstmt.executeQuery();

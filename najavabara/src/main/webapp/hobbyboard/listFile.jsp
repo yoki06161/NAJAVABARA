@@ -150,6 +150,9 @@ if (updatedDto != null) {
 		            	    case "art":
 		            	    	hobby = "아트";
 		            	        break;
+		            	    case "cook":
+		            	    	hobby = "요리";
+		            	        break;
 		            	    case "puzzle":
 		            	    	hobby = "퍼즐";
 		            	        break;

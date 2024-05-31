@@ -62,6 +62,20 @@
             return;
         }
 
+        const fileInput = uform.update_file; // 파일 입력 필드 가져오기
+        if (fileInput.value === "") { // 파일 입력 필드의 값 검사
+            alert('사진을 넣어주세요.');
+            fileInput.focus();
+            return;
+        }
+        
+        // 파일 확장자 검사
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.test(fileInput.value)) { // 파일 입력 필드의 값을 검사
+            alert('.jpg .png .gif .jpeg 확장자명만 업로드 가능합니다.');
+            fileInput.focus();
+            return;
+        }
         uform.submit();
     }
 

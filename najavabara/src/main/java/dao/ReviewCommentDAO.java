@@ -1,4 +1,4 @@
-package Review_Comment;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import Review_Board.Review_BoardDTO;
-import User.Conn;
+import common.JDBCConnect;
+import dto.ReviewCommentDTO;
+import dto.Review_BoardDTO;
 
 public class ReviewCommentDAO {
 	
@@ -20,9 +21,9 @@ public class ReviewCommentDAO {
 		PreparedStatement pstmt = null;
 		int rs = 0;
 		
-		conn = Conn.getConn();
 		
 		try {
+			conn = JDBCConnect.getConnection();
 			String sql = "insert into reviewcomments(num, comment, id) values(?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, cto.getNum());
@@ -38,7 +39,7 @@ public class ReviewCommentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		return rs;
@@ -54,7 +55,7 @@ public class ReviewCommentDAO {
 		List<ReviewCommentDTO> commentlist = new ArrayList<ReviewCommentDTO>();
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
@@ -76,7 +77,7 @@ public class ReviewCommentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.allClose(rs, pstmt, conn);
+			JDBCConnect.close(rs, pstmt, conn);
 		}
 		// 리스트 역순
 		Collections.reverse(commentlist);
@@ -92,7 +93,7 @@ public class ReviewCommentDAO {
 		String sql = "update reviewcomments set comment = ? where postdate = ?";
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cto.getComment());
@@ -102,7 +103,7 @@ public class ReviewCommentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		
 		return rs;
@@ -115,7 +116,7 @@ public class ReviewCommentDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 		
 			String sql = "delete from reviewcomments where postdate = ?";
 			
@@ -127,7 +128,7 @@ public class ReviewCommentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
@@ -139,7 +140,7 @@ public class ReviewCommentDAO {
 		int rs = 0;
 		
 		try {
-			conn = Conn.getConn();
+			conn = JDBCConnect.getConnection();
 			
 			String sql = "delete from reviewcomments where num = ?";
 		
@@ -152,7 +153,7 @@ public class ReviewCommentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			Conn.upClose(pstmt, conn);
+			JDBCConnect.close(pstmt, conn);
 		}
 		return rs;
 	}
