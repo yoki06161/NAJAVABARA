@@ -24,21 +24,21 @@ function validateFileForm(event) {
 		event.preventDefault(); // 폼 제출 방지
 		return false;
 	}
-	const fileInput = form.input_file.value;
-	if (fileInput.value === "") {
-		alert('file 필수값 입니다.');
-		form.input_file.focus();
-		event.preventDefault(); // 폼 제출 방지
-		return false;
-	}
+    const fileInput = form.input_file; // 수정: 파일 입력 필드 자체를 가져옴
+    if (fileInput.value === "") { // 수정: 파일 입력 필드의 값 검사
+        alert('file 필수값 입니다.');
+        fileInput.focus();
+        event.preventDefault(); // 폼 제출 방지
+        return false;
+    }
     // 파일 확장자 검사
     const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-	if (!allowedExtensions.test(fileInput)) {
-		alert('.jpg .png .gif .jpeg 확장자명만 업로드 가능합니다.');
-		form.input_file.focus();
-		event.preventDefault(); // 폼 제출 방지
-		return false;
-	}
+    if (!allowedExtensions.test(fileInput.value)) { // 수정: 파일 입력 필드의 값을 검사
+        alert('.jpg .png .gif .jpeg 확장자명만 업로드 가능합니다.');
+        fileInput.focus();
+        event.preventDefault(); // 폼 제출 방지
+        return false;
+    }
 	return true; // 폼 제출 허용
 }
 </script>

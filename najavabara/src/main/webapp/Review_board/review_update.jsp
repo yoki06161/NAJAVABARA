@@ -1,6 +1,6 @@
 <%@page import="com.mysql.cj.log.ProfilerEventImpl"%>
-<%@page import="Review_Board.Review_BoardDAO"%>
-<%@page import="Review_Board.Review_BoardDTO"%>
+<%@page import="dao.Review_BoardDAO"%>
+<%@page import="dto.Review_BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../common/menu.jsp" %>
@@ -10,14 +10,13 @@
 	String rnum = request.getParameter("unum");
 	int num = Integer.parseInt(rnum);
 	
-	Review_BoardDTO dto = new Review_BoardDTO();
+	dto.Review_BoardDTO dto = new dto.Review_BoardDTO();
 	// dto에 저장해서 밑의 input에서 불러오는용. input에선 저 넘값을 UpdateReviewAction로 보내서 dao에 저장한다
 	dto.setNum(num);
 	
-	Review_BoardDAO dao = new Review_BoardDAO();
+	dao.Review_BoardDAO dao = new dao.Review_BoardDAO();
 	// 내용 보여주는 코드
 	dto = dao.ShowContentBynum(dto);
-
 %>
 <!DOCTYPE html>
 <html>
